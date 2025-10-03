@@ -1,0 +1,91 @@
+/* Tailwind CSS imports (must come first) */
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* Ensure Tailwind loads our config and scans sources */
+@config "../../tailwind.config.js";
+
+/* Tailwind v4: declare source files to include used utilities */
+@source "../../index.html" "../**/*.{js,jsx,ts,tsx,html}";
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: "IBM Plex Sans", Inter, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-inline: clamp(24px, 6vw, 64px);
+}
+
+/* Remove default button styles to let components control appearance */
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Custom utilities */
+@layer utilities {
+  /* Global responsive page gutters */
+  :root {
+    --gutter-min: 24px;
+    --gutter-max: 64px;
+    --gutter-fluid: clamp(var(--gutter-min), 6vw, var(--gutter-max));
+  }
+  .page-gutter {
+    padding-left: var(--gutter-fluid);
+    padding-right: var(--gutter-fluid);
+  }
+  /* Section dividers */
+  .section-divider {
+    border-top: 3px solid var(--color-border-primary);
+  }
+
+  /* Color utilities (fallback to ensure visibility even if custom theme keys aren't emitted) */
+  .bg-bg-primary { background-color: var(--color-bg-primary) !important; }
+  .bg-bg-card { background-color: var(--color-bg-card) !important; }
+  .bg-bg-card-featured { background-color: var(--color-bg-card-featured) !important; }
+  .bg-bg-card-inline { background-color: var(--color-bg-card-inline) !important; }
+  .bg-bg-overlay { background-color: var(--color-bg-overlay) !important; }
+
+  .text-text-primary { color: var(--color-text-primary) !important; }
+  .text-text-secondary { color: var(--color-text-secondary) !important; }
+  .text-text-inverse { color: var(--color-text-inverse) !important; }
+
+  .border-border-primary { border-color: var(--color-border-primary) !important; }
+  .border-border-secondary { border-color: var(--color-border-secondary) !important; }
+  .border-border-dark { border-color: var(--color-border-dark) !important; }
+
+  /* Crisp, fast transitions aligned to the neobrutalist feel */
+  .transition-brutal {
+    transition-property: transform, box-shadow, border-color, background-color, color, text-decoration-color, opacity;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* Subtle reveal-on-scroll utility */
+  .reveal { opacity: 0; transform: translateY(16px); }
+  .reveal-in { opacity: 1; transform: translateY(0); transition: opacity 300ms ease, transform 300ms ease; }
+}

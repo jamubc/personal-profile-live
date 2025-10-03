@@ -1,0 +1,56 @@
+/* ===================================
+   CHROMA GRADIENT CONFIGURATION
+   Modify these values to customize the animation
+   =================================== */
+
+:root {
+  /* Gradient Colors (customize these hex values) */
+  --chroma-color-1: #17ead9;
+  --chroma-color-2: #6078ea;
+  --chroma-color-3: #e972fa;
+  --chroma-color-4: #feb692;
+  --chroma-color-5: #ff6a6a;
+
+  /* Animation Speed (lower = faster, higher = slower) */
+  --chroma-duration: 6s;
+
+  /* Gradient Size (affects smoothness and spread) */
+  --chroma-size: 400%;
+}
+
+/* ===================================
+   ANIMATION KEYFRAMES
+   =================================== */
+
+@keyframes chromaShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  60% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ===================================
+   GRADIENT TEXT CLASS
+   =================================== */
+
+.chroma-gradient-text {
+  background: linear-gradient(
+    90deg,
+    var(--chroma-color-1),
+    var(--chroma-color-2),
+    var(--chroma-color-3),
+    var(--chroma-color-4),
+    var(--chroma-color-5)
+  );
+  background-size: var(--chroma-size) var(--chroma-size);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: chromaShift var(--chroma-duration) ease-in-out infinite alternate;
+  will-change: background-position;
+}
