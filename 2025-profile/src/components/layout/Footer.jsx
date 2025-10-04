@@ -24,7 +24,7 @@ export const Footer = () => {
 
           {/* Copyright */}
           <div className="text-body-sm text-text-secondary">
-            © {currentYear} Andrew. All rights reserved.
+            © {currentYear} jamubc. All rights reserved.
           </div>
         </div>
       </div>

@@ -58,7 +58,7 @@ export const Header = () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         >
-          Andrew
+          Header Text Here
         </a>
 
         {/* Desktop Navigation */}

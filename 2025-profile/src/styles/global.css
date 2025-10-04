@@ -53,11 +53,30 @@ button {
     --gutter-min: 24px;
     --gutter-max: 64px;
     --gutter-fluid: clamp(var(--gutter-min), 6vw, var(--gutter-max));
+
+    /* Color unlock system */
+    --accent: 286 88% 60%;
+    --sat: 0%;
+  }
+
+  :root[data-plugged="true"] {
+    --sat: 100%;
+    --accent: 310 92% 56%;
   }
   .page-gutter {
     padding-left: var(--gutter-fluid);
     padding-right: var(--gutter-fluid);
   }
+
+  /* Background field always visible */
+  .bg-field { opacity: 1; }
+
+  /* Plug overlay auto-hide after connection */
+  .plug-overlay { opacity: 1; transition: opacity 600ms ease-out; background: transparent !important; }
+  body[data-plugged="true"] .plug-overlay { opacity: 0; }
+
+  /* Ensure all canvases default transparent */
+  canvas { background: transparent; }
   /* Section dividers */
   .section-divider {
     border-top: 3px solid var(--color-border-primary);
