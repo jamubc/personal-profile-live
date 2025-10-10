@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Canvas } from '@react-three/fiber';
 import { Button } from '../ui/Button';
-import { WorkingArm } from '../three/WorkingArm';
 import '../../styles/chromaGradient.css';
 
 export const Hero = () => {
@@ -15,7 +13,6 @@ export const Hero = () => {
   ];
 
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
-  const [displayedRole, setDisplayedRole] = useState('Full-Stack Developer');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,8 +20,6 @@ export const Hero = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
-
-  const handleLabelDeposited = (label) => setDisplayedRole(label);
 
   const scrollToProjects = () => {
     const element = document.querySelector('#projects');
@@ -75,24 +70,6 @@ export const Hero = () => {
 
   return (
     <section id="hero" className="container mx-auto page-gutter min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
-      {/* 3D Robotic Arm - Only in Hero section */}
-      <div className="absolute inset-0 pointer-events-none">
-        <Canvas
-          gl={{ alpha: true, antialias: true }}
-          onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
-          style={{ background: 'transparent' }}
-          camera={{ position: [0, 1, 8], fov: 50 }}
-        >
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[5, 5, 5]} intensity={0.8} />
-          <pointLight position={[-5, 3, 3]} intensity={0.4} color="#ffeb3b" />
-          <WorkingArm
-            currentLabel={roles[currentRoleIndex]}
-            onLabelDeposited={handleLabelDeposited}
-          />
-        </Canvas>
-      </div>
-
       {/* Hero Content */}
       <motion.div
         className="max-w-4xl relative z-10"
@@ -112,9 +89,9 @@ export const Hero = () => {
           variants={roleVariants}
           initial="initial"
           animate="deposited"
-          key={displayedRole}
+          key={roles[currentRoleIndex]}
         >
-          {displayedRole}
+          {roles[currentRoleIndex]}
         </motion.p>
         <motion.p
           className="text-body-lg text-text-secondary mb-12 max-w-2xl"

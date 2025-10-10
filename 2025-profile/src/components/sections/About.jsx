@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '../ui/Button';
-import { Tag } from '../ui/Tag';
 import { Avatar } from '../ui/Avatar';
+import { KnowledgeTree } from '../ui/KnowledgeTree';
 
 export const About = () => {
   const containerVariants = {
@@ -53,10 +53,9 @@ export const About = () => {
             </p>
           </motion.div>
 
-          <motion.div className="flex flex-wrap gap-3 mb-8" variants={itemVariants}>
-            {['Developer Tools', 'DX', 'Performance', 'Open Source'].map((t) => (
-              <Tag key={t}>{t}</Tag>
-            ))}
+          <motion.div className="mb-12" variants={itemVariants}>
+            <h3 className="text-h3 font-bold text-text-primary mb-6">Knowledge Tree</h3>
+            <KnowledgeTree />
           </motion.div>
 
           <motion.div variants={itemVariants}>

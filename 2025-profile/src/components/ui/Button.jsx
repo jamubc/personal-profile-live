@@ -7,7 +7,7 @@ export const Button = ({
   ...props
 }) => {
   const variants = {
-    primary: 'bg-primary text-text-inverse border-border-dark shadow-brutal-md',
+    primary: 'bg-primary text-text-inverse border-border-dark shadow-brutal-md transition-colors hover:bg-text-inverse hover:text-primary',
     secondary: 'bg-secondary text-text-primary border-border-primary shadow-brutal-light-md',
   };
 
