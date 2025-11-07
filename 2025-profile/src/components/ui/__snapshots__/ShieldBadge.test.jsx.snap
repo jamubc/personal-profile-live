@@ -1,0 +1,38 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ShieldBadge > snapshot testing > matches snapshot with custom className 1`] = `
+<img
+  alt="Snapshot"
+  class="inline-block h-6 custom"
+  decoding="async"
+  loading="lazy"
+  src="test.svg"
+/>
+`;
+
+exports[`ShieldBadge > snapshot testing > matches snapshot with href 1`] = `
+<a
+  class="inline-block"
+  href="https://example.com"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  <img
+    alt="Snapshot"
+    class="inline-block h-6 "
+    decoding="async"
+    loading="lazy"
+    src="test.svg"
+  />
+</a>
+`;
+
+exports[`ShieldBadge > snapshot testing > matches snapshot without href 1`] = `
+<img
+  alt="Snapshot"
+  class="inline-block h-6 "
+  decoding="async"
+  loading="lazy"
+  src="test.svg"
+/>
+`;

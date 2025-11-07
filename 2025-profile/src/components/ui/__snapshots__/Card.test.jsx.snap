@@ -1,0 +1,51 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Card > snapshot testing > matches snapshot with complex children 1`] = `
+<div
+  class="bg-bg-card border-border-primary border-default shadow-brutal-lg p-card-md "
+  style="opacity: 0; transform: translateY(30px);"
+>
+  <h1>
+    Title
+  </h1>
+  <p>
+    Content
+  </p>
+</div>
+`;
+
+exports[`Card > snapshot testing > matches snapshot with custom className 1`] = `
+<div
+  class="bg-bg-card border-border-primary border-default shadow-brutal-lg p-card-md custom"
+  style="opacity: 0; transform: translateY(30px);"
+>
+  Custom
+</div>
+`;
+
+exports[`Card > snapshot testing > matches snapshot with default props 1`] = `
+<div
+  class="bg-bg-card border-border-primary border-default shadow-brutal-lg p-card-md "
+  style="opacity: 0; transform: translateY(30px);"
+>
+  Snapshot Test
+</div>
+`;
+
+exports[`Card > snapshot testing > matches snapshot with featured variant 1`] = `
+<div
+  class="bg-bg-card-featured border-border-primary border-thick shadow-brutal-xl p-card-lg "
+  style="opacity: 0; transform: translateY(30px);"
+>
+  Featured
+</div>
+`;
+
+exports[`Card > snapshot testing > matches snapshot with standard variant 1`] = `
+<div
+  class="bg-bg-card border-border-primary border-default shadow-brutal-lg p-card-md "
+  style="opacity: 0; transform: translateY(30px);"
+>
+  Standard
+</div>
+`;
