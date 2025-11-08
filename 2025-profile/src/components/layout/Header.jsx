@@ -48,7 +48,7 @@ export const Header = () => {
 
   return (
     <header className="bg-bg-primary border-b-border-primary border-b-thick h-nav sticky top-0 z-50">
-      <div className="container mx-auto page-gutter h-full flex items-center justify-between">
+      <div className="page-gutter h-full flex items-center justify-between">
         {/* Logo/Name */}
         <a
           href="#"
@@ -144,7 +144,7 @@ export const Header = () => {
           transition={{ duration: 0.2 }}
         >
           <motion.nav
-            className="flex flex-col items-start p-8 gap-6"
+            className="flex flex-col items-start page-gutter py-12 gap-6 w-full"
             initial="hidden"
             animate="visible"
             variants={{

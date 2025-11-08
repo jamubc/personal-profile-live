@@ -5,7 +5,7 @@ import { skills } from '../../data/skills';
 
 export const Skills = () => {
   return (
-    <section id="skills" className="container mx-auto page-gutter section-divider py-32 md:py-48 min-h-screen flex flex-col justify-center">
+    <section id="skills" className="page-gutter section-divider py-32 md:py-48 min-h-screen flex flex-col justify-center">
       <motion.h2
         className="text-display-sm md:text-display-md font-bold text-text-primary mb-16"
         initial={{ opacity: 0, y: 20 }}

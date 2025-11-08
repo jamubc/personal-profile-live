@@ -1,12 +1,38 @@
 import '@testing-library/jest-dom'
-import { beforeAll } from 'vitest'
-import React from 'react'
+import { cleanup } from '@testing-library/react'
+import { afterEach, beforeAll, vi } from 'vitest'
 
-// Mock Three.js for testing
+// Mock Framer Motion to prevent context errors in tests
+vi.mock('framer-motion', async () => {
+  const React = await import('react')
+  return {
+    motion: new Proxy(
+      {},
+      {
+        get: (_target, prop) => {
+          const Component = React.forwardRef((props, ref) => {
+            const { whileHover, whileInView, initial, animate, transition, viewport, ...domProps } = props
+            return React.createElement(prop, { ...domProps, ref })
+          })
+          Component.displayName = `motion.${String(prop)}`
+          return Component
+        },
+      }
+    ),
+    AnimatePresence: ({ children }) => children,
+    MotionGlobalConfig: { skipAnimations: true },
+  }
+})
+
+// Mock Three.js dependencies for testing
 beforeAll(() => {
-  // Mock requestAnimationFrame
-  global.requestAnimationFrame = (cb) => setTimeout(cb, 16)
-  global.cancelAnimationFrame = (id) => clearTimeout(id)
+  // Mock requestAnimationFrame (if not already present)
+  if (!global.requestAnimationFrame) {
+    global.requestAnimationFrame = (cb) => setTimeout(cb, 16)
+  }
+  if (!global.cancelAnimationFrame) {
+    global.cancelAnimationFrame = (id) => clearTimeout(id)
+  }
 
   // Mock ResizeObserver
   global.ResizeObserver = class ResizeObserver {
@@ -22,28 +48,9 @@ beforeAll(() => {
     unobserve() {}
     disconnect() {}
   }
+})
 
-  // Create a basic document mock
-  global.document = {
-    getElementById: vi.fn(),
-    body: {
-      dataset: {},
-      setAttribute: vi.fn(),
-      removeAttribute: vi.fn()
-    },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    createElement: vi.fn(() => ({
-      getBoundingClientRect: () => ({ left: 0, top: 0, width: 0, height: 0 }),
-      getContext: vi.fn()
-    }))
-  }
-
-  // Mock window
-  global.window = {
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    requestAnimationFrame: global.requestAnimationFrame,
-    cancelAnimationFrame: global.cancelAnimationFrame
-  }
+// Cleanup after each test to prevent state leakage
+afterEach(() => {
+  cleanup()
 })

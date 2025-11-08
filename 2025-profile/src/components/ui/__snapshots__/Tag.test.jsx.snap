@@ -1,0 +1,54 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Tag > snapshot testing > matches snapshot with custom className 1`] = `
+<span
+  class="
+        inline-block
+        px-3 py-1
+        text-body-sm
+        bg-bg-card-inline
+        border-border-secondary
+        border-thin
+        text-text-secondary
+        custom
+      "
+>
+  Snapshot
+</span>
+`;
+
+exports[`Tag > snapshot testing > matches snapshot with default props 1`] = `
+<span
+  class="
+        inline-block
+        px-3 py-1
+        text-body-sm
+        bg-bg-card-inline
+        border-border-secondary
+        border-thin
+        text-text-secondary
+        
+      "
+>
+  Snapshot Test
+</span>
+`;
+
+exports[`Tag > snapshot testing > matches snapshot with element children 1`] = `
+<span
+  class="
+        inline-block
+        px-3 py-1
+        text-body-sm
+        bg-bg-card-inline
+        border-border-secondary
+        border-thin
+        text-text-secondary
+        
+      "
+>
+  <em>
+    Emphasized
+  </em>
+</span>
+`;

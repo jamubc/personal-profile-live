@@ -7,7 +7,7 @@ import { ShieldBadge } from '../ui/ShieldBadge';
 
 export const Projects = () => {
   return (
-    <section id="projects" className="container mx-auto page-gutter section-divider py-32 md:py-48">
+    <section id="projects" className="page-gutter section-divider py-32 md:py-48">
       <motion.h2
         className="text-display-sm md:text-display-md font-bold text-text-primary mb-16"
         initial={{ opacity: 0, y: 20 }}

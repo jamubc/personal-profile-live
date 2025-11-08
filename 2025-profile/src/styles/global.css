@@ -27,7 +27,6 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-inline: clamp(24px, 6vw, 64px);
 }
 
 /* Remove default button styles to let components control appearance */

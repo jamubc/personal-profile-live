@@ -142,11 +142,11 @@ void main() {
 
   float t = field * 0.5 + 0.5;
 
-  // Color gradient
-  vec3 c1 = vec3(0.05, 0.02, 0.15);
-  vec3 c2 = vec3(0.15, 0.08, 0.45);
-  vec3 c3 = vec3(0.6, 0.15, 0.7);
-  vec3 c4 = vec3(0.2, 0.6, 0.95);
+// Color gradient (Desaturated from your original)
+vec3 c1 = vec3(0.044); // (Original was vec3(0.05, 0.02, 0.15))
+vec3 c2 = vec3(0.143); // (Original was vec3(0.15, 0.08, 0.45))
+vec3 c3 = vec3(0.347); // (Original was vec3(0.6, 0.15, 0.7))
+vec3 c4 = vec3(0.520); // (Original was vec3(0.2, 0.6, 0.95))
 
   vec3 color;
   if (t < 0.33) {

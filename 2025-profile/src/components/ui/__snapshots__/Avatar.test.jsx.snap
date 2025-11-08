@@ -1,0 +1,52 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Avatar > snapshot testing > matches snapshot with custom className 1`] = `
+<div
+  aria-label="Avatar"
+  class="
+        w-28 h-28 md:w-32 md:h-32
+        bg-bg-card
+        border-border-primary border-thick
+        shadow-brutal-md
+        flex items-center justify-center
+        text-h2 font-bold text-text-primary
+        test-class
+      "
+>
+  JS
+</div>
+`;
+
+exports[`Avatar > snapshot testing > matches snapshot with custom initials 1`] = `
+<div
+  aria-label="Avatar"
+  class="
+        w-28 h-28 md:w-32 md:h-32
+        bg-bg-card
+        border-border-primary border-thick
+        shadow-brutal-md
+        flex items-center justify-center
+        text-h2 font-bold text-text-primary
+        
+      "
+>
+  TDD
+</div>
+`;
+
+exports[`Avatar > snapshot testing > matches snapshot with default props 1`] = `
+<div
+  aria-label="Avatar"
+  class="
+        w-28 h-28 md:w-32 md:h-32
+        bg-bg-card
+        border-border-primary border-thick
+        shadow-brutal-md
+        flex items-center justify-center
+        text-h2 font-bold text-text-primary
+        
+      "
+>
+  A
+</div>
+`;
