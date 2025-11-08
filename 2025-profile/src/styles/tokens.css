@@ -187,8 +187,6 @@
 
   /* Font Sizes - Fluid Typography with clamp() */
   /* Format: clamp(min, preferred, max) - scales between viewport widths */
-  --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);      /* 12px -> 14px */
-  --font-size-sm: clamp(0.875rem, 0.825rem + 0.25vw, 1rem);       /* 14px -> 16px */
   --font-size-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);      /* 16px -> 18px */
   --font-size-md: clamp(1.125rem, 1.05rem + 0.375vw, 1.25rem);    /* 18px -> 20px */
   --font-size-lg: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);        /* 20px -> 24px */
@@ -196,7 +194,6 @@
   --font-size-2xl: clamp(1.875rem, 1.65rem + 1.125vw, 2.25rem);   /* 30px -> 36px */
   --font-size-3xl: clamp(2.25rem, 1.95rem + 1.5vw, 3rem);         /* 36px -> 48px */
   --font-size-4xl: clamp(3rem, 2.55rem + 2.25vw, 3.75rem);        /* 48px -> 60px */
-  --font-size-5xl: clamp(3.75rem, 3.15rem + 3vw, 4.5rem);         /* 60px -> 72px */
 
   /* Line Heights - Optimized for readability */
   /* Body text: 1.5-1.8 for comfortable reading */
