@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Button } from '../ui/Button';
 import { Avatar } from '../ui/Avatar';
 import { KnowledgeTree } from '../ui/KnowledgeTree';
+import GlassCard from '../ui/GlassCard';
 
 export const About = () => {
   const containerVariants = {
@@ -80,10 +81,15 @@ export const About = () => {
               <div className="absolute -inset-4 bg-gradient-to-br from-purple-500 via-cyan-500 to-purple-500 rounded-full blur-2xl opacity-50" />
               <div className="absolute -inset-2 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full animate-pulse" />
 
-              {/* Avatar container */}
-              <div className="relative bg-bg-card-inline backdrop-blur-xl border-2 border-purple-500/50 rounded-full p-2 shadow-2xl">
+              {/* Avatar container with GlassCard */}
+              <GlassCard
+                variant="default"
+                hoverEffect="none"
+                padding="p-2"
+                className="relative !rounded-full !border-2 !border-purple-500/50 !bg-bg-card-inline !backdrop-blur-xl"
+              >
                 <Avatar initials="A" />
-              </div>
+              </GlassCard>
 
               {/* Animated ring */}
               <motion.div
@@ -119,8 +125,13 @@ export const About = () => {
                   whileHover={{ x: 8, scale: 1.02 }}
                   className="relative group"
                 >
-                  {/* Glassmorphism card with strong blur */}
-                  <div className="relative bg-white/5 backdrop-blur-xl border border-purple-500/30 rounded-2xl p-6 shadow-xl overflow-hidden">
+                  {/* Stats card with GlassCard */}
+                  <GlassCard
+                    variant="default"
+                    hoverEffect="none"
+                    padding="p-6"
+                    className="rounded-2xl !border-purple-500/30 !backdrop-blur-xl overflow-hidden shadow-xl"
+                  >
                     {/* Gradient background on hover */}
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -147,7 +158,7 @@ export const About = () => {
                       transition={{ duration: 0.3 }}
                       style={{ transformOrigin: 'left' }}
                     />
-                  </div>
+                  </GlassCard>
                 </motion.div>
               ))}
             </div>
@@ -161,12 +172,17 @@ export const About = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
           >
-            {/* Bio Card with Glassmorphism */}
+            {/* Bio Card with GlassCard */}
             <motion.div
               variants={itemVariants}
               className="relative group"
             >
-              <div className="relative bg-white/5 backdrop-blur-2xl border border-cyan-500/30 rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden">
+              <GlassCard
+                variant="default"
+                hoverEffect="none"
+                padding="p-8 md:p-12"
+                className="rounded-3xl !border-cyan-500/30 overflow-hidden shadow-2xl"
+              >
                 {/* Animated gradient background */}
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-transparent to-cyan-500/20"
@@ -213,7 +229,7 @@ export const About = () => {
 
                 {/* Animated border accent */}
                 <motion.div
-                  className="absolute inset-0 rounded-3xl"
+                  className="absolute -inset-[1px] rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"
                   style={{
                     background: 'linear-gradient(90deg, rgba(168, 85, 247, 0.4), rgba(6, 182, 212, 0.4), rgba(168, 85, 247, 0.4))',
                     backgroundSize: '200% 100%',
@@ -226,14 +242,18 @@ export const About = () => {
                     repeat: Infinity,
                     ease: 'linear',
                   }}
-                  className="absolute -inset-[1px] rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"
                 />
-              </div>
+              </GlassCard>
             </motion.div>
 
-            {/* Tech Stack Card */}
+            {/* Tech Stack Card with GlassCard */}
             <motion.div variants={itemVariants}>
-              <div className="relative bg-white/5 backdrop-blur-2xl border border-purple-500/30 rounded-3xl p-8 md:p-10 shadow-2xl overflow-hidden">
+              <GlassCard
+                variant="default"
+                hoverEffect="none"
+                padding="p-8 md:p-10"
+                className="rounded-3xl !border-purple-500/30 overflow-hidden shadow-2xl"
+              >
                 {/* Background gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-500/10" />
 
@@ -260,7 +280,7 @@ export const About = () => {
                     ))}
                   </div>
                 </div>
-              </div>
+              </GlassCard>
             </motion.div>
 
             {/* Knowledge Tree with enhanced styling */}

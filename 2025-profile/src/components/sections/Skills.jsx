@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import GlassCard from '../ui/GlassCard';
 import { skills } from '../../data/skills';
 
 // Skill proficiency levels (adjust as needed)
@@ -83,13 +84,13 @@ const SkillCard = ({ category, skills, config, index }) => {
       {/* Background gradient blob */}
       <div className={`absolute -inset-0.5 bg-gradient-to-r ${config.gradient} rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
 
-      {/* Main card */}
-      <div className="relative h-full bg-surface-raised/50 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transition-all duration-500 group-hover:border-white/20 group-hover:-translate-y-2 group-hover:shadow-2xl">
+      {/* Main card with GlassCard component */}
+      <GlassCard className="!rounded-2xl !backdrop-blur-xl !duration-500 group-hover:border-white/20 group-hover:-translate-y-2 group-hover:shadow-2xl relative overflow-hidden">
         {/* Top gradient bar */}
-        <div className={`h-1 ${config.accentColor}`} />
+        <div className={`h-1 ${config.accentColor} -mx-6 -mt-6 mb-6`} />
 
         {/* Card content */}
-        <div className="p-8">
+        <div>
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <div className={`text-4xl w-14 h-14 flex items-center justify-center rounded-xl ${config.accentColor} shadow-lg`}>
@@ -164,8 +165,8 @@ const SkillCard = ({ category, skills, config, index }) => {
         </div>
 
         {/* Bottom decorative element */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-      </div>
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent -mx-6 -mb-6" />
+      </GlassCard>
     </motion.div>
   );
 };

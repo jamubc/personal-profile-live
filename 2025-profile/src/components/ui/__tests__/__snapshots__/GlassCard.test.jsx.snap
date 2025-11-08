@@ -1,0 +1,122 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`GlassCard Component > snapshot testing > matches snapshot with accent variant 1`] = `
+<div
+  class="rounded-lg backdrop-blur-2xl transition-all duration-300 bg-white/10 border border-white/20"
+  variants="[object Object]"
+  whiletap="[object Object]"
+>
+  <div
+    class="relative z-10 p-6"
+  >
+    Accent
+  </div>
+</div>
+`;
+
+exports[`GlassCard Component > snapshot testing > matches snapshot with complex children 1`] = `
+<div
+  class="rounded-lg backdrop-blur-2xl transition-all duration-300 bg-white/5 border border-white/10"
+  variants="[object Object]"
+  whiletap="[object Object]"
+>
+  <div
+    class="relative z-10 p-6"
+  >
+    <h1>
+      Title
+    </h1>
+    <p>
+      Content
+    </p>
+  </div>
+</div>
+`;
+
+exports[`GlassCard Component > snapshot testing > matches snapshot with custom className 1`] = `
+<div
+  class="rounded-lg backdrop-blur-2xl transition-all duration-300 bg-white/5 border border-white/10    custom"
+  variants="[object Object]"
+  whiletap="[object Object]"
+>
+  <div
+    class="relative z-10 p-6"
+  >
+    Custom
+  </div>
+</div>
+`;
+
+exports[`GlassCard Component > snapshot testing > matches snapshot with default props 1`] = `
+<div
+  class="rounded-lg backdrop-blur-2xl transition-all duration-300 bg-white/5 border border-white/10"
+  variants="[object Object]"
+  whiletap="[object Object]"
+>
+  <div
+    class="relative z-10 p-6"
+  >
+    Snapshot Test
+  </div>
+</div>
+`;
+
+exports[`GlassCard Component > snapshot testing > matches snapshot with default variant 1`] = `
+<div
+  class="rounded-lg backdrop-blur-2xl transition-all duration-300 bg-white/5 border border-white/10"
+  variants="[object Object]"
+  whiletap="[object Object]"
+>
+  <div
+    class="relative z-10 p-6"
+  >
+    Default
+  </div>
+</div>
+`;
+
+exports[`GlassCard Component > snapshot testing > matches snapshot with glowColor prop 1`] = `
+<div
+  class="rounded-lg backdrop-blur-2xl transition-all duration-300 bg-white/5 border border-white/10"
+  variants="[object Object]"
+  whiletap="[object Object]"
+>
+  <div
+    class="relative z-10 p-6"
+  >
+    Purple Glow
+  </div>
+</div>
+`;
+
+exports[`GlassCard Component > snapshot testing > matches snapshot with gradient-border variant 1`] = `
+<div
+  class="rounded-lg backdrop-blur-2xl transition-all duration-300 bg-white/5 border-2 border-transparent bg-clip-padding   relative overflow-hidden before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:pointer-events-none"
+  variants="[object Object]"
+  whiletap="[object Object]"
+>
+  <div
+    class="relative z-10 p-6"
+  >
+    Gradient
+  </div>
+  <div
+    class="absolute inset-0 rounded-lg p-[1px] pointer-events-none"
+    style="background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.1), transparent);"
+  />
+</div>
+`;
+
+exports[`GlassCard Component > snapshot testing > matches snapshot with hover effect 1`] = `
+<div
+  class="rounded-lg backdrop-blur-2xl transition-all duration-300 bg-white/5 border border-white/10  hover:border-white/20 cursor-pointer"
+  variants="[object Object]"
+  whiletap="[object Object]"
+>
+  <div
+    class="relative z-10 p-6"
+  >
+    Lift Effect
+  </div>
+</div>
+`;

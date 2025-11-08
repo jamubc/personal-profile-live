@@ -13,14 +13,17 @@ export default {
         accent: '#0A0A0A',
         // Text tokens
         'text-primary': '#FFFFFF',
-        'text-secondary': '#CCCCCC',
+        'text-secondary': '#D4D4D4',
+        'text-tertiary': '#999999',
         'text-inverse': '#000000',
         // Border tokens
         'border-primary': '#FFFFFF',
-        'border-secondary': '#4A5568',
+        'border-secondary': '#525252',
+        'border-subtle': '#2A2A2A',
         'border-dark': '#000000',
         // Background tokens
         'bg-primary': '#000000',
+        'background-primary': '#000000',
         'bg-card': '#1A1A1A',
         'bg-card-featured': '#0A0A0A',
         'bg-card-inline': '#2A2A2A',
@@ -29,12 +32,14 @@ export default {
         // Nested semantic groups (generate classes like text-text-primary)
         text: {
           primary: '#FFFFFF',
-          secondary: '#CCCCCC',
+          secondary: '#D4D4D4',
+          tertiary: '#999999',
           inverse: '#000000',
         },
         border: {
           primary: '#FFFFFF',
-          secondary: '#4A5568',
+          secondary: '#525252',
+          subtle: '#2A2A2A',
           dark: '#000000',
         },
         bg: {
@@ -43,6 +48,34 @@ export default {
           'card-featured': '#0A0A0A',
           'card-inline': '#2A2A2A',
           overlay: '#000000',
+        },
+        // Accent colors
+        'accent-primary': 'hsl(286, 88%, 60%)',
+        'accent-purple': 'hsl(286, 88%, 60%)',
+        'accent-cyan': 'hsl(190, 92%, 56%)',
+        purple: {
+          50: '#faf5ff',
+          100: '#f3e8ff',
+          200: '#e9d5ff',
+          300: '#d8b4fe',
+          400: '#c084fc',
+          500: '#a855f7',
+          600: '#9333ea',
+          700: '#7e22ce',
+          800: '#6b21a8',
+          900: '#581c87',
+        },
+        cyan: {
+          50: '#ecfeff',
+          100: '#cffafe',
+          200: '#a5f3fc',
+          300: '#67e8f9',
+          400: '#22d3ee',
+          500: '#06b6d4',
+          600: '#0891b2',
+          700: '#0e7490',
+          800: '#155e75',
+          900: '#164e63',
         },
       },
 
@@ -101,6 +134,7 @@ export default {
         'brutal-pressed-sm': 'var(--shadow-brutal-pressed-sm)',
         'brutal-pressed-md': 'var(--shadow-brutal-pressed-md)',
         'brutal-light-md': 'var(--shadow-brutal-light-md)',
+        'accent-primary': '0 0 24px 0 hsla(286, 88%, 60%, 0.4), 0 0 12px 0 hsla(286, 88%, 60%, 0.2)',
         'none': 'none',
       },
 

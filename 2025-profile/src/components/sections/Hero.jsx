@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../ui/Button';
+import GlassCard from '../ui/GlassCard';
 import '../../styles/chromaGradient.css';
 
 export const Hero = () => {
@@ -152,44 +153,26 @@ export const Hero = () => {
           variants={glassCardVariants}
           className="mb-16 inline-block"
         >
-          <div
-            className="relative rounded-3xl p-1 overflow-hidden"
-            style={{
-              background: 'linear-gradient(135deg, rgb(168, 85, 247), rgb(34, 211, 238))',
-            }}
+          <GlassCard
+            variant="gradient-border"
+            glowColor="purple"
+            hoverEffect="glow"
+            className="px-12 py-8"
           >
-            {/* Glass Card */}
-            <div
-              className="relative rounded-[22px] px-12 py-8 overflow-hidden"
+            <motion.p
+              id="role-anchor"
+              className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-accent-purple via-accent-cyan to-accent-purple bg-clip-text text-transparent"
               style={{
-                background: 'rgba(15, 23, 42, 0.7)',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
+                backgroundSize: '200% auto',
               }}
+              variants={roleVariants}
+              initial="initial"
+              animate="deposited"
+              key={roles[currentRoleIndex]}
             >
-              {/* Subtle inner glow */}
-              <div
-                className="absolute inset-0 opacity-20"
-                style={{
-                  background: 'radial-gradient(circle at center, rgb(168, 85, 247) 0%, transparent 70%)',
-                }}
-              />
-
-              <motion.p
-                id="role-anchor"
-                className="relative text-5xl md:text-6xl font-bold bg-gradient-to-r from-accent-purple via-accent-cyan to-accent-purple bg-clip-text text-transparent"
-                style={{
-                  backgroundSize: '200% auto',
-                }}
-                variants={roleVariants}
-                initial="initial"
-                animate="deposited"
-                key={roles[currentRoleIndex]}
-              >
-                {roles[currentRoleIndex]}
-              </motion.p>
-            </div>
-          </div>
+              {roles[currentRoleIndex]}
+            </motion.p>
+          </GlassCard>
         </motion.div>
 
         {/* Description with dramatic spacing */}
@@ -243,62 +226,38 @@ export const Hero = () => {
           variants={itemVariants}
           className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
         >
-          {/* Stat Card 1 */}
-          <div
-            className="relative rounded-2xl p-1 overflow-hidden group"
-            style={{
-              background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, transparent 100%)',
-            }}
+          {/* Stat Card 1 - Years Experience */}
+          <GlassCard
+            variant="gradient-border"
+            glowColor="purple"
+            hoverEffect="lift"
+            className="text-center px-6 py-8"
           >
-            <div
-              className="relative rounded-[14px] px-6 py-8 text-center"
-              style={{
-                background: 'rgba(15, 23, 42, 0.8)',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
-              <div className="text-3xl font-bold text-accent-purple mb-2">5+</div>
-              <div className="text-text-secondary text-sm uppercase tracking-wider">Years Experience</div>
-            </div>
-          </div>
+            <div className="text-3xl font-bold text-accent-purple mb-2">5+</div>
+            <div className="text-text-secondary text-sm uppercase tracking-wider">Years Experience</div>
+          </GlassCard>
 
-          {/* Stat Card 2 */}
-          <div
-            className="relative rounded-2xl p-1 overflow-hidden group"
-            style={{
-              background: 'linear-gradient(135deg, rgb(34, 211, 238) 0%, transparent 100%)',
-            }}
+          {/* Stat Card 2 - Projects Built */}
+          <GlassCard
+            variant="gradient-border"
+            glowColor="cyan"
+            hoverEffect="lift"
+            className="text-center px-6 py-8"
           >
-            <div
-              className="relative rounded-[14px] px-6 py-8 text-center"
-              style={{
-                background: 'rgba(15, 23, 42, 0.8)',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
-              <div className="text-3xl font-bold text-accent-cyan mb-2">50+</div>
-              <div className="text-text-secondary text-sm uppercase tracking-wider">Projects Built</div>
-            </div>
-          </div>
+            <div className="text-3xl font-bold text-accent-cyan mb-2">50+</div>
+            <div className="text-text-secondary text-sm uppercase tracking-wider">Projects Built</div>
+          </GlassCard>
 
-          {/* Stat Card 3 */}
-          <div
-            className="relative rounded-2xl p-1 overflow-hidden group"
-            style={{
-              background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(34, 211, 238) 100%)',
-            }}
+          {/* Stat Card 3 - Ideas to Code */}
+          <GlassCard
+            variant="gradient-border"
+            glowColor="purple"
+            hoverEffect="lift"
+            className="text-center px-6 py-8"
           >
-            <div
-              className="relative rounded-[14px] px-6 py-8 text-center"
-              style={{
-                background: 'rgba(15, 23, 42, 0.8)',
-                backdropFilter: 'blur(10px)',
-              }}
-            >
-              <div className="text-3xl font-bold bg-gradient-to-r from-accent-purple to-accent-cyan bg-clip-text text-transparent mb-2">∞</div>
-              <div className="text-text-secondary text-sm uppercase tracking-wider">Ideas to Code</div>
-            </div>
-          </div>
+            <div className="text-3xl font-bold bg-gradient-to-r from-accent-purple to-accent-cyan bg-clip-text text-transparent mb-2">∞</div>
+            <div className="text-text-secondary text-sm uppercase tracking-wider">Ideas to Code</div>
+          </GlassCard>
         </motion.div>
       </motion.div>
     </section>
