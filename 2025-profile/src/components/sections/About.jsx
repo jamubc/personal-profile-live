@@ -3,6 +3,7 @@ import { Button } from '../ui/Button';
 import { Avatar } from '../ui/Avatar';
 import { KnowledgeTree } from '../ui/KnowledgeTree';
 import GlassCard from '../ui/GlassCard';
+import { StatCard } from '../ui/StatCard';
 
 export const About = () => {
   const containerVariants = {
@@ -116,50 +117,13 @@ export const About = () => {
             {/* Glassmorphism Stats Cards */}
             <div className="space-y-4 mt-12">
               {stats.map((stat, index) => (
-                <motion.div
+                <StatCard
                   key={stat.label}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + index * 0.1, duration: 0.6 }}
-                  whileHover={{ x: 8, scale: 1.02 }}
-                  className="relative group"
-                >
-                  {/* Stats card with GlassCard */}
-                  <GlassCard
-                    variant="default"
-                    hoverEffect="none"
-                    padding="p-6"
-                    className="rounded-2xl !border-purple-500/30 !backdrop-blur-xl overflow-hidden shadow-xl"
-                  >
-                    {/* Gradient background on hover */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    />
-
-                    {/* Content */}
-                    <div className="relative z-10 flex items-center gap-4">
-                      <div className="text-4xl">{stat.icon}</div>
-                      <div className="flex-1">
-                        <div className="text-xs font-semibold text-purple-400 uppercase tracking-wider mb-1">
-                          {stat.label}
-                        </div>
-                        <div className="text-body font-bold text-text-primary">
-                          {stat.value}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Accent border on hover */}
-                    <motion.div
-                      className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-cyan-500"
-                      initial={{ scaleX: 0 }}
-                      whileHover={{ scaleX: 1 }}
-                      transition={{ duration: 0.3 }}
-                      style={{ transformOrigin: 'left' }}
-                    />
-                  </GlassCard>
-                </motion.div>
+                  label={stat.label}
+                  value={stat.value}
+                  icon={stat.icon}
+                  index={index}
+                />
               ))}
             </div>
           </motion.div>

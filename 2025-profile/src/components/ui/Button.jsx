@@ -14,6 +14,9 @@ export const Button = ({
   const variants = {
     primary: 'bg-primary text-text-inverse border-border-dark shadow-brutal-md transition-colors hover:bg-text-inverse hover:text-primary',
     secondary: 'bg-secondary text-text-primary border-border-primary shadow-brutal-light-md',
+    ghost: 'bg-transparent text-text-primary border-2 border-border-primary transition-all hover:bg-border-primary hover:text-text-inverse',
+    gradient: 'bg-gradient-to-r from-purple-500 to-cyan-500 text-text-inverse border-border-dark shadow-brutal-md transition-all hover:shadow-lg',
+    icon: 'bg-primary text-text-inverse border-border-dark shadow-brutal-md rounded-full aspect-square p-0 w-12 h-12 transition-colors hover:bg-text-inverse hover:text-primary flex items-center justify-center',
   };
 
   const isDisabled = disabled || loading;
@@ -43,10 +46,10 @@ export const Button = ({
   return (
     <motion.button
       className={`
-        px-8 py-4
+        ${variant === 'icon' ? '' : 'px-8 py-4'}
         font-bold
         border-default
-        rounded-lg
+        ${variant !== 'icon' ? 'rounded-lg' : ''}
         relative
         overflow-hidden
         ${variants[variant]}

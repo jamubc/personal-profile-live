@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../ui/Button';
 import GlassCard from '../ui/GlassCard';
+import { StatCard } from '../ui/StatCard';
 import '../../styles/chromaGradient.css';
 
 export const Hero = () => {
@@ -227,37 +228,26 @@ export const Hero = () => {
           className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
         >
           {/* Stat Card 1 - Years Experience */}
-          <GlassCard
-            variant="gradient-border"
+          <StatCard
+            value="5+"
+            label="Years Experience"
             glowColor="purple"
-            hoverEffect="lift"
-            className="text-center px-6 py-8"
-          >
-            <div className="text-3xl font-bold text-accent-purple mb-2">5+</div>
-            <div className="text-text-secondary text-sm uppercase tracking-wider">Years Experience</div>
-          </GlassCard>
+          />
 
           {/* Stat Card 2 - Projects Built */}
-          <GlassCard
-            variant="gradient-border"
+          <StatCard
+            value="50+"
+            label="Projects Built"
             glowColor="cyan"
-            hoverEffect="lift"
-            className="text-center px-6 py-8"
-          >
-            <div className="text-3xl font-bold text-accent-cyan mb-2">50+</div>
-            <div className="text-text-secondary text-sm uppercase tracking-wider">Projects Built</div>
-          </GlassCard>
+          />
 
           {/* Stat Card 3 - Ideas to Code */}
-          <GlassCard
-            variant="gradient-border"
+          <StatCard
+            value="∞"
+            label="Ideas to Code"
             glowColor="purple"
-            hoverEffect="lift"
-            className="text-center px-6 py-8"
-          >
-            <div className="text-3xl font-bold bg-gradient-to-r from-accent-purple to-accent-cyan bg-clip-text text-transparent mb-2">∞</div>
-            <div className="text-text-secondary text-sm uppercase tracking-wider">Ideas to Code</div>
-          </GlassCard>
+            isGradient={true}
+          />
         </motion.div>
       </motion.div>
     </section>

@@ -1,0 +1,127 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`StatCard > snapshot testing > matches snapshot with all props 1`] = `
+<div
+  class="glass-card text-center px-6 py-8 w-full h-full"
+  data-glow-color="pink"
+  data-testid="glass-card"
+  hovereffect="lift"
+  variant="gradient-border"
+>
+  <div
+    class="text-3xl font-bold mb-2 bg-gradient-to-r from-accent-purple to-accent-cyan bg-clip-text text-transparent"
+  >
+    1000+
+  </div>
+  <div
+    class="text-text-secondary text-sm uppercase tracking-wider"
+  >
+    Complete Props Test
+  </div>
+</div>
+`;
+
+exports[`StatCard > snapshot testing > matches snapshot with custom className 1`] = `
+<div
+  class="glass-card text-center px-6 py-8 w-full custom"
+  data-glow-color="purple"
+  data-testid="glass-card"
+  hovereffect="lift"
+  variant="gradient-border"
+>
+  <div
+    class="text-3xl font-bold mb-2 text-accent-purple"
+  >
+    40
+  </div>
+  <div
+    class="text-text-secondary text-sm uppercase tracking-wider"
+  >
+    Custom Class
+  </div>
+</div>
+`;
+
+exports[`StatCard > snapshot testing > matches snapshot with cyan glow color 1`] = `
+<div
+  class="glass-card text-center px-6 py-8 "
+  data-glow-color="cyan"
+  data-testid="glass-card"
+  hovereffect="lift"
+  variant="gradient-border"
+>
+  <div
+    class="text-3xl font-bold mb-2 text-accent-cyan"
+  >
+    20
+  </div>
+  <div
+    class="text-text-secondary text-sm uppercase tracking-wider"
+  >
+    Cyan Glow
+  </div>
+</div>
+`;
+
+exports[`StatCard > snapshot testing > matches snapshot with default props 1`] = `
+<div
+  class="glass-card text-center px-6 py-8 "
+  data-glow-color="purple"
+  data-testid="glass-card"
+  hovereffect="lift"
+  variant="gradient-border"
+>
+  <div
+    class="text-3xl font-bold mb-2 text-accent-purple"
+  >
+    10
+  </div>
+  <div
+    class="text-text-secondary text-sm uppercase tracking-wider"
+  >
+    Default Props
+  </div>
+</div>
+`;
+
+exports[`StatCard > snapshot testing > matches snapshot with gradient enabled 1`] = `
+<div
+  class="glass-card text-center px-6 py-8 "
+  data-glow-color="purple"
+  data-testid="glass-card"
+  hovereffect="lift"
+  variant="gradient-border"
+>
+  <div
+    class="text-3xl font-bold mb-2 bg-gradient-to-r from-accent-purple to-accent-cyan bg-clip-text text-transparent"
+  >
+    85
+  </div>
+  <div
+    class="text-text-secondary text-sm uppercase tracking-wider"
+  >
+    Gradient Test
+  </div>
+</div>
+`;
+
+exports[`StatCard > snapshot testing > matches snapshot with purple glow color 1`] = `
+<div
+  class="glass-card text-center px-6 py-8 "
+  data-glow-color="purple"
+  data-testid="glass-card"
+  hovereffect="lift"
+  variant="gradient-border"
+>
+  <div
+    class="text-3xl font-bold mb-2 text-accent-purple"
+  >
+    30
+  </div>
+  <div
+    class="text-text-secondary text-sm uppercase tracking-wider"
+  >
+    Purple Glow
+  </div>
+</div>
+`;
