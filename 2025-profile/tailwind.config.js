@@ -111,18 +111,43 @@ export default {
       },
 
       fontSize: {
-        // Exaggerated scale
+        // Display scale (Extra Large, Large, Medium, Small)
         'display-xl': ['72px', { lineHeight: '1.2', fontWeight: '700' }],
         'display-lg': ['60px', { lineHeight: '1.2', fontWeight: '700' }],
         'display-md': ['48px', { lineHeight: '1.2', fontWeight: '700' }],
+        'display-sm': ['40px', { lineHeight: '1.2', fontWeight: '700' }],
+
+        // Semantic heading scale (H1-H6 for proper HTML structure)
         'h1': ['48px', { lineHeight: '1.2', fontWeight: '700' }],
         'h2': ['36px', { lineHeight: '1.3', fontWeight: '700' }],
         'h3': ['28px', { lineHeight: '1.3', fontWeight: '700' }],
         'h4': ['24px', { lineHeight: '1.3', fontWeight: '700' }],
+        'h5': ['20px', { lineHeight: '1.4', fontWeight: '700' }],
+        'h6': ['16px', { lineHeight: '1.4', fontWeight: '700' }],
+
+        // Body text scale (Semantic sizing)
         'body-lg': ['18px', { lineHeight: '1.5', fontWeight: '400' }],
         'body': ['16px', { lineHeight: '1.5', fontWeight: '400' }],
         'body-sm': ['14px', { lineHeight: '1.5', fontWeight: '400' }],
+        'body-xs': ['12px', { lineHeight: '1.5', fontWeight: '400' }],
+
+        // Legacy caption (aliased to body-xs for consistency)
         'caption': ['12px', { lineHeight: '1.5', fontWeight: '400' }],
+
+        // Standard Tailwind size scale (xs - 9xl for utility compatibility)
+        'xs': ['12px', { lineHeight: '1.5', fontWeight: '400' }],
+        'sm': ['14px', { lineHeight: '1.5', fontWeight: '400' }],
+        'base': ['16px', { lineHeight: '1.5', fontWeight: '400' }],
+        'lg': ['18px', { lineHeight: '1.5', fontWeight: '400' }],
+        'xl': ['20px', { lineHeight: '1.4', fontWeight: '700' }],
+        '2xl': ['24px', { lineHeight: '1.3', fontWeight: '700' }],
+        '3xl': ['28px', { lineHeight: '1.3', fontWeight: '700' }],
+        '4xl': ['36px', { lineHeight: '1.3', fontWeight: '700' }],
+        '5xl': ['48px', { lineHeight: '1.2', fontWeight: '700' }],
+        '6xl': ['60px', { lineHeight: '1.2', fontWeight: '700' }],
+        '7xl': ['72px', { lineHeight: '1.2', fontWeight: '700' }],
+        '8xl': ['80px', { lineHeight: '1.1', fontWeight: '700' }],
+        '9xl': ['96px', { lineHeight: '1.1', fontWeight: '700' }],
       },
 
       boxShadow: {
