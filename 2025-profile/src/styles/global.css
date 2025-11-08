@@ -314,10 +314,73 @@ html {
 body {
   background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
-  font-family: "IBM Plex Sans", Inter, Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-normal);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography - Modern heading styles with 2025 best practices */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--font-size-4xl);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tighter);
+}
+
+h2 {
+  font-size: var(--font-size-3xl);
+  line-height: var(--line-height-tight);
+}
+
+h3 {
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-snug);
+}
+
+h4 {
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-snug);
+}
+
+h5 {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-snug);
+}
+
+h6 {
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+}
+
+/* Body text elements */
+p {
+  line-height: var(--line-height-relaxed);
+  margin: 0;
+}
+
+/* Links with smooth transitions */
+a {
+  color: inherit;
+  text-decoration: inherit;
+  transition: var(--transition-colors);
+}
+
+/* Lists with proper spacing */
+ul, ol {
+  margin: 0;
+  padding: 0;
 }
 
 /* Remove default button styles to let components control appearance */
@@ -328,6 +391,7 @@ button {
   font: inherit;
   cursor: pointer;
   outline: inherit;
+  transition: var(--transition-all);
 }
 
 /* Focus visible for accessibility */
@@ -362,7 +426,11 @@ button {
   .bg-field { opacity: 1; }
 
   /* Plug overlay auto-hide after connection */
-  .plug-overlay { opacity: 1; transition: opacity 600ms ease-out; background: transparent !important; }
+  .plug-overlay {
+    opacity: 1;
+    transition: opacity var(--transition-slower) var(--transition-timing-smooth);
+    background: transparent !important;
+  }
   body[data-plugged="true"] .plug-overlay { opacity: 0; }
 
   /* Ensure all canvases default transparent */
@@ -387,16 +455,132 @@ button {
   .border-border-secondary { border-color: var(--color-border-secondary) !important; }
   .border-border-dark { border-color: var(--color-border-dark) !important; }
 
+  /* ============================================
+     ENHANCED COLOR UTILITIES - 2025 Design System
+     ============================================ */
+
+  /* Additional background utilities - New surfaces */
+  .bg-bg-secondary { background-color: var(--color-bg-secondary) !important; }
+  .bg-bg-tertiary { background-color: var(--color-bg-tertiary) !important; }
+  .bg-bg-card-elevated { background-color: var(--color-bg-card-elevated) !important; }
+  .bg-surface-base { background-color: var(--color-surface-base) !important; }
+  .bg-surface-raised { background-color: var(--color-surface-raised) !important; }
+
+  /* Additional text utilities - Enhanced hierarchy */
+  .text-text-tertiary { color: var(--color-text-tertiary) !important; }
+  .text-text-muted { color: var(--color-text-muted) !important; }
+  .text-text-disabled { color: var(--color-text-disabled) !important; }
+
+  /* Additional border utilities - Enhanced hierarchy */
+  .border-border-tertiary { border-color: var(--color-border-tertiary) !important; }
+  .border-border-muted { border-color: var(--color-border-muted) !important; }
+
+  /* Accent color utilities */
+  .bg-accent-primary { background-color: var(--color-accent-primary) !important; }
+  .bg-accent-secondary { background-color: var(--color-accent-secondary) !important; }
+  .text-accent-primary { color: var(--color-accent-primary) !important; }
+  .text-accent-secondary { color: var(--color-accent-secondary) !important; }
+  .border-accent-primary { border-color: var(--color-accent-primary) !important; }
+
+  /* Semantic color utilities - Success */
+  .bg-success { background-color: var(--color-success) !important; }
+  .bg-success-bg { background-color: var(--color-success-bg) !important; }
+  .text-success { color: var(--color-success-text) !important; }
+  .border-success { border-color: var(--color-success-border) !important; }
+
+  /* Semantic color utilities - Warning */
+  .bg-warning { background-color: var(--color-warning) !important; }
+  .bg-warning-bg { background-color: var(--color-warning-bg) !important; }
+  .text-warning { color: var(--color-warning-text) !important; }
+  .border-warning { border-color: var(--color-warning-border) !important; }
+
+  /* Semantic color utilities - Error */
+  .bg-error { background-color: var(--color-error) !important; }
+  .bg-error-bg { background-color: var(--color-error-bg) !important; }
+  .text-error { color: var(--color-error-text) !important; }
+  .border-error { border-color: var(--color-error-border) !important; }
+
+  /* Semantic color utilities - Info */
+  .bg-info { background-color: var(--color-info) !important; }
+  .bg-info-bg { background-color: var(--color-info-bg) !important; }
+  .text-info { color: var(--color-info-text) !important; }
+  .border-info { border-color: var(--color-info-border) !important; }
+
+  /* Gradient utilities - 2025 subtle depth */
+  .bg-gradient-primary { background: var(--gradient-bg-primary) !important; }
+  .bg-gradient-card { background: var(--gradient-bg-card) !important; }
+  .bg-gradient-accent { background: var(--gradient-accent) !important; }
+  .bg-gradient-accent-subtle { background: var(--gradient-accent-subtle) !important; }
+
+  /* Glass morphism utilities */
+  .glass {
+    background: var(--glass-bg) !important;
+    border: 1px solid var(--glass-border) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+  }
+
+  /* Shadow utilities - Brutal shadows (enhanced) */
+  .shadow-brutal-sm { box-shadow: var(--shadow-brutal-sm) !important; }
+  .shadow-brutal-md { box-shadow: var(--shadow-brutal-md) !important; }
+  .shadow-brutal-lg { box-shadow: var(--shadow-brutal-lg) !important; }
+  .shadow-brutal-xl { box-shadow: var(--shadow-brutal-xl) !important; }
+  .shadow-brutal-2xl { box-shadow: var(--shadow-brutal-2xl) !important; }
+  .shadow-brutal-light-sm { box-shadow: var(--shadow-brutal-light-sm) !important; }
+  .shadow-brutal-light-lg { box-shadow: var(--shadow-brutal-light-lg) !important; }
+
+  /* Shadow utilities - Soft shadows (modern 2025) */
+  .shadow-soft-xs { box-shadow: var(--shadow-soft-xs) !important; }
+  .shadow-soft-sm { box-shadow: var(--shadow-soft-sm) !important; }
+  .shadow-soft-md { box-shadow: var(--shadow-soft-md) !important; }
+  .shadow-soft-lg { box-shadow: var(--shadow-soft-lg) !important; }
+  .shadow-soft-xl { box-shadow: var(--shadow-soft-xl) !important; }
+  .shadow-soft-2xl { box-shadow: var(--shadow-soft-2xl) !important; }
+
+  /* Shadow utilities - Accent shadows */
+  .shadow-accent-glow { box-shadow: var(--shadow-accent-glow) !important; }
+  .shadow-accent-brutal { box-shadow: var(--shadow-accent-brutal) !important; }
+
+  /* Elevation utilities - Combined z-index + shadow */
+  .elevation-0 { box-shadow: var(--elevation-0) !important; }
+  .elevation-1 { box-shadow: var(--elevation-1) !important; }
+  .elevation-2 { box-shadow: var(--elevation-2) !important; }
+  .elevation-3 { box-shadow: var(--elevation-3) !important; }
+  .elevation-4 { box-shadow: var(--elevation-4) !important; }
+  .elevation-5 { box-shadow: var(--elevation-5) !important; }
+
   /* Crisp, fast transitions aligned to the neobrutalist feel */
   .transition-brutal {
     transition-property: transform, box-shadow, border-color, background-color, color, text-decoration-color, opacity;
-    transition-duration: 150ms;
-    transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition-duration: var(--transition-fast);
+    transition-timing-function: var(--transition-timing-sharp);
   }
 
-  /* Subtle reveal-on-scroll utility */
-  .reveal { opacity: 0; transform: translateY(16px); }
-  .reveal-in { opacity: 1; transform: translateY(0); transition: opacity 300ms ease, transform 300ms ease; }
+  /* Modern smooth transitions for interactive elements */
+  .transition-smooth {
+    transition: var(--transition-all);
+  }
+
+  .transition-colors {
+    transition: var(--transition-colors);
+  }
+
+  .transition-transform {
+    transition: var(--transition-transform);
+  }
+
+  /* Subtle reveal-on-scroll utility with modern timing */
+  .reveal {
+    opacity: 0;
+    transform: translateY(var(--space-4));
+  }
+
+  .reveal-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity var(--transition-slow) var(--transition-timing-smooth),
+                transform var(--transition-slow) var(--transition-timing-smooth);
+  }
 
   /* Cursor utility classes */
   body.cursor-pointer { cursor: pointer !important; }

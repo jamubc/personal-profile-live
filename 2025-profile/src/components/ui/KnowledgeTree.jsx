@@ -173,7 +173,13 @@ const Scene = () => {
 
 export const KnowledgeTree = () => {
   return (
-    <div className="w-full h-[500px] bg-bg-card-inline border-border-secondary border-thin">
+    <div className="w-full h-[500px] bg-bg-card-inline/80 backdrop-blur-sm border-border-secondary/50 border rounded-xl shadow-md overflow-hidden relative">
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none rounded-xl" />
+
+      {/* Subtle noise texture */}
+      <div className="absolute inset-0 opacity-[0.02] pointer-events-none rounded-xl" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 400 400\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
+
       <Canvas
         camera={{ position: [0, -0.5, 10], fov: 50 }}
         gl={{ antialias: true, alpha: true, powerPreference: 'low-power' }}

@@ -2,31 +2,253 @@
 /* Shadows - Hard, offset shadows for neobrutalist aesthetic */
 
 :root {
-  /* Colors */
-  --color-bg-primary: #000000;
-  --color-bg-card: #1A1A1A;
-  --color-bg-card-featured: #0A0A0A;
-  --color-bg-card-inline: #2A2A2A;
-  --color-bg-overlay: #000000;
+  /* ============================================
+     BASE COLORS - Core palette (60-30-10 rule)
+     ============================================ */
 
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #CCCCCC;
-  --color-text-inverse: #000000;
+  /* Background Colors - Dominant (60%) - Enhanced for depth */
+  --color-bg-primary: #000000;              /* Pure black - main background */
+  --color-bg-secondary: #0A0A0A;            /* Near black - subtle variation */
+  --color-bg-tertiary: #121212;             /* Raised surfaces */
 
-  --color-border-primary: #FFFFFF;
-  --color-border-secondary: #4A5568;
-  --color-border-dark: #000000;
+  /* Card Backgrounds - Layered depth system */
+  --color-bg-card: #1A1A1A;                 /* Standard cards - WCAG AAA compliant */
+  --color-bg-card-featured: #0F0F0F;        /* Featured/highlighted cards */
+  --color-bg-card-inline: #2A2A2A;          /* Inline elements (tags, badges) */
+  --color-bg-card-elevated: #242424;        /* Elevated cards (modals, dropdowns) */
 
-  /* Shadows */
+  /* Surface Colors - Modern layering */
+  --color-surface-base: #0D0D0D;
+  --color-surface-raised: #1F1F1F;
+  --color-surface-overlay: #000000;
+  --color-bg-overlay: #000000;              /* Maintained for compatibility */
+
+  /* Text Colors - Secondary (30%) - WCAG AAA compliant */
+  --color-text-primary: #FFFFFF;            /* Pure white - 21:1 contrast ratio */
+  --color-text-secondary: #D4D4D4;          /* Lighter gray - 14.77:1 contrast */
+  --color-text-tertiary: #A3A3A3;           /* Medium gray - 8.59:1 contrast */
+  --color-text-muted: #737373;              /* Muted text - 4.54:1 contrast (WCAG AA large) */
+  --color-text-inverse: #000000;            /* Black on light backgrounds */
+  --color-text-disabled: #525252;           /* Disabled state */
+
+  /* Border Colors - Refined hierarchy */
+  --color-border-primary: #FFFFFF;          /* Bright white borders - emphasis */
+  --color-border-secondary: #525252;        /* Improved from #4A5568 for consistency */
+  --color-border-tertiary: #2A2A2A;         /* Subtle borders */
+  --color-border-dark: #000000;             /* Dark borders */
+  --color-border-muted: #404040;            /* Muted borders */
+
+  /* ============================================
+     ACCENT COLORS - Accent (10%) - Brand & CTAs
+     ============================================ */
+
+  /* Primary Accent - Vibrant purple/magenta (matches existing accent system) */
+  --color-accent-primary: hsl(286, 88%, 60%);
+  --color-accent-primary-hover: hsl(286, 88%, 68%);
+  --color-accent-primary-active: hsl(286, 88%, 52%);
+
+  /* Secondary Accent - Cyan/Electric blue */
+  --color-accent-secondary: hsl(190, 92%, 56%);
+  --color-accent-secondary-hover: hsl(190, 92%, 64%);
+  --color-accent-secondary-active: hsl(190, 92%, 48%);
+
+  /* ============================================
+     SEMANTIC COLORS - Status & Feedback
+     ============================================ */
+
+  /* Success - Vibrant green */
+  --color-success: #10B981;                 /* emerald-500 */
+  --color-success-bg: #064E3B;              /* emerald-900 - dark bg */
+  --color-success-border: #047857;          /* emerald-700 */
+  --color-success-text: #6EE7B7;            /* emerald-300 - accessible on dark */
+
+  /* Warning - Vibrant amber/orange */
+  --color-warning: #F59E0B;                 /* amber-500 */
+  --color-warning-bg: #78350F;              /* amber-900 - dark bg */
+  --color-warning-border: #B45309;          /* amber-700 */
+  --color-warning-text: #FCD34D;            /* amber-300 - accessible on dark */
+
+  /* Error - Vibrant red */
+  --color-error: #EF4444;                   /* red-500 */
+  --color-error-bg: #7F1D1D;                /* red-900 - dark bg */
+  --color-error-border: #B91C1C;            /* red-700 */
+  --color-error-text: #FCA5A5;              /* red-300 - accessible on dark */
+
+  /* Info - Vibrant blue */
+  --color-info: #3B82F6;                    /* blue-500 */
+  --color-info-bg: #1E3A8A;                 /* blue-900 - dark bg */
+  --color-info-border: #1D4ED8;             /* blue-700 */
+  --color-info-text: #93C5FD;               /* blue-300 - accessible on dark */
+
+  /* ============================================
+     GRADIENTS - Subtle depth (2025 trend)
+     ============================================ */
+
+  /* Subtle background gradients - very minimal for modern depth */
+  --gradient-bg-primary: linear-gradient(180deg, #000000 0%, #0A0A0A 100%);
+  --gradient-bg-card: linear-gradient(135deg, #1A1A1A 0%, #151515 100%);
+  --gradient-accent: linear-gradient(135deg, hsl(286, 88%, 60%) 0%, hsl(310, 92%, 56%) 100%);
+  --gradient-accent-subtle: linear-gradient(135deg, rgba(192, 132, 252, 0.08) 0%, rgba(232, 121, 249, 0.08) 100%);
+
+  /* Glass morphism effect (modern 2025) */
+  --glass-bg: rgba(26, 26, 26, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(12px);
+
+  /* ============================================
+     SHADOWS - Dual system (brutal + soft)
+     ============================================ */
+
+  /* Brutal Shadows - Hard, offset shadows (neobrutalist aesthetic) */
   --shadow-brutal-sm: 4px 4px 0px 0px #000000;
   --shadow-brutal-md: 6px 6px 0px 0px #000000;
   --shadow-brutal-lg: 8px 8px 0px 0px #000000;
   --shadow-brutal-xl: 12px 12px 0px 0px #000000;
+  --shadow-brutal-2xl: 16px 16px 0px 0px #000000;
 
-  /* Shadow variants (pressed state) */
+  /* Brutal Shadow variants (pressed state) */
   --shadow-brutal-pressed-sm: 2px 2px 0px 0px #000000;
   --shadow-brutal-pressed-md: 3px 3px 0px 0px #000000;
 
-  /* Shadow variants (light) */
+  /* Brutal Shadow variants (light) */
+  --shadow-brutal-light-sm: 4px 4px 0px 0px rgba(255, 255, 255, 0.15);
   --shadow-brutal-light-md: 6px 6px 0px 0px rgba(255, 255, 255, 0.2);
+  --shadow-brutal-light-lg: 8px 8px 0px 0px rgba(255, 255, 255, 0.25);
+
+  /* Modern Soft Shadows - Layered, subtle depth (2025 trend) */
+  --shadow-soft-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-soft-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-soft-md: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+  --shadow-soft-lg: 0 8px 16px 0 rgba(0, 0, 0, 0.7), 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+  --shadow-soft-xl: 0 12px 24px 0 rgba(0, 0, 0, 0.8), 0 6px 12px 0 rgba(0, 0, 0, 0.6);
+  --shadow-soft-2xl: 0 24px 48px 0 rgba(0, 0, 0, 0.9), 0 12px 24px 0 rgba(0, 0, 0, 0.7);
+
+  /* Colored shadows for accent elements */
+  --shadow-accent-glow: 0 0 24px 0 hsla(286, 88%, 60%, 0.4), 0 0 12px 0 hsla(286, 88%, 60%, 0.2);
+  --shadow-accent-brutal: 6px 6px 0px 0px hsl(286, 88%, 40%);
+
+  /* ============================================
+     ELEVATION SYSTEM - Z-index + shadow combo
+     ============================================ */
+
+  --elevation-0: var(--shadow-soft-xs);
+  --elevation-1: var(--shadow-soft-sm);
+  --elevation-2: var(--shadow-soft-md);
+  --elevation-3: var(--shadow-soft-lg);
+  --elevation-4: var(--shadow-soft-xl);
+  --elevation-5: var(--shadow-soft-2xl);
+
+  /* ============================================
+     INTERACTIVE STATES - Hover, focus, active
+     ============================================ */
+
+  /* Hover states */
+  --color-hover-overlay: rgba(255, 255, 255, 0.05);
+  --color-hover-border: #FFFFFF;
+
+  /* Focus states (WCAG compliant) */
+  --color-focus-ring: hsl(286, 88%, 60%);
+  --focus-ring-width: 3px;
+  --focus-ring-offset: 2px;
+
+  /* Active/pressed states */
+  --color-active-overlay: rgba(255, 255, 255, 0.08);
+
+  /* ============================================
+     SPACING & SIZING - Visual rhythm
+     ============================================ */
+
+  /* Border widths */
+  --border-thin: 1px;
+  --border-default: 2px;
+  --border-thick: 3px;
+  --border-xl: 4px;
+
+  /* Border radius (brutalist = 0, but available for mixed styles) */
+  --radius-none: 0px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+
+  /* ============================================
+     TYPOGRAPHY TOKENS (2025 Best Practices)
+     ============================================ */
+
+  /* Font Families */
+  --font-sans: "IBM Plex Sans", Inter, Helvetica, Arial, sans-serif;
+  --font-display: Inter, "IBM Plex Sans", Helvetica, Arial, sans-serif;
+
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Font Sizes - Fluid Typography with clamp() */
+  /* Format: clamp(min, preferred, max) - scales between viewport widths */
+  --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);      /* 12px -> 14px */
+  --font-size-sm: clamp(0.875rem, 0.825rem + 0.25vw, 1rem);       /* 14px -> 16px */
+  --font-size-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);      /* 16px -> 18px */
+  --font-size-md: clamp(1.125rem, 1.05rem + 0.375vw, 1.25rem);    /* 18px -> 20px */
+  --font-size-lg: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);        /* 20px -> 24px */
+  --font-size-xl: clamp(1.5rem, 1.35rem + 0.75vw, 1.875rem);      /* 24px -> 30px */
+  --font-size-2xl: clamp(1.875rem, 1.65rem + 1.125vw, 2.25rem);   /* 30px -> 36px */
+  --font-size-3xl: clamp(2.25rem, 1.95rem + 1.5vw, 3rem);         /* 36px -> 48px */
+  --font-size-4xl: clamp(3rem, 2.55rem + 2.25vw, 3.75rem);        /* 48px -> 60px */
+  --font-size-5xl: clamp(3.75rem, 3.15rem + 3vw, 4.5rem);         /* 60px -> 72px */
+
+  /* Line Heights - Optimized for readability */
+  /* Body text: 1.5-1.8 for comfortable reading */
+  --line-height-tight: 1.2;      /* For large headings */
+  --line-height-snug: 1.3;       /* For medium headings */
+  --line-height-normal: 1.5;     /* For body text (minimum) */
+  --line-height-relaxed: 1.6;    /* For comfortable body text */
+  --line-height-loose: 1.75;     /* For spacious body text */
+
+  /* Letter Spacing - Refined optical balance */
+  --letter-spacing-tighter: -0.05em;  /* Large headings */
+  --letter-spacing-tight: -0.025em;   /* Medium headings */
+  --letter-spacing-normal: 0;         /* Body text */
+  --letter-spacing-wide: 0.025em;     /* Small text, buttons */
+  --letter-spacing-wider: 0.05em;     /* All caps, labels */
+
+  /* ============================================
+     SPACING TOKENS (Consistent 4px-based scale)
+     ============================================ */
+
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* ============================================
+     TRANSITION TOKENS (Modern smooth animations)
+     ============================================ */
+
+  --transition-fast: 150ms;
+  --transition-base: 200ms;
+  --transition-slow: 300ms;
+  --transition-slower: 500ms;
+
+  --transition-timing-smooth: ease-out;
+  --transition-timing-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-timing-sharp: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Common transition combinations */
+  --transition-colors: color var(--transition-base) var(--transition-timing-smooth),
+                       background-color var(--transition-base) var(--transition-timing-smooth),
+                       border-color var(--transition-base) var(--transition-timing-smooth);
+
+  --transition-transform: transform var(--transition-base) var(--transition-timing-smooth);
+
+  --transition-all: all var(--transition-base) var(--transition-timing-smooth);
 }

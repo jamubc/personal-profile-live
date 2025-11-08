@@ -312,8 +312,18 @@ export function BackgroundField() {
   // Auto-detect and track interactive elements
   useEffect(() => {
     let rafId = null;
+    let lastUpdate = 0;
+    const UPDATE_THROTTLE = 16; // ~60fps max update rate
 
     const updateElements = () => {
+      const now = performance.now();
+
+      // Throttle updates to prevent excessive re-renders during scroll
+      if (now - lastUpdate < UPDATE_THROTTLE) {
+        return;
+      }
+      lastUpdate = now;
+
       // Query all buttons, headings, and major containers
       const tracked = document.querySelectorAll('button, h1, h2, .card, [data-field-interact]');
       const newElements = [];
@@ -330,7 +340,26 @@ export function BackgroundField() {
         }
       });
 
-      setElements(newElements);
+      // Only update state if elements actually changed significantly
+      // This prevents unnecessary re-renders that can freeze the animation
+      setElements(prev => {
+        if (prev.length !== newElements.length) return newElements;
+
+        // Check if any element moved significantly (>1px equivalent)
+        const threshold = 0.001; // ~1px on a 1000px screen
+        for (let i = 0; i < newElements.length; i++) {
+          const old = prev[i];
+          const neu = newElements[i];
+          if (!old ||
+              Math.abs(old.x - neu.x) > threshold ||
+              Math.abs(old.y - neu.y) > threshold ||
+              Math.abs(old.width - neu.width) > threshold ||
+              Math.abs(old.height - neu.height) > threshold) {
+            return newElements;
+          }
+        }
+        return prev; // No significant change, keep previous state
+      });
     };
 
     const handleScroll = () => {
@@ -377,6 +406,7 @@ export function BackgroundField() {
           background: '#000000'
         }}
         dpr={[1, 2]}
+        frameloop="always"
       >
         <ElectromagneticField elements={elements} />
       </Canvas>

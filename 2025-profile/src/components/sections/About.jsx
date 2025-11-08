@@ -45,9 +45,21 @@ export const About = () => {
           </motion.h2>
 
           <motion.div
-            className="border-l-border-primary border-l-thick pl-6 mb-8"
+            className="border-l-border-primary border-l-thick pl-6 mb-8 relative"
             variants={itemVariants}
           >
+            {/* Animated border accent */}
+            <motion.div
+              className="absolute left-0 top-0 w-1 bg-primary"
+              initial={{ height: 0 }}
+              whileInView={{ height: '100%' }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.8,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.4,
+              }}
+            />
             <p className="text-body-lg text-text-secondary">
               I build developer tools and performant web apps with a focus on clarity, reliability, and speed. My work emphasizes strong architecture, measurable impact, and superb developer experience.
             </p>
@@ -89,14 +101,49 @@ export const About = () => {
           </div>
 
           <motion.div
-            className="bg-bg-card-inline border-border-secondary border-thin shadow-brutal-sm p-card-md"
-            whileHover={{ y: -2 }}
-            transition={{ duration: 0.2 }}
+            className="bg-bg-card-inline/80 backdrop-blur-sm border-border-secondary/50 border shadow-md p-card-md relative overflow-hidden rounded-xl group"
+            whileHover={{
+              y: -4,
+              boxShadow: '0 0 20px rgba(115, 115, 115, 0.1), 4px 4px 0px 0px var(--color-border-secondary)',
+            }}
+            transition={{
+              type: 'spring',
+              stiffness: 300,
+              damping: 20,
+            }}
           >
-            <ul className="text-body text-text-secondary space-y-2">
-              <li><span className="text-text-primary font-bold">Focus:</span> Web performance, DX, open source</li>
-              <li><span className="text-text-primary font-bold">Stack:</span> React, Node.js, FastAPI, Tailwind</li>
-              <li><span className="text-text-primary font-bold">Approach:</span> Pragmatic, measurable, maintainable</li>
+            {/* Subtle gradient overlay */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"
+              initial={{ opacity: 0 }}
+              whileHover={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+            <ul className="text-body text-text-secondary space-y-2 relative z-10">
+              <motion.li
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5, duration: 0.4 }}
+              >
+                <span className="text-text-primary font-bold">Focus:</span> Web performance, DX, open source
+              </motion.li>
+              <motion.li
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6, duration: 0.4 }}
+              >
+                <span className="text-text-primary font-bold">Stack:</span> React, Node.js, FastAPI, Tailwind
+              </motion.li>
+              <motion.li
+                initial={{ opacity: 0, x: -10 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.7, duration: 0.4 }}
+              >
+                <span className="text-text-primary font-bold">Approach:</span> Pragmatic, measurable, maintainable
+              </motion.li>
             </ul>
           </motion.div>
         </motion.aside>

@@ -5,7 +5,66 @@ import { Link } from '../ui/Link';
 import { projects } from '../../data/projects';
 import { ShieldBadge } from '../ui/ShieldBadge';
 
+// Loading skeleton component
+const ProjectSkeleton = () => (
+  <div className="bg-bg-card/50 backdrop-blur-sm border-border-primary/20 border-2 shadow-brutal-xl p-card-lg rounded-xl animate-pulse">
+    <div className="h-8 bg-bg-card-inline/50 rounded-lg w-3/4 mb-6"></div>
+    <div className="space-y-3 mb-8">
+      <div className="h-4 bg-bg-card-inline/50 rounded"></div>
+      <div className="h-4 bg-bg-card-inline/50 rounded w-5/6"></div>
+    </div>
+    <div className="flex flex-wrap gap-2 mb-8">
+      {[1, 2, 3, 4].map(i => (
+        <div key={i} className="h-7 w-16 bg-bg-card-inline/50 rounded-md"></div>
+      ))}
+    </div>
+  </div>
+);
+
+// Empty state component
+const EmptyState = () => (
+  <motion.div
+    className="text-center py-24"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+  >
+    <div className="text-6xl mb-4">📦</div>
+    <h3 className="text-h3 font-bold text-text-primary mb-4">No Projects Yet</h3>
+    <p className="text-body text-text-secondary max-w-md mx-auto">
+      Check back soon for exciting projects and updates!
+    </p>
+  </motion.div>
+);
+
 export const Projects = () => {
+  const isLoading = false; // This would come from your data fetching logic
+  const isEmpty = projects.length === 0;
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 200,
+        damping: 20,
+      },
+    },
+  };
+
   return (
     <section id="projects" className="page-gutter section-divider py-32 md:py-48">
       <motion.h2
@@ -18,12 +77,23 @@ export const Projects = () => {
         Featured Projects
       </motion.h2>
 
-      <div className="grid grid-cols-1 gap-12 md:gap-16">
-        {projects.map((project) => (
-          <Card
-            key={project.id}
-            variant="featured"
-          >
+      {isLoading ? (
+        <div className="grid grid-cols-1 gap-12 md:gap-16">
+          {[1, 2, 3].map(i => <ProjectSkeleton key={i} />)}
+        </div>
+      ) : isEmpty ? (
+        <EmptyState />
+      ) : (
+        <motion.div
+          className="grid grid-cols-1 gap-12 md:gap-16"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {projects.map((project, index) => (
+          <motion.div key={project.id} variants={cardVariants}>
+            <Card variant="featured">
             {/* Title - Large, bold hierarchy */}
             <h3 className="text-h3 font-bold text-text-primary mb-6">
               {project.title}
@@ -83,9 +153,11 @@ export const Projects = () => {
                 </Link>
               )}
             </div>
-          </Card>
+            </Card>
+          </motion.div>
         ))}
-      </div>
+        </motion.div>
+      )}
     </section>
   );
 };
