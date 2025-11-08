@@ -55,60 +55,250 @@ export const Hero = () => {
   };
 
   const roleVariants = {
-    initial: { opacity: 0, y: 0, scale: 1 },
+    initial: { opacity: 0, y: 20, scale: 0.95 },
     deposited: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.5,
+        duration: 0.6,
         ease: [0.23, 1, 0.32, 1],
-        opacity: { duration: 0.6 } // Longer fade for smooth handoff
       }
+    },
+  };
+
+  const glassCardVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.23, 1, 0.32, 1],
+      },
     },
   };
 
   return (
     <section id="hero" className="page-gutter min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
+      {/* Dramatic Gradient Background */}
+      <div className="absolute inset-0 z-0">
+        {/* Purple Gradient Orb - Top Left */}
+        <motion.div
+          className="absolute -top-48 -left-48 w-96 h-96 rounded-full opacity-30 blur-3xl"
+          style={{
+            background: 'radial-gradient(circle, rgb(168, 85, 247) 0%, transparent 70%)',
+          }}
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.4, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+
+        {/* Cyan Gradient Orb - Bottom Right */}
+        <motion.div
+          className="absolute -bottom-48 -right-48 w-96 h-96 rounded-full opacity-30 blur-3xl"
+          style={{
+            background: 'radial-gradient(circle, rgb(34, 211, 238) 0%, transparent 70%)',
+          }}
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.3, 0.4, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+
+        {/* Center Purple-Cyan Gradient */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] opacity-20 blur-3xl"
+          style={{
+            background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(34, 211, 238) 100%)',
+          }}
+        />
+      </div>
+
       {/* Hero Content */}
       <motion.div
-        className="max-w-4xl relative z-10"
+        className="max-w-5xl relative z-10 text-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <motion.h1
-          className="text-display-md md:text-display-xl font-bold text-text-primary mb-6"
+        {/* Dramatic Headline with Gradient Text */}
+        <motion.div variants={itemVariants} className="mb-16">
+          <h1 className="text-7xl md:text-8xl lg:text-9xl font-black text-text-primary mb-6 leading-none tracking-tight">
+            Name
+          </h1>
+
+          {/* Accent Line with Gradient */}
+          <div className="flex items-center justify-center gap-6 mb-8">
+            <div className="h-1 w-24 bg-gradient-to-r from-transparent via-accent-purple to-accent-purple rounded-full" />
+            <div className="h-2 w-2 rounded-full bg-accent-cyan animate-pulse" />
+            <div className="h-1 w-24 bg-gradient-to-l from-transparent via-accent-cyan to-accent-cyan rounded-full" />
+          </div>
+        </motion.div>
+
+        {/* Glassmorphism Role Card */}
+        <motion.div
+          variants={glassCardVariants}
+          className="mb-16 inline-block"
+        >
+          <div
+            className="relative rounded-3xl p-1 overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, rgb(168, 85, 247), rgb(34, 211, 238))',
+            }}
+          >
+            {/* Glass Card */}
+            <div
+              className="relative rounded-[22px] px-12 py-8 overflow-hidden"
+              style={{
+                background: 'rgba(15, 23, 42, 0.7)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+              }}
+            >
+              {/* Subtle inner glow */}
+              <div
+                className="absolute inset-0 opacity-20"
+                style={{
+                  background: 'radial-gradient(circle at center, rgb(168, 85, 247) 0%, transparent 70%)',
+                }}
+              />
+
+              <motion.p
+                id="role-anchor"
+                className="relative text-5xl md:text-6xl font-bold bg-gradient-to-r from-accent-purple via-accent-cyan to-accent-purple bg-clip-text text-transparent"
+                style={{
+                  backgroundSize: '200% auto',
+                }}
+                variants={roleVariants}
+                initial="initial"
+                animate="deposited"
+                key={roles[currentRoleIndex]}
+              >
+                {roles[currentRoleIndex]}
+              </motion.p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Description with dramatic spacing */}
+        <motion.p
+          className="text-2xl md:text-3xl text-text-secondary mb-20 max-w-3xl mx-auto leading-relaxed font-light"
           variants={itemVariants}
         >
-          Name
-        </motion.h1>
-        <motion.p
-          id="role-anchor"
-          className="text-h3 md:text-h2 mb-8 chroma-gradient-text"
-          variants={roleVariants}
-          initial="initial"
-          animate="deposited"
-          key={roles[currentRoleIndex]}
-        >
-          {roles[currentRoleIndex]}
+          Building impactful software that solves real problems. Specializing in modern web technologies and developer tools with a focus on{' '}
+          <span className="text-accent-purple font-semibold">performance</span>
+          {' '}and{' '}
+          <span className="text-accent-cyan font-semibold">user experience</span>.
         </motion.p>
-        <motion.p
-          className="text-body-lg text-text-secondary mb-12 max-w-2xl"
+
+        {/* CTA Buttons with Glow Effects */}
+        <motion.div
+          className="flex flex-wrap gap-6 justify-center items-center"
           variants={itemVariants}
         >
-          Building impactful software that solves real problems. Specializing in modern web technologies and developer tools with a focus on performance and user experience.
-        </motion.p>
-        <motion.div className="flex flex-wrap gap-4" variants={itemVariants}>
-          <Button variant="primary" onClick={scrollToProjects}>
-            View My Work
-          </Button>
-          <Button variant="secondary" onClick={() => {
-            const el = document.querySelector('#about');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-          }}>
-            About Me
-          </Button>
+          {/* Primary Button with Glow */}
+          <div className="relative group">
+            {/* Glow effect */}
+            <div
+              className="absolute -inset-1 bg-gradient-to-r from-accent-purple to-accent-cyan rounded-xl opacity-70 group-hover:opacity-100 blur transition-opacity duration-300"
+            />
+            <Button
+              variant="primary"
+              onClick={scrollToProjects}
+              className="relative text-lg px-8 py-4"
+            >
+              View My Work
+            </Button>
+          </div>
+
+          {/* Secondary Button with Border Glow */}
+          <div className="relative group">
+            <Button
+              variant="secondary"
+              onClick={() => {
+                const el = document.querySelector('#about');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="relative text-lg px-8 py-4 border-2 border-accent-cyan/30 hover:border-accent-cyan/60 transition-colors duration-300"
+            >
+              About Me
+            </Button>
+          </div>
+        </motion.div>
+
+        {/* Bottom Accent Cards */}
+        <motion.div
+          variants={itemVariants}
+          className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+        >
+          {/* Stat Card 1 */}
+          <div
+            className="relative rounded-2xl p-1 overflow-hidden group"
+            style={{
+              background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, transparent 100%)',
+            }}
+          >
+            <div
+              className="relative rounded-[14px] px-6 py-8 text-center"
+              style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <div className="text-3xl font-bold text-accent-purple mb-2">5+</div>
+              <div className="text-text-secondary text-sm uppercase tracking-wider">Years Experience</div>
+            </div>
+          </div>
+
+          {/* Stat Card 2 */}
+          <div
+            className="relative rounded-2xl p-1 overflow-hidden group"
+            style={{
+              background: 'linear-gradient(135deg, rgb(34, 211, 238) 0%, transparent 100%)',
+            }}
+          >
+            <div
+              className="relative rounded-[14px] px-6 py-8 text-center"
+              style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <div className="text-3xl font-bold text-accent-cyan mb-2">50+</div>
+              <div className="text-text-secondary text-sm uppercase tracking-wider">Projects Built</div>
+            </div>
+          </div>
+
+          {/* Stat Card 3 */}
+          <div
+            className="relative rounded-2xl p-1 overflow-hidden group"
+            style={{
+              background: 'linear-gradient(135deg, rgb(168, 85, 247) 0%, rgb(34, 211, 238) 100%)',
+            }}
+          >
+            <div
+              className="relative rounded-[14px] px-6 py-8 text-center"
+              style={{
+                background: 'rgba(15, 23, 42, 0.8)',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
+              <div className="text-3xl font-bold bg-gradient-to-r from-accent-purple to-accent-cyan bg-clip-text text-transparent mb-2">∞</div>
+              <div className="text-text-secondary text-sm uppercase tracking-wider">Ideas to Code</div>
+            </div>
+          </div>
         </motion.div>
       </motion.div>
     </section>
