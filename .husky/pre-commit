@@ -1,0 +1,6 @@
+# Run npm audit for security scanning in 2025-profile directory
+(cd /home/user/2025-profile/2025-profile && npm audit)
+
+# Note: Linting temporarily disabled during security audit fixes
+# Uncomment to enable linting checks before commits
+# (cd /home/user/2025-profile/2025-profile && npm run lint)

@@ -71,13 +71,13 @@ const Node = ({ node, parent, level = 0, onHover, hoveredNode }) => {
   const handlePointerOver = () => {
     setHovered(true);
     onHover(node.name);
-    document.body.style.cursor = 'pointer';
+    document.body.classList.add('cursor-pointer');
   };
 
   const handlePointerOut = () => {
     setHovered(false);
     onHover(null);
-    document.body.style.cursor = 'default';
+    document.body.classList.remove('cursor-pointer');
   };
 
   return (
