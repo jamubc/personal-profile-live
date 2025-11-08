@@ -11,7 +11,7 @@ export const Footer = () => {
 
   return (
     <footer className="bg-bg-primary border-t-border-primary border-t-thick py-12 mt-24">
-      <div className="container mx-auto page-gutter">
+      <div className="page-gutter">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           {/* Social Links */}
           <div className="flex flex-wrap gap-6">

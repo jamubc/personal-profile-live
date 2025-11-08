@@ -69,7 +69,7 @@ export const Hero = () => {
   };
 
   return (
-    <section id="hero" className="container mx-auto page-gutter min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
+    <section id="hero" className="page-gutter min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
       {/* Hero Content */}
       <motion.div
         className="max-w-4xl relative z-10"
@@ -81,7 +81,7 @@ export const Hero = () => {
           className="text-display-md md:text-display-xl font-bold text-text-primary mb-6"
           variants={itemVariants}
         >
-          Andrew
+          Name
         </motion.h1>
         <motion.p
           id="role-anchor"

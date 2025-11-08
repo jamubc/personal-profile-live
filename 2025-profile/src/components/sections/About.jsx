@@ -27,7 +27,7 @@ export const About = () => {
   };
 
   return (
-    <section id="about" className="container mx-auto page-gutter section-divider py-32 md:py-48 min-h-screen flex items-center">
+    <section id="about" className="page-gutter section-divider py-32 md:py-48 min-h-screen flex items-center">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start w-full">
         {/* Left: Lead + Bio */}
         <motion.div
@@ -83,8 +83,8 @@ export const About = () => {
           <div className="flex items-center gap-4 mb-6">
             <Avatar initials="A" />
             <div>
-              <div className="text-h3 font-bold text-text-primary">Andrew</div>
-              <div className="text-body text-text-secondary">Full‑Stack Developer</div>
+              <div className="text-h3 font-bold text-text-primary">Name</div>
+              <div className="text-body text-text-secondary">Dev</div>
             </div>
           </div>
 
