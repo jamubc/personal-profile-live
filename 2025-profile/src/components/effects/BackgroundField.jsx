@@ -262,7 +262,6 @@ function ElectromagneticField({ elements }) {
 
       // Smoothly approach target element positions to avoid jitter/flicker
       const elementArray = mat.current.uniforms.uElements.value;
-      const count = mat.current.uniforms.uElementCount.value;
       const alpha = 0.2; // smoothing factor per frame
       for (let i = 0; i < 10; i++) {
         const target = targetsRef.current[i];

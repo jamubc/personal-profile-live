@@ -3,26 +3,31 @@
 exports[`ShieldBadge > snapshot testing > matches snapshot with custom className 1`] = `
 <img
   alt="Snapshot"
-  class="inline-block h-6 custom"
+  class="inline-block h-6 rounded custom"
   decoding="async"
   loading="lazy"
   src="test.svg"
+  whiletap="[object Object]"
 />
 `;
 
 exports[`ShieldBadge > snapshot testing > matches snapshot with href 1`] = `
 <a
-  class="inline-block"
+  class="inline-block relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary rounded"
   href="https://example.com"
   rel="noopener noreferrer"
   target="_blank"
 >
+  <span
+    class="absolute -inset-1 bg-primary/10 blur-sm -z-10 rounded"
+  />
   <img
     alt="Snapshot"
-    class="inline-block h-6 "
+    class="inline-block h-6 rounded "
     decoding="async"
     loading="lazy"
     src="test.svg"
+    whiletap="[object Object]"
   />
 </a>
 `;
@@ -30,9 +35,10 @@ exports[`ShieldBadge > snapshot testing > matches snapshot with href 1`] = `
 exports[`ShieldBadge > snapshot testing > matches snapshot without href 1`] = `
 <img
   alt="Snapshot"
-  class="inline-block h-6 "
+  class="inline-block h-6 rounded "
   decoding="async"
   loading="lazy"
   src="test.svg"
+  whiletap="[object Object]"
 />
 `;

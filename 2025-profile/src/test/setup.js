@@ -11,6 +11,7 @@ vi.mock('framer-motion', async () => {
       {
         get: (_target, prop) => {
           const Component = React.forwardRef((props, ref) => {
+            // eslint-disable-next-line no-unused-vars
             const { whileHover, whileInView, initial, animate, transition, viewport, ...domProps } = props
             return React.createElement(prop, { ...domProps, ref })
           })
@@ -27,22 +28,22 @@ vi.mock('framer-motion', async () => {
 // Mock Three.js dependencies for testing
 beforeAll(() => {
   // Mock requestAnimationFrame (if not already present)
-  if (!global.requestAnimationFrame) {
-    global.requestAnimationFrame = (cb) => setTimeout(cb, 16)
+  if (!globalThis.requestAnimationFrame) {
+    globalThis.requestAnimationFrame = (cb) => setTimeout(cb, 16)
   }
-  if (!global.cancelAnimationFrame) {
-    global.cancelAnimationFrame = (id) => clearTimeout(id)
+  if (!globalThis.cancelAnimationFrame) {
+    globalThis.cancelAnimationFrame = (id) => clearTimeout(id)
   }
 
   // Mock ResizeObserver
-  global.ResizeObserver = class ResizeObserver {
+  globalThis.ResizeObserver = class ResizeObserver {
     observe() {}
     unobserve() {}
     disconnect() {}
   }
 
   // Mock IntersectionObserver
-  global.IntersectionObserver = class IntersectionObserver {
+  globalThis.IntersectionObserver = class IntersectionObserver {
     constructor() {}
     observe() {}
     unobserve() {}

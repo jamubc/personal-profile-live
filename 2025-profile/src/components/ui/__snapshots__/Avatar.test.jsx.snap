@@ -5,15 +5,34 @@ exports[`Avatar > snapshot testing > matches snapshot with custom className 1`] 
   aria-label="Avatar"
   class="
         w-28 h-28 md:w-32 md:h-32
-        bg-bg-card
-        border-border-primary border-thick
-        shadow-brutal-md
+        bg-bg-card/95
+        backdrop-blur-sm
+        border-border-primary/40 border-2
+        shadow-lg
         flex items-center justify-center
         text-h2 font-bold text-text-primary
+        relative
+        overflow-hidden
+        rounded-2xl
         test-class
       "
+  whiletap="[object Object]"
 >
-  JS
+  <div
+    class="absolute inset-0 rounded-2xl p-[2px] bg-gradient-to-br from-border-primary/30 via-transparent to-border-primary/20"
+    style="mask-composite: exclude;"
+  />
+  <div
+    class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl"
+  />
+  <div
+    class="absolute -inset-[2px] bg-gradient-to-br from-primary/10 to-transparent opacity-0 hover:opacity-100 blur-md transition-opacity duration-300 -z-10 rounded-2xl"
+  />
+  <span
+    class="relative z-10"
+  >
+    JS
+  </span>
 </div>
 `;
 
@@ -22,15 +41,34 @@ exports[`Avatar > snapshot testing > matches snapshot with custom initials 1`] =
   aria-label="Avatar"
   class="
         w-28 h-28 md:w-32 md:h-32
-        bg-bg-card
-        border-border-primary border-thick
-        shadow-brutal-md
+        bg-bg-card/95
+        backdrop-blur-sm
+        border-border-primary/40 border-2
+        shadow-lg
         flex items-center justify-center
         text-h2 font-bold text-text-primary
+        relative
+        overflow-hidden
+        rounded-2xl
         
       "
+  whiletap="[object Object]"
 >
-  TDD
+  <div
+    class="absolute inset-0 rounded-2xl p-[2px] bg-gradient-to-br from-border-primary/30 via-transparent to-border-primary/20"
+    style="mask-composite: exclude;"
+  />
+  <div
+    class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl"
+  />
+  <div
+    class="absolute -inset-[2px] bg-gradient-to-br from-primary/10 to-transparent opacity-0 hover:opacity-100 blur-md transition-opacity duration-300 -z-10 rounded-2xl"
+  />
+  <span
+    class="relative z-10"
+  >
+    TDD
+  </span>
 </div>
 `;
 
@@ -39,14 +77,33 @@ exports[`Avatar > snapshot testing > matches snapshot with default props 1`] = `
   aria-label="Avatar"
   class="
         w-28 h-28 md:w-32 md:h-32
-        bg-bg-card
-        border-border-primary border-thick
-        shadow-brutal-md
+        bg-bg-card/95
+        backdrop-blur-sm
+        border-border-primary/40 border-2
+        shadow-lg
         flex items-center justify-center
         text-h2 font-bold text-text-primary
+        relative
+        overflow-hidden
+        rounded-2xl
         
       "
+  whiletap="[object Object]"
 >
-  A
+  <div
+    class="absolute inset-0 rounded-2xl p-[2px] bg-gradient-to-br from-border-primary/30 via-transparent to-border-primary/20"
+    style="mask-composite: exclude;"
+  />
+  <div
+    class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl"
+  />
+  <div
+    class="absolute -inset-[2px] bg-gradient-to-br from-primary/10 to-transparent opacity-0 hover:opacity-100 blur-md transition-opacity duration-300 -z-10 rounded-2xl"
+  />
+  <span
+    class="relative z-10"
+  >
+    A
+  </span>
 </div>
 `;
