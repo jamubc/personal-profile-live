@@ -1,156 +1,10 @@
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef, useState, useEffect } from 'react';
-import { Vector4 } from 'three';
-import { FieldRepulsionContext } from '../../hooks/useFieldRepulsion';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { useRef, useState, useEffect, useMemo } from 'react';
+import { Vector4, Vector2 } from 'three';
 
-const fragmentShader = `
-#ifdef GL_ES
-precision highp float;
-#endif
-#define PI 3.14159265359
-#define MAX_ELEMENTS 20
-
-uniform float uTime;
-uniform vec2 uMouse;
-uniform vec2 uMouseVelocity;
-uniform float uScroll;
-uniform int uElementCount;
-uniform vec4 uElements[MAX_ELEMENTS]; // x, y, width, height
-varying vec2 vUv;
-
-// TE waveguide mode - Maxwell's equations
-float TE_mode(vec2 p, float m, float n, float t, float zPhase) {
-  float a = 2.0;
-  float b = 2.0;
-
-  vec2 coord = p * vec2(a, b);
-  float Hz = cos(m * PI * coord.x / a) * cos(n * PI * coord.y / b);
-
-  float omega = 2.0 * PI * 0.03;  // Very slow ambient animation
-  float kx = m * PI / a;
-  float ky = n * PI / b;
-  float beta = sqrt(max(0.0, omega * omega - kx * kx - ky * ky));
-
-  return Hz * cos(omega * t - beta * zPhase);
-}
-
-// Calculate repulsion field from DOM elements
-vec2 calculateElementRepulsion(vec2 p) {
-  vec2 totalRepulsion = vec2(0.0);
-
-  for (int i = 0; i < MAX_ELEMENTS; i++) {
-    if (i >= uElementCount) break;
-
-    vec4 element = uElements[i];
-    // element.y is document-relative normalized Y
-    // uScroll is normalized scroll offset
-    // Convert to screen space UV (0..1 bottom-up)
-    float elementY = 1.0 - (element.y - uScroll);
-    
-    vec2 elementCenter = vec2(element.x, elementY);
-    vec2 elementSize = vec2(element.z, element.w);
-
-    // Distance from point to element center
-    vec2 toElement = p - elementCenter;
-    
-    // Create elliptical repulsion zone based on element size
-    vec2 normalizedDist = toElement / (elementSize * 0.6 + 0.15);
-    float ellipseDist = length(normalizedDist);
-
-    // Smooth repulsion falloff (gentler)
-    float repulsionStrength = smoothstep(2.5, 0.8, ellipseDist);
-
-    // Push field lines away from element - clamped for stability
-    if (ellipseDist > 0.01) {
-      vec2 push = (toElement / ellipseDist) * repulsionStrength * 0.25;
-      // Clamp vector components to avoid extreme warping
-      push = clamp(push, vec2(-0.2), vec2(0.2));
-      totalRepulsion += push;
-    }
-  }
-
-  return totalRepulsion;
-}
-
-void main() {
-  vec2 p = vUv;
-
-  // Mouse acts as a charge source - creates field disturbance
-  vec2 mousePos = vec2(uMouse.x * 0.5 + 0.5, -uMouse.y * 0.5 + 0.5); // Mouse is already -1..1
-  // Wait, uMouse in JS is -1..1.
-  // In shader: x * 0.5 + 0.5 maps -1..1 to 0..1.
-  // y: -y * 0.5 + 0.5. If y is 1 (top), -1*0.5+0.5 = 0.
-  // If y is -1 (bottom), 1*0.5+0.5 = 1.
-  // So mousePos is (0,0) at top-left?
-  // vUv is (0,0) at bottom-left.
-  // We need mousePos to match vUv.
-  // If mouse y=1 is top, we want vUv y=1.
-  // So we want mousePos.y = 1 when uMouse.y = 1.
-  // uMouse.y comes from JS: -(clientY/h)*2 + 1.
-  // clientY=0 -> y=1. clientY=h -> y=-1.
-  // So uMouse.y is 1 at top, -1 at bottom.
-  // We want 0..1 (bottom to top).
-  // So (uMouse.y + 1.0) * 0.5.
-  
-  vec2 mouseUv = vec2(uMouse.x * 0.5 + 0.5, uMouse.y * 0.5 + 0.5);
-  
-  float distToMouse = distance(p, mouseUv);
-
-  // Field strength from charge (inverse square law)
-  float chargeField = 1.0 / (1.0 + distToMouse * 3.0);
-
-  // Mouse acceleration creates field ripples - moderated
-  float velocityMag = length(uMouseVelocity);
-  float ripple = sin(distToMouse * 20.0 - uTime * 3.0) * chargeField * velocityMag * 8.0; // Increased ripple intensity
-
-  // Apply field distortion from mouse charge - moderated and clamped
-  vec2 fieldDistortion = (p - mouseUv) * chargeField * 0.45 * velocityMag; // Increased distortion
-  fieldDistortion = clamp(fieldDistortion, vec2(-0.2), vec2(0.2));
-
-  // Add repulsion from DOM elements
-  vec2 elementRepulsion = calculateElementRepulsion(p);
-
-  vec2 distortedP = p + fieldDistortion + elementRepulsion;
-
-  // Scroll-driven propagation (very subtle)
-  float z1 = uTime * 0.05 + uScroll * 1.5;
-  float z2 = uTime * 0.04 + uScroll * 1.3 + 1.0;
-  float z3 = uTime * 0.03 + uScroll * 1.0 + 2.0;
-
-  // Multiple TE modes on distorted field - Simplified for elegance
-  float H_z_10 = TE_mode(distortedP, 1.0, 0.0, uTime * 0.5, z1); // Slower
-  float H_z_01 = TE_mode(distortedP, 0.0, 1.0, uTime * 0.5, z2);
-
-  float field = (H_z_10 * 0.6 + H_z_01 * 0.4);
-  field += ripple * 0.1; // Drastically reduced ripple noise
-
-  float t = field * 0.5 + 0.5;
-
-  // Modern Color Palette - Deep Space Theme
-  vec3 bg = vec3(0.02, 0.02, 0.03); // Matches --color-bg-primary
-  vec3 accent = vec3(0.39, 0.4, 0.95); // Matches Indigo 500 (#6366f1)
-  vec3 secondary = vec3(0.1, 0.1, 0.15); 
-
-  // Smooth mixing
-  vec3 color = mix(bg, secondary, t * 0.3);
-  
-  // Subtler contour lines
-  float lines = 8.0; 
-  float f = fract(field * lines);
-  float w = fwidth(field * lines) * 2.0;
-  float contour = 1.0 - smoothstep(0.0, w, min(f, 1.0 - f));
-  
-  // Faint accent on contours
-  color += accent * contour * 0.15; 
-
-  // Highlight charge source when moving
-  color += accent * chargeField * velocityMag * 0.2;
-
-  color = clamp(color, 0.0, 1.0);
-
-  gl_FragColor = vec4(color, 1.0);
-}
-`;
+// -----------------------------------------------------------------------------
+// SHADER DEFINITIONS
+// -----------------------------------------------------------------------------
 
 const vertexShader = `
 varying vec2 vUv;
@@ -160,108 +14,257 @@ void main() {
 }
 `;
 
+const fragmentShader = `
+#ifdef GL_ES
+precision highp float;
+#endif
+
+#define PI 3.14159265359
+#define MAX_ELEMENTS 20
+
+uniform float uTime;
+uniform vec2 uMouse;
+uniform vec2 uMouseVelocity;
+uniform float uScroll;
+uniform int uElementCount;
+uniform vec4 uElements[MAX_ELEMENTS];
+uniform vec2 uResolution;
+
+varying vec2 vUv;
+
+// --- UTILS ---
+
+float hash(vec2 p) {
+    return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    f = f * f * (3.0 - 2.0 * f);
+    return mix(mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), f.x),
+               mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
+}
+
+// --- PHYSICS & FIELD CALCS ---
+
+vec2 getElementRepulsion(vec2 p) {
+    vec2 totalForce = vec2(0.0);
+    
+    for (int i = 0; i < MAX_ELEMENTS; i++) {
+        if (i >= uElementCount) break;
+        
+        vec4 el = uElements[i];
+        float elY = 1.0 - (el.y - uScroll);
+        
+        vec2 center = vec2(el.x, elY);
+        float aspect = uResolution.x / uResolution.y;
+        center.x *= aspect;
+        
+        vec2 pCorrected = p;
+        pCorrected.x *= aspect;
+        
+        vec2 size = vec2(el.z, el.w);
+        
+        vec2 delta = pCorrected - center;
+        vec2 scaledDelta = delta / (size * 0.5 + 0.05);
+        float dist = length(scaledDelta);
+        
+        float strength = smoothstep(1.2, 0.0, dist);
+        
+        if (dist > 0.001) {
+            totalForce += (delta / dist) * strength * 0.12; 
+        }
+    }
+    return totalForce;
+}
+
+float calculateField(vec2 p, float t) {
+    float aspect = uResolution.x / uResolution.y;
+    vec2 pAR = vec2(p.x * aspect, p.y);
+
+    // 1. Repulsion
+    vec2 repulsion = getElementRepulsion(p);
+    vec2 distortedP = pAR - repulsion;
+    
+    // 2. Mouse Interaction
+    vec2 mouseUv = uMouse * 0.5 + 0.5; 
+    vec2 mouseAR = vec2(mouseUv.x * aspect, mouseUv.y);
+    
+    vec2 toMouse = distortedP - mouseAR;
+    float mouseDist = length(toMouse);
+    
+    // Velocity Wake
+    float velMag = length(uMouseVelocity);
+    float wake = dot(normalize(toMouse), normalize(uMouseVelocity + vec2(0.001))) * velMag;
+    
+    // Stronger Mouse Force
+    float mouseForce = 1.0 / (1.0 + mouseDist * 8.0);
+    
+    // Ripple (Dynamic "Alive" Feel) - INCREASED SPEED AND AMP
+    float rippleBase = sin(mouseDist * 12.0 - t * 5.0) * 0.1; 
+    
+    float rippleActive = sin(mouseDist * 20.0 - t * 12.0) * mouseForce * velMag * 5.0;
+    
+    // 3. Plasma Flow (Domain Warping) - FASTER AND LARGER
+    float n = noise(distortedP * 1.0 + t * 0.4); 
+    distortedP += vec2(n * 0.15); 
+
+    // 4. Wave/Field Calculation
+    float z1 = t * 0.8 + uScroll * 3.0; // Much Faster flow
+    
+    float kx1 = 2.0 * PI; 
+    float ky1 = 2.0 * PI;
+    float w1 = cos(kx1 * distortedP.x + z1) * cos(ky1 * distortedP.y);
+    
+    float kx2 = 1.0 * PI;
+    float ky2 = 3.0 * PI;
+    
+    float w2 = cos(kx2 * distortedP.x - z1 * 0.7) * cos(ky2 * distortedP.y + t * 0.9);
+    
+    float field = (w1 + w2) * 0.5;
+    
+    field += rippleBase + rippleActive;
+    
+    return field;
+}
+
+void main() {
+    vec2 uv = vUv;
+    
+    // CHROMATIC ABERRATION
+    float distortionStr = 0.008; // Stronger split
+    
+    float fieldR = calculateField(uv + vec2(distortionStr, 0.0), uTime);
+    float fieldG = calculateField(uv, uTime);
+    float fieldB = calculateField(uv - vec2(distortionStr, 0.0), uTime);
+    
+    // Isolines - FASTER MOVING
+    float lineSpeed = uTime * 0.3;
+    float linesR = abs(fract(fieldR * 4.0 + lineSpeed) - 0.5);
+    float linesG = abs(fract(fieldG * 4.0 + lineSpeed) - 0.5);
+    float linesB = abs(fract(fieldB * 4.0 + lineSpeed) - 0.5);
+    
+    float lineWidth = 0.15; 
+    float sharp = 0.06;
+    
+    vec3 lineCol;
+    lineCol.r = 1.0 - smoothstep(lineWidth - sharp, lineWidth + sharp, linesR);
+    lineCol.g = 1.0 - smoothstep(lineWidth - sharp, lineWidth + sharp, linesG);
+    lineCol.b = 1.0 - smoothstep(lineWidth - sharp, lineWidth + sharp, linesB);
+    
+    // COLORS
+    vec3 bg = vec3(0.03, 0.03, 0.05); 
+    vec3 accent = vec3(0.4, 0.5, 1.0);    // Bright Indigo
+    vec3 hot = vec3(0.0, 1.0, 1.0);       // Cyan
+    
+    float intensity = (fieldG * 0.5 + 0.5);
+    
+    // Breathing effect - FASTER
+    float pulse = 1.0 + sin(uTime * 2.5) * 0.2;
+    
+    vec3 finalColor = bg;
+    
+    // Ambient Plasma Glow
+    finalColor += accent * intensity * 0.4 * pulse;
+    
+    // Lines
+    finalColor += vec3(lineCol.r * 0.8, lineCol.g * 0.8, lineCol.b * 1.0) * accent * 0.9;
+    
+    // Mouse Hotspot
+    float aspect = uResolution.x / uResolution.y;
+    vec2 mouseUv = uMouse * 0.5 + 0.5;
+    float mouseDist = distance(vec2(uv.x * aspect, uv.y), vec2(mouseUv.x * aspect, mouseUv.y));
+    float mouseGlow = 1.0 / (1.0 + mouseDist * 2.0);
+    
+    finalColor += hot * mouseGlow * 0.25; 
+    finalColor += hot * mouseGlow * length(uMouseVelocity) * 4.0 * lineCol; 
+
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+`;
+
+// -----------------------------------------------------------------------------
+// REACT COMPONENT
+// -----------------------------------------------------------------------------
+
 function ElectromagneticField({ elements }) {
   const mat = useRef(null);
-  const mouseRef = useRef({ x: 0, y: 0 });
-  const mouseVelocityRef = useRef({ x: 0, y: 0 });
-  const prevMouse = useRef({ x: 0, y: 0 });
-  const targetsRef = useRef(Array.from({ length: 20 }, () => [0, 0, 0, 0]));
+  const { viewport } = useThree();
+  const mouseRef = useRef(new Vector2(0, 0));
+  const mouseVelocityRef = useRef(new Vector2(0, 0));
+  const prevMouse = useRef(new Vector2(0, 0));
+  
+  const targets = useMemo(() => Array.from({ length: 20 }, () => new Vector4(0, 0, 0, 0)), []);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      const newMouse = {
-        x: (e.clientX / window.innerWidth) * 2 - 1,
-        y: -(e.clientY / window.innerHeight) * 2 + 1
-      };
-
-      // Calculate velocity (change in position)
-      mouseVelocityRef.current = {
-        x: newMouse.x - prevMouse.current.x,
-        y: newMouse.y - prevMouse.current.y
-      };
-
-      prevMouse.current = newMouse;
-      mouseRef.current = newMouse;
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = -(e.clientY / window.innerHeight) * 2 + 1;
+      const newMouse = new Vector2(x, y);
+      
+      const velocity = new Vector2().subVectors(newMouse, prevMouse.current);
+      
+      mouseVelocityRef.current.copy(velocity);
+      prevMouse.current.copy(newMouse);
+      mouseRef.current.copy(newMouse);
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
+    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Update element target positions only when they change
   useEffect(() => {
-    if (mat.current) {
-      const count = Math.min(elements.length, 20);
-      mat.current.uniforms.uElementCount.value = count;
-      // Save targets for smoothing
-      for (let i = 0; i < 20; i++) {
-        if (i < count) {
-          const el = elements[i];
-          targetsRef.current[i][0] = el.x;
-          targetsRef.current[i][1] = el.y;
-          targetsRef.current[i][2] = el.width;
-          targetsRef.current[i][3] = el.height;
-        } else {
-          targetsRef.current[i][0] = 0;
-          targetsRef.current[i][1] = 0;
-          targetsRef.current[i][2] = 0;
-          targetsRef.current[i][3] = 0;
-        }
+    const count = Math.min(elements.length, 20);
+    if (mat.current) mat.current.uniforms.uElementCount.value = count;
+
+    for (let i = 0; i < 20; i++) {
+      if (i < count) {
+        const el = elements[i];
+        targets[i].set(el.x, el.y, el.width, el.height);
+      } else {
+        targets[i].set(0, 0, 0, 0);
       }
     }
-  }, [elements]);
+  }, [elements, targets]);
 
   useFrame((state) => {
-    if (mat.current) {
-      mat.current.uniforms.uTime.value = state.clock.getElapsedTime();
-      mat.current.uniforms.uMouse.value = [mouseRef.current.x, mouseRef.current.y];
-      mat.current.uniforms.uMouseVelocity.value = [mouseVelocityRef.current.x, mouseVelocityRef.current.y];
+    if (!mat.current) return;
 
-      // Pass normalized scroll position to shader for smooth element tracking
-      mat.current.uniforms.uScroll.value = window.scrollY / window.innerHeight;
+    const uniforms = mat.current.uniforms;
 
-      // Smoothly approach target element positions to avoid jitter/flicker
-      const elementArray = mat.current.uniforms.uElements.value;
-      const alpha = 0.1; // smoothing factor per frame
-      for (let i = 0; i < 20; i++) {
-        const target = targetsRef.current[i];
-        const v = elementArray[i];
-        // v is a Vector4
-        v.set(
-          v.x + (target[0] - v.x) * alpha,
-          v.y + (target[1] - v.y) * alpha,
-          v.z + (target[2] - v.z) * alpha,
-          v.w + (target[3] - v.w) * alpha
-        );
-      }
+    uniforms.uTime.value = state.clock.getElapsedTime();
+    uniforms.uScroll.value = window.scrollY / window.innerHeight;
+    uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+
+    uniforms.uMouse.value.lerp(mouseRef.current, 0.2);
+    uniforms.uMouseVelocity.value.lerp(mouseVelocityRef.current, 0.1);
+    mouseVelocityRef.current.multiplyScalar(0.92);
+
+    const elementUniforms = uniforms.uElements.value;
+    for (let i = 0; i < 20; i++) {
+      elementUniforms[i].lerp(targets[i], 0.1);
     }
-
-    // Decay velocity over time
-    mouseVelocityRef.current.x *= 0.95;
-    mouseVelocityRef.current.y *= 0.95;
   });
 
   return (
-    <mesh position={[0, 0, -2]}>
-      <planeGeometry args={[20, 20]} />
+    <mesh position={[0, 0, -1]}>
+      <planeGeometry args={[viewport.width, viewport.height]} /> 
       <shaderMaterial
         ref={mat}
         uniforms={{
           uTime: { value: 0 },
-          uMouse: { value: [0, 0] },
-          uMouseVelocity: { value: [0, 0] },
+          uMouse: { value: new Vector2(0, 0) },
+          uMouseVelocity: { value: new Vector2(0, 0) },
           uScroll: { value: 0 },
           uElementCount: { value: 0 },
-          // Use Vector4 array to match vec4[] uniform and avoid shared references
+          uResolution: { value: new Vector2(window.innerWidth, window.innerHeight) },
           uElements: { value: Array.from({ length: 20 }, () => new Vector4(0, 0, 0, 0)) }
         }}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
-        extensions={{ derivatives: true }}
-        transparent
+        transparent={true}
+        depthWrite={false}
       />
     </mesh>
   );
@@ -269,92 +272,71 @@ function ElectromagneticField({ elements }) {
 
 export function BackgroundField() {
   const [elements, setElements] = useState([]);
-  const elementsMapRef = useRef(new Map());
 
-  // Auto-detect and track interactive elements
   useEffect(() => {
-    const updateElements = () => {
-      // Query all buttons, headings, and major containers
-      const tracked = document.querySelectorAll('button, h1, h2, .card, [data-field-interact]');
+    const calculateElements = () => {
+      const tracked = document.querySelectorAll('button, .card, input, h1, section'); 
       const newElements = [];
+      const invW = 1.0 / window.innerWidth;
+      const invH = 1.0 / window.innerHeight;
       const scrollY = window.scrollY;
-      const innerHeight = window.innerHeight;
-      const innerWidth = window.innerWidth;
 
       tracked.forEach(el => {
         const rect = el.getBoundingClientRect();
         if (rect.width > 0 && rect.height > 0) {
-          // Calculate position relative to document top
+          const centerX = (rect.left + rect.width * 0.5) * invW;
           const docTop = rect.top + scrollY;
-          const docCenterY = docTop + rect.height / 2;
+          const docCenterY = docTop + rect.height * 0.5;
+          const normalizedY = docCenterY * invH;
 
-          // Normalize by viewport dimensions
-          // y is normalized document position (can be > 1)
           newElements.push({
-            x: (rect.left + rect.width / 2) / innerWidth,
-            y: docCenterY / innerHeight,
-            width: rect.width / innerWidth,
-            height: rect.height / innerHeight
+            x: centerX,
+            y: normalizedY, 
+            width: rect.width * invW,
+            height: rect.height * invH
           });
         }
       });
-
       setElements(newElements);
     };
 
-    // Run on mount
-    updateElements();
+    let timeout;
+    const onLayoutChange = () => {
+        clearTimeout(timeout);
+        timeout = setTimeout(calculateElements, 100);
+    };
 
-    // Use ResizeObserver to detect layout changes
-    const resizeObserver = new ResizeObserver(() => {
-      updateElements();
-    });
+    const resizeObserver = new ResizeObserver(onLayoutChange);
     resizeObserver.observe(document.body);
-
-    window.addEventListener('resize', updateElements, { passive: true });
+    window.addEventListener('resize', onLayoutChange);
+    calculateElements();
 
     return () => {
       resizeObserver.disconnect();
-      window.removeEventListener('resize', updateElements);
+      window.removeEventListener('resize', onLayoutChange);
+      clearTimeout(timeout);
     };
   }, []);
 
-  const contextValue = {
-    registerElement: (element, rect) => {
-      // For manual registration, we assume rect is viewport relative?
-      // Or we should calculate document relative here too.
-      // But since this is rarely used (if at all), we can just ignore or fix later.
-      // For now, let's just store it but we need to be careful about coordinates.
-      // If manual registration is used, it might conflict with auto-detection.
-      // Given it's unused, I'll leave it as is but it might be buggy if used.
-      elementsMapRef.current.set(element, rect);
-      setElements(Array.from(elementsMapRef.current.values()));
-    },
-    unregisterElement: (element) => {
-      elementsMapRef.current.delete(element);
-      setElements(Array.from(elementsMapRef.current.values()));
-    }
-  };
-
   return (
-    <FieldRepulsionContext.Provider value={contextValue}>
-      <Canvas
-        className="fixed inset-0 -z-10"
-        camera={{ position: [0, 0, 5], fov: 75 }}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: -1,
-          pointerEvents: 'none',
-          background: 'var(--color-bg-primary)'
-        }}
-        dpr={[1, 2]}
-      >
-        <ElectromagneticField elements={elements} />
-      </Canvas>
-    </FieldRepulsionContext.Provider>
+    <Canvas
+      className="fixed inset-0 -z-10"
+      orthographic
+      camera={{ zoom: 1, position: [0, 0, 1] }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: -1,
+        pointerEvents: 'none',
+        background: '#050508'
+      }}
+      dpr={[1, 2]}
+      gl={{ alpha: false, antialias: false }}
+    >
+      <ElectromagneticField elements={elements} />
+    </Canvas>
   );
 }
