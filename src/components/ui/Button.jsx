@@ -1,5 +1,7 @@
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { hoverScaleVariants } from '../../utils/motion';
+import { useFieldRepulsion } from '../../hooks/useFieldRepulsion';
 
 export const Button = ({
   variant = 'primary',
@@ -7,15 +9,19 @@ export const Button = ({
   children,
   ...props
 }) => {
+  const buttonRef = useRef(null);
+  useFieldRepulsion(buttonRef);
+
   const variantStyles = {
-    primary: 'bg-primary text-text-inverse border border-transparent shadow-md hover:shadow-glow-sm hover:bg-opacity-90',
-    secondary: 'bg-secondary text-text-primary border border-border-primary shadow-sm hover:border-border-secondary hover:bg-bg-tertiary',
+    primary: 'bg-accent-primary text-white border border-transparent shadow-md hover:shadow-glow-sm hover:bg-accent-primary-hover',
+    secondary: 'bg-bg-card-featured/80 backdrop-blur-xl text-text-primary border border-border-secondary shadow-sm hover:border-border-primary hover:bg-bg-card-featured',
     outline: 'bg-transparent text-text-primary border border-border-primary hover:border-accent-primary hover:text-accent-primary',
     ghost: 'bg-transparent text-text-secondary hover:text-text-primary hover:bg-bg-card-inline',
   };
 
   return (
     <motion.button
+      ref={buttonRef}
       className={`
         relative overflow-hidden
         px-6 py-3

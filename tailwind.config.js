@@ -45,6 +45,7 @@ export default {
         'border-primary': 'var(--color-border-primary)',
         'border-secondary': 'var(--color-border-secondary)',
         'border-tertiary': 'var(--color-border-tertiary)',
+        'border-subtle': 'var(--color-border-subtle)',
         'border-dark': 'var(--color-border-dark)',
         'border-muted': 'var(--color-border-muted)',
 
@@ -80,7 +81,7 @@ export default {
 
       fontFamily: {
         sans: ['"Open Sans"', 'Inter', 'Helvetica', 'Arial', 'sans-serif'],
-        display: ['"IBM Plex Sans"', 'Inter', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'Consolas', 'monospace'],
       },
 
       fontSize: {

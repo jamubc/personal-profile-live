@@ -1,6 +1,7 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { useRef, useEffect, useMemo, useContext } from 'react';
 import { Vector4, Vector2 } from 'three';
+import { FieldRepulsionContext } from '../../hooks/useFieldRepulsion';
 
 // -----------------------------------------------------------------------------
 // SHADER DEFINITIONS
@@ -48,32 +49,76 @@ float noise(vec2 p) {
 
 // --- PHYSICS & FIELD CALCS ---
 
-vec2 getElementRepulsion(vec2 p) {
-    vec2 totalForce = vec2(0.0);
-    
+// Glass card liquid distortion effect
+float getGlassDistortion(vec2 p, float t) {
+    float glassEffect = 0.0;
+
     for (int i = 0; i < MAX_ELEMENTS; i++) {
         if (i >= uElementCount) break;
-        
+
         vec4 el = uElements[i];
         float elY = 1.0 - (el.y - uScroll);
-        
+
         vec2 center = vec2(el.x, elY);
         float aspect = uResolution.x / uResolution.y;
         center.x *= aspect;
-        
+
         vec2 pCorrected = p;
         pCorrected.x *= aspect;
-        
+
         vec2 size = vec2(el.z, el.w);
-        
+
+        vec2 delta = pCorrected - center;
+        vec2 scaledDelta = delta / (size * 0.5);
+        float dist = length(scaledDelta);
+
+        // Inside glass card bounds
+        if (dist < 1.0) {
+            // Create liquid glass distortion
+            float liquidWave1 = sin(pCorrected.x * 15.0 + t * 2.0) * cos(pCorrected.y * 15.0 - t * 2.0);
+            float liquidWave2 = sin(pCorrected.x * 25.0 - t * 3.0) * sin(pCorrected.y * 20.0 + t * 2.5);
+
+            // Radial ripples from center
+            float radialRipple = sin(dist * 30.0 - t * 4.0) * 0.5;
+
+            // Combine liquid effects
+            float liquidPattern = (liquidWave1 + liquidWave2 * 0.5 + radialRipple) * 0.3;
+
+            // Fade at edges
+            float edgeFade = smoothstep(1.0, 0.7, dist);
+
+            glassEffect += liquidPattern * edgeFade;
+        }
+    }
+    return glassEffect;
+}
+
+vec2 getElementRepulsion(vec2 p) {
+    vec2 totalForce = vec2(0.0);
+
+    for (int i = 0; i < MAX_ELEMENTS; i++) {
+        if (i >= uElementCount) break;
+
+        vec4 el = uElements[i];
+        float elY = 1.0 - (el.y - uScroll);
+
+        vec2 center = vec2(el.x, elY);
+        float aspect = uResolution.x / uResolution.y;
+        center.x *= aspect;
+
+        vec2 pCorrected = p;
+        pCorrected.x *= aspect;
+
+        vec2 size = vec2(el.z, el.w);
+
         vec2 delta = pCorrected - center;
         vec2 scaledDelta = delta / (size * 0.5 + 0.05);
         float dist = length(scaledDelta);
-        
+
         float strength = smoothstep(1.2, 0.0, dist);
-        
+
         if (dist > 0.001) {
-            totalForce += (delta / dist) * strength * 0.12; 
+            totalForce += (delta / dist) * strength * 0.12;
         }
     }
     return totalForce;
@@ -82,6 +127,10 @@ vec2 getElementRepulsion(vec2 p) {
 float calculateField(vec2 p, float t) {
     float aspect = uResolution.x / uResolution.y;
     vec2 pAR = vec2(p.x * aspect, p.y);
+
+    // Parallax offset based on mouse position
+    vec2 parallaxOffset = uMouse * 0.02; // Subtle 2% shift
+    pAR += parallaxOffset;
 
     // 1. Repulsion
     vec2 repulsion = getElementRepulsion(p);
@@ -131,13 +180,16 @@ float calculateField(vec2 p, float t) {
 
 void main() {
     vec2 uv = vUv;
-    
-    // CHROMATIC ABERRATION
-    float distortionStr = 0.008; // Stronger split
-    
-    float fieldR = calculateField(uv + vec2(distortionStr, 0.0), uTime);
-    float fieldG = calculateField(uv, uTime);
-    float fieldB = calculateField(uv - vec2(distortionStr, 0.0), uTime);
+
+    // LIQUID GLASS DISTORTION for glass cards
+    float glassDistortion = getGlassDistortion(uv, uTime);
+
+    // CHROMATIC ABERRATION with glass distortion
+    float distortionStr = 0.008 + abs(glassDistortion) * 0.01; // Amplify with glass
+
+    float fieldR = calculateField(uv + vec2(distortionStr, 0.0) + glassDistortion * 0.02, uTime);
+    float fieldG = calculateField(uv + glassDistortion * 0.015, uTime);
+    float fieldB = calculateField(uv - vec2(distortionStr, 0.0) + glassDistortion * 0.01, uTime);
     
     // Isolines - FASTER MOVING
     float lineSpeed = uTime * 0.3;
@@ -145,8 +197,8 @@ void main() {
     float linesG = abs(fract(fieldG * 4.0 + lineSpeed) - 0.5);
     float linesB = abs(fract(fieldB * 4.0 + lineSpeed) - 0.5);
     
-    float lineWidth = 0.15; 
-    float sharp = 0.06;
+    float lineWidth = 0.08;
+    float sharp = 0.04;
     
     vec3 lineCol;
     lineCol.r = 1.0 - smoothstep(lineWidth - sharp, lineWidth + sharp, linesR);
@@ -176,9 +228,27 @@ void main() {
     vec2 mouseUv = uMouse * 0.5 + 0.5;
     float mouseDist = distance(vec2(uv.x * aspect, uv.y), vec2(mouseUv.x * aspect, mouseUv.y));
     float mouseGlow = 1.0 / (1.0 + mouseDist * 2.0);
-    
-    finalColor += hot * mouseGlow * 0.25; 
-    finalColor += hot * mouseGlow * length(uMouseVelocity) * 4.0 * lineCol; 
+
+    finalColor += hot * mouseGlow * 0.25;
+    finalColor += hot * mouseGlow * length(uMouseVelocity) * 4.0 * lineCol;
+
+    // GLASS CARD ENHANCEMENT - Add extra brightness and color shift
+    if (abs(glassDistortion) > 0.001) {
+        // Extra brightness behind glass
+        float glassBrightness = abs(glassDistortion) * 2.0;
+
+        // Color shift - more cyan/bright blue for liquid glass feel
+        vec3 glassAccent = vec3(0.3, 0.8, 1.0); // Bright cyan
+
+        // Pulsing glow effect
+        float glassPulse = 1.0 + sin(uTime * 3.0 + glassDistortion * 10.0) * 0.3;
+
+        // Add glass enhancement
+        finalColor += glassAccent * glassBrightness * glassPulse * 0.4;
+
+        // Increase overall intensity
+        finalColor *= (1.0 + glassBrightness * 0.5);
+    }
 
     gl_FragColor = vec4(finalColor, 1.0);
 }
@@ -194,7 +264,7 @@ function ElectromagneticField({ elements }) {
   const mouseRef = useRef(new Vector2(0, 0));
   const mouseVelocityRef = useRef(new Vector2(0, 0));
   const prevMouse = useRef(new Vector2(0, 0));
-  
+
   const targets = useMemo(() => Array.from({ length: 20 }, () => new Vector4(0, 0, 0, 0)), []);
 
   useEffect(() => {
@@ -249,7 +319,7 @@ function ElectromagneticField({ elements }) {
 
   return (
     <mesh position={[0, 0, -1]}>
-      <planeGeometry args={[viewport.width, viewport.height]} /> 
+      <planeGeometry args={[viewport.width, viewport.height]} />
       <shaderMaterial
         ref={mat}
         uniforms={{
@@ -271,52 +341,7 @@ function ElectromagneticField({ elements }) {
 }
 
 export function BackgroundField() {
-  const [elements, setElements] = useState([]);
-
-  useEffect(() => {
-    const calculateElements = () => {
-      const tracked = document.querySelectorAll('button, .card, input, h1, section'); 
-      const newElements = [];
-      const invW = 1.0 / window.innerWidth;
-      const invH = 1.0 / window.innerHeight;
-      const scrollY = window.scrollY;
-
-      tracked.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-          const centerX = (rect.left + rect.width * 0.5) * invW;
-          const docTop = rect.top + scrollY;
-          const docCenterY = docTop + rect.height * 0.5;
-          const normalizedY = docCenterY * invH;
-
-          newElements.push({
-            x: centerX,
-            y: normalizedY, 
-            width: rect.width * invW,
-            height: rect.height * invH
-          });
-        }
-      });
-      setElements(newElements);
-    };
-
-    let timeout;
-    const onLayoutChange = () => {
-        clearTimeout(timeout);
-        timeout = setTimeout(calculateElements, 100);
-    };
-
-    const resizeObserver = new ResizeObserver(onLayoutChange);
-    resizeObserver.observe(document.body);
-    window.addEventListener('resize', onLayoutChange);
-    calculateElements();
-
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener('resize', onLayoutChange);
-      clearTimeout(timeout);
-    };
-  }, []);
+  const { elements } = useContext(FieldRepulsionContext) || { elements: [] };
 
   return (
     <Canvas
@@ -331,7 +356,7 @@ export function BackgroundField() {
         height: '100%',
         zIndex: -1,
         pointerEvents: 'none',
-        background: '#050508'
+        background: 'var(--color-bg-primary)'
       }}
       dpr={[1, 2]}
       gl={{ alpha: false, antialias: false }}

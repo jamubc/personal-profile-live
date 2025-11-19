@@ -129,7 +129,6 @@ const Node = ({ node, parent, level = 0, onHover, hoveredNode }) => {
             anchorX="center"
             anchorY="middle"
             maxWidth={1.6}
-            font="/fonts/Inter-Bold.woff" // Optional: Add if available, or remove if relying on default
           >
             {isLeaf ? `${node.icon} ${node.name}` : node.name}
           </Text>

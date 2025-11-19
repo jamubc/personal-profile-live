@@ -32,6 +32,7 @@
   --color-border-primary: rgba(255, 255, 255, 0.08);
   --color-border-secondary: rgba(255, 255, 255, 0.12);
   --color-border-tertiary: rgba(255, 255, 255, 0.04);
+  --color-border-subtle: rgba(255, 255, 255, 0.03);
   --color-border-dark: #000000;
   --color-border-muted: rgba(255, 255, 255, 0.02);
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../ui/Button';
+import { Card } from '../ui/Card';
 import { Section } from '../layout/Section';
 import '../../styles/chromaGradient.css';
 import { TRANSITION_EASE } from '../../utils/motion';
@@ -85,7 +86,7 @@ export const Hero = () => {
       >
         {/* Text Content */}
         <div className="lg:col-span-8 text-center lg:text-left z-10">
-          <div className="backdrop-blur-md bg-bg-card/30 p-8 md:p-12 rounded-3xl border border-border-primary shadow-glow-sm">
+          <Card variant="featured" useGlassShader={true} className="p-8 md:p-12">
             <motion.h1
               className="text-display-md md:text-display-xl font-bold text-text-primary mb-6 tracking-tight"
               variants={heroItemVariants}
@@ -127,7 +128,7 @@ export const Hero = () => {
                 About Me
               </Button>
             </motion.div>
-          </div>
+          </Card>
         </div>
 
         {/* Optional: Right side visual or spacer (can be used for 3D element later) */}
