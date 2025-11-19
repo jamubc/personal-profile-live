@@ -1,0 +1,108 @@
+/* Tailwind CSS imports */
+@import 'tailwindcss';
+@import './tokens.css';
+
+@config "../../tailwind.config.js";
+@source "../../index.html" "../**/*.{js,jsx,ts,tsx,html}";
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+  /* Increased for larger fixed headers */
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: "Open Sans", Inter, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  /* Text Rendering Optimization */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* Removed default padding to allow full-width sections */
+  overflow-x: hidden;
+}
+
+/* Button Reset */
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+/* Accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Custom utilities */
+@layer utilities {
+
+  /* Canvas handling */
+  canvas {
+    background: transparent;
+  }
+
+  /* Refined Section Divider */
+  .section-divider {
+    position: relative;
+  }
+
+  .section-divider::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border-secondary), transparent);
+  }
+
+  /* Color utilities mapping to variables */
+  .bg-bg-primary {
+    background-color: var(--color-bg-primary) !important;
+  }
+
+  .bg-bg-card {
+    background-color: var(--color-bg-card) !important;
+  }
+
+  .bg-bg-card-featured {
+    background-color: var(--color-bg-card-featured) !important;
+  }
+
+  .bg-bg-card-inline {
+    background-color: var(--color-bg-card-inline) !important;
+  }
+
+  .text-text-primary {
+    color: var(--color-text-primary) !important;
+  }
+
+  .text-text-secondary {
+    color: var(--color-text-secondary) !important;
+  }
+
+  .border-border-primary {
+    border-color: var(--color-border-primary) !important;
+  }
+
+  /* Transitions */
+  .transition-smooth {
+    transition: all 400ms cubic-bezier(0.2, 0, 0, 1);
+  }
+}

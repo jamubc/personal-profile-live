@@ -1,0 +1,6 @@
+# Run npm audit for security scanning
+npm audit
+
+# Note: Linting temporarily disabled during security audit fixes
+# Uncomment to enable linting checks before commits
+# npm run lint

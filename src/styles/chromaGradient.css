@@ -1,0 +1,58 @@
+/* ===================================
+   CHROMA GRADIENT CONFIGURATION
+   Aligned with the Deep Space Theme
+   =================================== */
+
+:root {
+  /* Gradient Colors - Analogous cool spectrum */
+  --chroma-color-1: #3b82f6; /* Blue 500 */
+  --chroma-color-2: #6366f1; /* Indigo 500 */
+  --chroma-color-3: #8b5cf6; /* Violet 500 */
+  --chroma-color-4: #d946ef; /* Fuchsia 500 */
+  --chroma-color-5: #6366f1; /* Loop back to Indigo */
+
+  /* Animation Speed - Slower for elegance */
+  --chroma-duration: 8s;
+
+  /* Gradient Size */
+  --chroma-size: 300%;
+}
+
+/* ===================================
+   ANIMATION KEYFRAMES
+   =================================== */
+
+@keyframes chromaShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ===================================
+   GRADIENT TEXT CLASS
+   =================================== */
+
+.chroma-gradient-text {
+  background: linear-gradient(
+    to right,
+    var(--chroma-color-1),
+    var(--chroma-color-2),
+    var(--chroma-color-3),
+    var(--chroma-color-4),
+    var(--chroma-color-5)
+  );
+  background-size: var(--chroma-size) auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: chromaShift var(--chroma-duration) ease infinite;
+  /* Add a subtle drop shadow to text to pop against dark background */
+  filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.3));
+  will-change: background-position;
+}
