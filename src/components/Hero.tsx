@@ -20,7 +20,7 @@ export const Hero = () => {
           </h2>
 
           <p className="text-lg md:text-xl text-gray-400 max-w-2xl leading-relaxed mx-auto">
-            Im studying Electrican Engineering and mechatronics, I also write code.
+            Im studying Electrical Engineering & Mechatronics, I also write code.
           </p>
         </motion.div>
       </div>
