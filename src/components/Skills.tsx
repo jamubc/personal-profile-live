@@ -2,22 +2,31 @@ import { skills } from '../data/skills';
 
 export const Skills = () => {
   return (
-    <section id="skills" className="py-24 bg-dark/50 border-y border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Technical Skills</h2>
-          <p className="text-gray-400">Technologies I use to build digital products.</p>
+    <section id="skills" className="relative py-28">
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-12 max-w-3xl">
+          <p className="text-sm uppercase tracking-[0.4em] text-secondary">Technical Proficiency</p>
+          <h2 className="mt-2 text-4xl font-semibold">A versatile toolkit bridging hardware and software.</h2>
+          <p className="mt-4 text-gray-400">
+            From high-voltage power systems to full-stack web applications, I leverage a diverse set of tools to solve complex engineering challenges.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {skills.map((skillGroup) => (
-            <div key={skillGroup.category} className="p-6 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-colors">
-              <h3 className="text-xl font-bold mb-6 text-primary">{skillGroup.category}</h3>
-              <div className="flex flex-wrap gap-3">
-                {skillGroup.items.map((skill) => (
-                  <span 
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {skills.map(skillGroup => (
+            <div
+              key={skillGroup.category}
+              className="rounded-[28px] border border-white/10 bg-white/5 p-6 shadow-soft backdrop-blur-xl transition hover:border-white/30"
+            >
+              <div className="mb-6 flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-white">{skillGroup.category}</h3>
+                <span className="text-xs uppercase tracking-[0.35em] text-gray-500">Focus</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {skillGroup.items.map(skill => (
+                  <span
                     key={skill}
-                    className="px-3 py-1.5 text-sm bg-black/40 text-gray-300 rounded-lg border border-white/5"
+                    className="rounded-full border border-white/10 bg-black/30 px-3 py-1 text-xs uppercase tracking-wide text-gray-300"
                   >
                     {skill}
                   </span>

@@ -2,15 +2,19 @@ import { Skill } from '../types';
 
 export const skills: Skill[] = [
   {
-    category: "Frontend",
-    items: ["React", "TypeScript", "Tailwind CSS", "Next.js", "Framer Motion"]
+    category: "Electrical Systems",
+    items: ["Power Systems Analysis", "Circuit Design", "Power Electronics", "Transmission Lines", "Frequency Control"]
   },
   {
-    category: "Backend",
-    items: ["Node.js", "PostgreSQL", "Redis", "FastAPI", "Docker"]
+    category: "Photonics & Signals",
+    items: ["Optical Design", "Semiconductors", "Signal Processing", "Fiber Optics", "System Analysis"]
   },
   {
-    category: "Tools & DevOps",
-    items: ["Git", "AWS", "Vercel", "CI/CD", "Linux"]
+    category: "Automation & Tech",
+    items: ["Robotics", "Control Systems", "Embedded Programming", "Machine Vision", "Renewable Energy"]
+  },
+  {
+    category: "Analysis & Design",
+    items: ["Economic Feasibility", "Monte Carlo Sim", "Technical Reporting", "Thermal Analysis", "Engineering Design"]
   }
 ];
