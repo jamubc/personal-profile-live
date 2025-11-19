@@ -21,7 +21,7 @@ export const Hero = () => {
       setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [roles.length]);
 
   const scrollToProjects = () => {
     const element = document.querySelector('#projects');

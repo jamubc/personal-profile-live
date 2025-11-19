@@ -1,43 +1,7 @@
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef, useState, useEffect, createContext, useContext } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Vector4 } from 'three';
-
-// Context for field repulsion elements
-const FieldRepulsionContext = createContext(null);
-
-export function useFieldRepulsion(elementRef) {
-  const context = useContext(FieldRepulsionContext);
-
-  useEffect(() => {
-    if (!context || !elementRef.current) return;
-
-    const updatePosition = () => {
-      const rect = elementRef.current.getBoundingClientRect();
-      const normalizedRect = {
-        x: (rect.left + rect.width / 2) / window.innerWidth,
-        y: (rect.top + rect.height / 2) / window.innerHeight,
-        width: rect.width / window.innerWidth,
-        height: rect.height / window.innerHeight
-      };
-      context.registerElement(elementRef.current, normalizedRect);
-    };
-
-    updatePosition();
-
-    const observer = new ResizeObserver(updatePosition);
-    observer.observe(elementRef.current);
-
-    window.addEventListener('scroll', updatePosition, { passive: true });
-    window.addEventListener('resize', updatePosition, { passive: true });
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('scroll', updatePosition);
-      window.removeEventListener('resize', updatePosition);
-      context.unregisterElement(elementRef.current);
-    };
-  }, [context, elementRef]);
-}
+import { FieldRepulsionContext } from '../../hooks/useFieldRepulsion';
 
 const fragmentShader = `
 #ifdef GL_ES
