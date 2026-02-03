@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp, Cpu, FileText } from 'lucide-react';
+import { ChevronDown, Cpu } from 'lucide-react';
 import { Project } from '../types';
 
 interface EngineeringListProps {

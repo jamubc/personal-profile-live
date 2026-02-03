@@ -46,6 +46,11 @@ function App() {
           <div className="absolute bottom-[-10%] right-1/3 w-[380px] h-[380px] bg-accent/10 blur-[140px]" />
         </div>
 
+        {/* Global Guide Rails (Engineering Grid) */}
+        <div className="absolute inset-0 pointer-events-none max-w-5xl mx-auto px-4 z-0">
+          <div className="h-full border-x border-white/10"></div>
+        </div>
+
         {/* Content */}
         <Navbar />
         <main className="relative">
