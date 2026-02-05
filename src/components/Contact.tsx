@@ -6,9 +6,9 @@ export const Contact = () => {
       <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <p className="text-[10px] uppercase tracking-[0.4em] text-white/50">Communications</p>
+          <p className="text-[10px] uppercase tracking-[0.4em] text-white/50">Get in contact</p>
           <h2 className="mt-2 text-3xl md:text-4xl font-light uppercase tracking-wide text-white/90">
-            Open inbox
+            Reach out!
           </h2>
         </div>
 
@@ -16,8 +16,8 @@ export const Contact = () => {
         <div className="border border-white/20 bg-black">
           {/* Top bar with label */}
           <div className="border-b border-white/20 px-6 py-3 flex items-center justify-between">
-            <span className="text-xs uppercase tracking-wider text-white/40">Contact Interface</span>
-            <span className="text-xs uppercase tracking-wider text-secondary">Status: Active</span>
+            <span className="text-xs uppercase tracking-wider text-white/40">🖂</span>
+            <span className="text-xs uppercase tracking-wider text-secondary">Text here?</span>
           </div>
 
           {/* Content */}

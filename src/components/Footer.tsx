@@ -9,12 +9,11 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-2">
             <h2 className="text-2xl font-bold text-white mb-4">
-              Let's build something <br />
-              <span className="text-primary">extraordinary</span> together.
+              Let's <span className="text-primary">talk</span> and<br />
+              <span className="text-primary">build</span> together.
             </h2>
             <p className="text-gray-400 max-w-sm">
-              Crafting digital experiences with passion and precision. 
-              Open for collaborations and new opportunities.
+              Learning, Building, Sharing.
             </p>
           </div>
           
@@ -52,8 +51,7 @@ export const Footer = () => {
             © {currentYear} Andrew. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-gray-500">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-white transition-colors">Link here?</a>
           </div>
         </div>
       </div>
