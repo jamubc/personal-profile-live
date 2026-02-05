@@ -3,7 +3,7 @@ import { Skill } from '../types';
 export const skills: Skill[] = [
   {
     category: "Electrical Systems",
-    items: ["Power Systems Analysis", "Circuit Design", "Power Electronics", "Transmission Lines", "Frequency Control"]
+    items: ["Power Systems Analysis", "Cadence",  "Circuit Design", "Power Electronics", "Transmission Lines", "Frequency Control"]
   },
   {
     category: "Photonics & Signals",

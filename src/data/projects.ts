@@ -37,6 +37,7 @@ export const projects: Project[] = [
     image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80',
     techStack: ['SolidWorks', 'MATLAB', 'C++', 'Arduino', 'Computer Vision', 'Sensor Fusion'],
     category: 'Engineering & Research',
+    assetsDir: '/projects/wildfire-robot',
     repoUrl: 'https://github.com/andrewmanson/wildfire-robot'
   },
   {
@@ -46,15 +47,19 @@ export const projects: Project[] = [
     image: 'https://images.unsplash.com/photo-1589820296153-17d40996e538?auto=format&fit=crop&w=800&q=80',
     techStack: ['Python', 'TensorFlow', 'OpenCV', 'Machine Vision', 'Robotics', 'Automation', 'Control Systems', 'Sensor Integration'],
     category: 'Engineering & Research',
+    assetsDir: '/projects/apple-classifier',
     repoUrl: 'https://github.com/andrewmanson/apple-classifier'
   },
   {
     id: '6',
     title: 'PPG Heart Rate Monitor',
     description: 'Photoplethysmography (PPG)-based heart rate monitor with real-time signal acquisition, filtering, and peak detection for reliable BPM estimation.',
-    image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=800&q=80',
-    techStack: ['Embedded C', 'Signal Processing', 'MATLAB', 'Arduino', 'Sensor Design'],
-    category: 'Engineering & Research'
+    image: '/projects/ppg-monitor/images/Circuit%20schematic%20including%20stage%202.png',
+    engineeringImageWidthPct: 60,
+    engineeringImageFit: 'contain',
+    techStack: ['Circuit Design', 'Signal Processing', 'LTSpice', 'Sensor Design'],
+    category: 'Engineering & Research',
+    assetsDir: '/projects/ppg-monitor'
   },
   {
     id: '7',
@@ -62,7 +67,8 @@ export const projects: Project[] = [
     description: 'Conducted a comprehensive economic analysis for a $1.5-2.9B hydrogen fuel cell tram-train network. Performed NPV, BCR, and IRR calculations for a 342km system, including Monte Carlo simulations for cost risks and technology maturity assessments.',
     image: 'https://images.unsplash.com/photo-1442570468985-f62ed5fe4535?auto=format&fit=crop&w=800&q=80',
     techStack: ['Economic Analysis', 'Hydrogen Fuel Cells', 'Monte Carlo Sim', 'Infrastructure'],
-    category: 'Engineering & Research'
+    category: 'Engineering & Research',
+    assetsDir: '/projects/okanagan-hydrail'
   },
   {
     id: '8',
@@ -70,6 +76,7 @@ export const projects: Project[] = [
     description: 'Advanced optical design and analysis including fiber optic coupling, index-matching, and reflectivity calculations. Characterized photodetectors and analyzed semiconductor physics, specifically energy bandgaps and optoelectronic responses.',
     image: 'https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?auto=format&fit=crop&w=800&q=80',
     techStack: ['Fiber Optics', 'Semiconductors', 'Photodetectors', 'Optical Analysis'],
-    category: 'Engineering & Research'
+    category: 'Engineering & Research',
+    assetsDir: '/projects/photonics-optical-systems'
   }
 ];
