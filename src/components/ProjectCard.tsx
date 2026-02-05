@@ -25,7 +25,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       href={project.repoUrl} 
       target="_blank" 
       rel="noopener noreferrer"
-      className="group relative flex flex-col overflow-hidden rounded-3xl h-full min-h-[380px] w-full border border-white/10 shadow-2xl transition-transform duration-500 hover:-translate-y-1"
+      className="group relative flex flex-col overflow-hidden h-full min-h-[380px] w-full border border-white/10 shadow-2xl transition-transform duration-500 hover:-translate-y-1"
     >
       {/* Full Background Image */}
       <div className="absolute inset-0 z-0">
@@ -44,7 +44,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
         {/* Top Bar: Actions */}
         <div className="flex justify-end items-center gap-3">
            {project.stars && githubPath && (
-              <div className="hidden sm:block overflow-hidden rounded-md opacity-90 hover:opacity-100 transition-opacity shadow-lg">
+              <div className="hidden sm:block overflow-hidden opacity-90 hover:opacity-100 transition-opacity shadow-lg">
                  <img 
                    src={`https://img.shields.io/github/stars/${githubPath}?style=social`}
                    alt="GitHub Stars"
@@ -52,14 +52,14 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
                  />
               </div>
            )}
-           <div className="p-2.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white hover:bg-white hover:text-black transition-all duration-300 shadow-lg">
+           <div className="p-2.5 bg-black/40 backdrop-blur-md border border-white/20 text-white hover:bg-white hover:text-black transition-all duration-300 shadow-lg">
              <ArrowUpRight className="w-5 h-5" />
            </div>
         </div>
 
         {/* Bottom Text Content with Glassmorphism Blur */}
         <div className="mt-auto">
-          <div className="rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 p-5 shadow-2xl hover:bg-black/50 transition-colors">
+          <div className="bg-black/40 backdrop-blur-xl border border-white/10 p-5 shadow-2xl hover:bg-black/50 transition-colors">
             <h3 className="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight shadow-black drop-shadow-lg">
               {project.title}
             </h3>

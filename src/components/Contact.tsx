@@ -31,12 +31,6 @@ export const Contact = () => {
               Message on LinkedIn
             </a>
           </div>
-
-          <div className="mt-8 flex flex-col gap-4 text-sm text-gray-400 sm:flex-row sm:justify-center">
-            <span>🗓 Booking Q2 2025</span>
-            <span>🇨🇦 Pacific Time</span>
-            <span>⚡️ Zero boilerplate</span>
-          </div>
         </div>
       </div>
     </section>
