@@ -8,7 +8,7 @@ export const Projects = () => {
 
   return (
     <section id="projects" className="relative py-28">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="mb-20">
