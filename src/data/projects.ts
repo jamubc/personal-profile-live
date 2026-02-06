@@ -1,4 +1,8 @@
 import { Project } from '../types';
+import { parseProjectContent } from '../lib/parseProjectContent';
+
+import appleClassifierMd from '../content/apple-classifier.md?raw';
+import ppgMonitorMd from '../content/ppg-monitor.md?raw';
 
 export const projects: Project[] = [
   {
@@ -32,51 +36,57 @@ export const projects: Project[] = [
   },
   {
     id: '4',
-    title: 'Autonomous Wildfire Reconnaissance Robot',
-    description: 'Autonomous robot designed for wildfire reconnaissance and surveillance, with real-time monitoring, sensor integration, and rugged all-terrain mobility.',
-    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=80',
-    techStack: ['SolidWorks', 'MATLAB', 'C++', 'Arduino', 'Computer Vision', 'Sensor Fusion'],
+    title: 'Automated Apple Grade Classification',
+    description: 'A CNN-based classification system deployed on a Raspberry Pi to grade apples as Good or Bad in near real time using machine vision, achieving 96% accuracy for our client on a $187 budget.',
+    image: 'https://images.unsplash.com/photo-1589820296153-17d40996e538?auto=format&fit=crop&w=800&q=80',
+    techStack: ['Python', 'TensorFlow Lite', 'OpenCV', 'Raspberry Pi', 'CNN', 'Edge ML', 'Embedded Systems'],
     category: 'Engineering & Research',
-    assetsDir: '/projects/wildfire-robot',
-    repoUrl: 'https://github.com/andrewmanson/wildfire-robot'
+    assetsDir: '/projects/apple-classifier',
+    icon: '/projects/apple-classifier/icon.png',
+    repoUrl: 'https://github.com/andrewmanson/apple-classifier',
+    detailSections: parseProjectContent(appleClassifierMd),
   },
   {
     id: '5',
-    title: 'Automated Apple Grade Classification',
-    description: 'Senior Capstone Project: Built a multi-camera computer vision + ML grading system to classify apples by defects and quality metrics (color, defect detection, and sugar/starch testing), paired with an automated sorting workflow.',
-    image: 'https://images.unsplash.com/photo-1589820296153-17d40996e538?auto=format&fit=crop&w=800&q=80',
-    techStack: ['Python', 'TensorFlow', 'OpenCV', 'Machine Vision', 'Robotics', 'Automation', 'Control Systems', 'Sensor Integration'],
+    title: 'Analog PPG Heart Rate Monitor',
+    description: 'Measuring heart rate via photoplethysmogram with a multi stage analog signal filter',
+    image: '/projects/ppg-monitor/images/Circuit%20schematic%20including%20stage%202.png',
+    engineeringImageWidthPct: 80,
+    engineeringImageFit: 'contain',
+    techStack: ['Analog Circuit Design', 'LTSpice validation', 'Signals', 'Prototyping'],
     category: 'Engineering & Research',
-    assetsDir: '/projects/apple-classifier',
-    repoUrl: 'https://github.com/andrewmanson/apple-classifier'
+    assetsDir: '/projects/ppg-monitor',
+    icon: '/projects/ppg-monitor/icon.png',
+    detailSections: parseProjectContent(ppgMonitorMd),
   },
   {
     id: '6',
-    title: 'PPG Heart Rate Monitor',
-    description: 'Photoplethysmography (PPG)-based heart rate monitor with real-time signal acquisition, filtering, and peak detection for reliable BPM estimation.',
-    image: '/projects/ppg-monitor/images/Circuit%20schematic%20including%20stage%202.png',
-    engineeringImageWidthPct: 60,
-    engineeringImageFit: 'contain',
-    techStack: ['Circuit Design', 'Signal Processing', 'LTSpice', 'Sensor Design'],
+    title: 'Repairing a Damaged Exhaust System',
+    description: '',
+    image: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80',
+    techStack: ['Welding', 'Fabrication', 'Automotive'],
     category: 'Engineering & Research',
-    assetsDir: '/projects/ppg-monitor'
+    assetsDir: '/projects/exhaust-system',
+    icon: '/projects/exhaust-system/icon.png',
   },
   {
     id: '7',
-    title: 'Okanagan Hydrail Feasibility Study',
-    description: 'Conducted a comprehensive economic analysis for a $1.5-2.9B hydrogen fuel cell tram-train network. Performed NPV, BCR, and IRR calculations for a 342km system, including Monte Carlo simulations for cost risks and technology maturity assessments.',
-    image: 'https://images.unsplash.com/photo-1442570468985-f62ed5fe4535?auto=format&fit=crop&w=800&q=80',
-    techStack: ['Economic Analysis', 'Hydrogen Fuel Cells', 'Monte Carlo Sim', 'Infrastructure'],
+    title: 'Repairing and Restoring Rust Damage — Automotive',
+    description: '',
+    image: 'https://images.unsplash.com/photo-1590004953392-5aba2e72269a?auto=format&fit=crop&w=800&q=80',
+    techStack: ['Body Work', 'Welding', 'Restoration', 'Automotive'],
     category: 'Engineering & Research',
-    assetsDir: '/projects/okanagan-hydrail'
+    assetsDir: '/projects/rust-restoration',
+    icon: '/projects/rust-restoration/icon.png',
   },
   {
     id: '8',
-    title: 'Photonics & Optical Systems',
-    description: 'Advanced optical design and analysis including fiber optic coupling, index-matching, and reflectivity calculations. Characterized photodetectors and analyzed semiconductor physics, specifically energy bandgaps and optoelectronic responses.',
-    image: 'https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45?auto=format&fit=crop&w=800&q=80',
-    techStack: ['Fiber Optics', 'Semiconductors', 'Photodetectors', 'Optical Analysis'],
+    title: 'Rebuilding a 4-Cylinder Engine',
+    description: '',
+    image: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=800&q=80',
+    techStack: ['Engine Rebuild', 'Mechanical', 'Automotive'],
     category: 'Engineering & Research',
-    assetsDir: '/projects/photonics-optical-systems'
-  }
+    assetsDir: '/projects/engine-rebuild',
+    icon: '/projects/engine-rebuild/icon.png',
+  },
 ];

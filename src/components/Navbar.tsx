@@ -1,4 +1,4 @@
-import { Zap, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 export const Navbar = () => {
@@ -65,7 +65,6 @@ export const Navbar = () => {
     { label: 'Home', href: '#hero' },
     { label: 'Projects', href: '#projects' },
     { label: 'Skills', href: '#skills' },
-    { label: 'Contact', href: '#contact' },
   ];
 
   return (
@@ -90,35 +89,33 @@ export const Navbar = () => {
             }
           `}
         >
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group pl-6">
-            <div className="flex h-8 w-8 items-center justify-center border border-white/20 group-hover:border-white transition-colors bg-black/20 backdrop-blur-sm">
-              <Zap className="w-4 h-4 text-white group-hover:text-primary transition-colors" />
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="text-[10px] uppercase tracking-widest text-white/50">Portfolio</span>
-              <span className="text-sm font-bold text-white tracking-wide">
-                ANDREW
-              </span>
-            </div>
-          </a>
+          <div className="flex items-center gap-8">
+            {/* Logo */}
+            <a href="#" className="flex items-center gap-3 group pl-6">
 
-          {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-8 pr-6">
-            {navLinks.map(link => (
-              <a
-                key={link.label}
-                href={link.href}
-                onMouseEnter={() => setHoveredLink(link.label)}
-                onMouseLeave={() => setHoveredLink(null)}
-                className="text-xs uppercase tracking-widest text-white/60 hover:text-white transition-colors relative"
-              >
-                {link.label}
-                {hoveredLink === link.label && (
-                   <span className="absolute -bottom-1 left-0 w-full h-[1px] bg-primary" />
-                )}
-              </a>
-            ))}
+            </a>
+
+            {/* Desktop Links */}
+            <div className="hidden md:flex items-center gap-8">
+              {navLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onMouseEnter={() => setHoveredLink(link.label)}
+                  onMouseLeave={() => setHoveredLink(null)}
+                  className="text-xs uppercase tracking-widest text-white/60 hover:text-white transition-colors relative"
+                >
+                  {link.label}
+                  {hoveredLink === link.label && (
+                    <span className="absolute -bottom-1 left-0 w-full h-[1px] bg-primary" />
+                  )}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop CTA */}
+          <div className="hidden md:flex items-center pr-6">
             <a
               href="#contact"
               className="px-4 py-2 border border-white/20 text-xs uppercase tracking-widest text-white hover:bg-white hover:text-black transition-all bg-black/20 backdrop-blur-sm"

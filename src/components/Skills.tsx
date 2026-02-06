@@ -6,13 +6,15 @@ export const Skills = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <section id="skills" className="relative py-28 font-mono">
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="skills" className="relative pt-8 pb-24 font-mono">
+      {/* Ambient color transition */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[50%] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
-          <p className="text-[10px] uppercase tracking-[0.4em] text-white/50">Technical Proficiency</p>
-          <h2 className="mt-2 text-3xl md:text-4xl font-light uppercase tracking-wide text-white/90">
-            Core competencies across electrical and software engineering.
+        <div className="mb-10">
+          <h2 className="text-3xl md:text-4xl font-light uppercase tracking-wide text-white/90">
+            Toolbox
           </h2>
         </div>
 
@@ -29,7 +31,7 @@ export const Skills = () => {
                   border-r border-white/20 whitespace-nowrap
                   ${activeTab === index
                     ? 'bg-white/5 text-white'
-                    : 'text-white/40 hover:text-white/70'
+                    : 'text-white/60 hover:text-white'
                   }
                 `}
               >

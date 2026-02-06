@@ -7,14 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#B794FF',
-        secondary: '#5DEDCB',
-        accent: '#F7947D',
+        primary: '#ffffff',
+        secondary: '#00f7ff',
+        accent: '#ef522e',
         dark: '#010208',
         card: 'rgba(8, 10, 24, 0.7)',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['"Open Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         glow: '0 25px 120px rgba(183, 148, 255, 0.35)',

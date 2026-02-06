@@ -1,36 +1,31 @@
-import { useState, useEffect, useRef } from 'react';
-import { Navbar } from './components/Navbar';
+import { useState, useCallback } from 'react';
+import { Sidebar } from './components/Sidebar';
 import { Hero } from './components/Hero';
 import { Projects } from './components/Projects';
 import { Skills } from './components/Skills';
 import { Contact } from './components/Contact';
-import { Footer } from './components/Footer';
+import { ProjectDetail } from './components/ProjectDetail';
+import { Project } from './types';
 
 function App() {
-  const [footerHeight, setFooterHeight] = useState(0);
-  const footerRef = useRef<HTMLDivElement>(null);
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
 
-  useEffect(() => {
-    const updateFooterHeight = () => {
-      if (footerRef.current) {
-        setFooterHeight(footerRef.current.offsetHeight);
-      }
-    };
+  const openProjectDetail = useCallback((project: Project) => {
+    setActiveProject(project);
+  }, []);
 
-    updateFooterHeight();
-    window.addEventListener('resize', updateFooterHeight);
-
-    return () => window.removeEventListener('resize', updateFooterHeight);
+  const closeProjectDetail = useCallback(() => {
+    setActiveProject(null);
   }, []);
 
   return (
     <div className="relative min-h-screen bg-dark text-white selection:bg-primary selection:text-dark overflow-hidden">
-      {/* Main Content Wrapper - Acts as the sliding curtain over the footer */}
-      <div
-        className="relative z-10 bg-dark shadow-2xl"
-        style={{ marginBottom: `${footerHeight}px` }}
-      >
-        {/* Background Effects - Moved inside content wrapper to ensure opacity */}
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Main Content — offset by sidebar width on desktop */}
+      <div className="relative z-10 bg-dark shadow-2xl md:ml-60">
+        {/* Background Effects */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-[#05060f] via-[#020308] to-[#05060f]" />
           <div className="absolute inset-0 opacity-60 noise-texture mix-blend-soft-light" />
@@ -46,28 +41,17 @@ function App() {
           <div className="absolute bottom-[-10%] right-1/3 w-[380px] h-[380px] bg-accent/10 blur-[140px]" />
         </div>
 
-        {/* Global Guide Rails (Engineering Grid) */}
-        <div className="absolute inset-0 pointer-events-none max-w-5xl mx-auto px-4 z-0">
-          <div className="h-full border-x border-white/10"></div>
-        </div>
-
         {/* Content */}
-        <Navbar />
         <main className="relative">
           <Hero />
-          <Projects />
+          <Projects onOpenDetail={openProjectDetail} />
           <Skills />
           <Contact />
         </main>
       </div>
 
-      {/* Fixed Footer - Reveals when content scrolls up */}
-      <div
-        ref={footerRef}
-        className="fixed bottom-0 w-full z-0"
-      >
-        <Footer />
-      </div>
+      {/* Project Detail Overlay */}
+      <ProjectDetail project={activeProject} onClose={closeProjectDetail} />
     </div>
   );
 }
