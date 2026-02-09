@@ -22,8 +22,8 @@ export const projects: Project[] = [
     image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=800&q=80',
     techStack: ['Python', 'AppleScript', 'MCP Protocol', 'Music Theory', 'UV Package Manager'],
     category: 'Software Development',
-    repoUrl: 'https://github.com/andrewmanson/logic-pro-mcp',
-    demoUrl: 'https://logic-pro-mcp.andrewmanson.com'
+    repoUrl: 'https://github.com/jamubc/logic-pro-mcp',
+    demoUrl: 'https://logic-pro-mcp-website.vercel.app/'
   },
   {
     id: '3',
@@ -32,7 +32,7 @@ export const projects: Project[] = [
     image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
     techStack: ['Python', 'Textual', 'Cryptography', 'Shell Scripting'],
     category: 'Software Development',
-    repoUrl: 'https://github.com/andrewmanson/env-manager'
+    repoUrl: 'https://github.com/jamubc/env-manager'
   },
   {
     id: '4',
@@ -43,7 +43,7 @@ export const projects: Project[] = [
     category: 'Engineering & Research',
     assetsDir: '/projects/apple-classifier',
     icon: '/projects/apple-classifier/icon.png',
-    repoUrl: 'https://github.com/andrewmanson/apple-classifier',
+    repoUrl: 'https://github.com/jamubc/apple_classifier_private_Capstone',
     detailSections: parseProjectContent(appleClassifierMd),
   },
   {
