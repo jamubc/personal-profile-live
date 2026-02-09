@@ -39,15 +39,15 @@ export const Sidebar = () => {
       {/* Navigation Links */}
       <nav className="flex-1 px-4 py-6">
         {/* CTA */}
-      <div className="px-6 pb-8">
-        <a
-          href="#contact"
-          onClick={closeMobile}
-          className="block w-full text-center px-4 py-3 border border-white/20 text-[11px] uppercase tracking-[0.2em] text-white hover:bg-white hover:text-black transition-all bg-black/20"
-        >
-          Hire Me
-        </a>
-      </div>
+        <div className="px-6 pb-8">
+          <a
+            href="#contact"
+            onClick={closeMobile}
+            className="block w-full text-center px-4 py-3 border border-white/20 text-[11px] uppercase tracking-[0.2em] text-white hover:bg-white hover:text-black transition-all bg-black/20"
+          >
+            Hire Me
+          </a>
+        </div>
         <ul className="space-y-1">
           {navLinks.map((link) => (
             <li key={link.label}>
@@ -59,11 +59,10 @@ export const Sidebar = () => {
                 className="group flex items-center gap-3 px-3 py-3 text-xs uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors relative"
               >
                 <span
-                  className={`h-px transition-all duration-300 ${
-                    hoveredLink === link.label
+                  className={`h-px transition-all duration-300 ${hoveredLink === link.label
                       ? 'w-6 bg-white'
                       : 'w-3 bg-white/30'
-                  }`}
+                    }`}
                 />
                 {link.label}
               </a>
@@ -75,13 +74,13 @@ export const Sidebar = () => {
       {/* Social Links — arch layout */}
       <div className="mt-auto pb-8 flex justify-center">
         <div className="flex items-end gap-5">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors mb-3">
+          <a href="https://github.com/jamubc" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors mb-3">
             <Github className="w-[18px] h-[18px]" />
           </a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors mb-0">
+          <a href="https://www.linkedin.com/in/jandrewmanson/" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors mb-0">
             <Linkedin className="w-[18px] h-[18px]" />
           </a>
-          <a href="mailto:hello@example.com" className="text-white/40 hover:text-white transition-colors mb-3">
+          <a href="mailto:andrew@jandrewmanson.engineer" className="text-white/40 hover:text-white transition-colors mb-3">
             <Mail className="w-[18px] h-[18px]" />
           </a>
         </div>

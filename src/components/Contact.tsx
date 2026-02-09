@@ -14,9 +14,9 @@ export const Contact = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.5, 1]);
 
   const links = [
-    { href: 'mailto:hello@2025.dev', label: 'Email', external: false },
-    { href: 'https://linkedin.com', label: 'LinkedIn', external: true },
-    { href: 'https://github.com', label: 'GitHub', external: true },
+    { href: 'mailto:andrew@jandrewmanson.engineer', label: 'Email', external: false },
+    { href: 'https://www.linkedin.com/in/jandrewmanson/', label: 'LinkedIn', external: true },
+    { href: 'https://github.com/jamubc', label: 'GitHub', external: true },
   ];
 
   return (
