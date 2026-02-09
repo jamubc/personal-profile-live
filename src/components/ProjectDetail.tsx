@@ -1,7 +1,8 @@
 import { useEffect, useRef, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
-import { Project } from '../types';
+import { Project, ProjectDetailSection } from '../types';
+import { loadProjectContent } from '../data/projects';
 
 interface ProjectDetailProps {
   project: Project | null;
@@ -46,13 +47,38 @@ const renderInlineMarkdown = (text: string): React.ReactNode[] => {
 export const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [loadedSections, setLoadedSections] = useState<ProjectDetailSection[] | null>(null);
+  const [isLoadingContent, setIsLoadingContent] = useState(false);
+
+  /* Lazy-load markdown content when a project with contentFile is opened */
+  useEffect(() => {
+    if (!project) {
+      setLoadedSections(null);
+      return;
+    }
+    if (project.detailSections) {
+      setLoadedSections(project.detailSections);
+      return;
+    }
+    if (project.contentFile) {
+      setIsLoadingContent(true);
+      loadProjectContent(project.contentFile).then((sections) => {
+        setLoadedSections(sections);
+        setIsLoadingContent(false);
+      });
+    } else {
+      setLoadedSections(null);
+    }
+  }, [project]);
+
+  const detailSections = loadedSections ?? project?.detailSections ?? null;
 
   const tocEntries = useMemo(() => {
-    if (!project?.detailSections) return [];
-    return project.detailSections
+    if (!detailSections) return [];
+    return detailSections
       .filter((s) => s.heading)
       .map((s) => ({ label: s.heading!, id: toSlug(s.heading!) }));
-  }, [project]);
+  }, [detailSections]);
 
   /* lock body scroll while open */
   useEffect(() => {
@@ -124,27 +150,24 @@ export const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
               >
                 {/* Node dot */}
                 <span
-                  className={`absolute left-[-16px] top-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full border transition-all z-10 ${
-                    isActive
+                  className={`absolute left-[-16px] top-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full border transition-all z-10 ${isActive
                       ? 'border-white/70 bg-white/20'
                       : 'border-white/40 bg-[#050507] group-hover:border-white/60 group-hover:bg-white/10'
-                  }`}
+                    }`}
                 />
 
                 {/* Step number */}
                 <span
-                  className={`text-[10px] tabular-nums font-mono w-4 text-right flex-none transition-colors ${
-                    isActive ? 'text-white/70' : 'text-white/40 group-hover:text-white/60'
-                  }`}
+                  className={`text-[10px] tabular-nums font-mono w-4 text-right flex-none transition-colors ${isActive ? 'text-white/70' : 'text-white/40 group-hover:text-white/60'
+                    }`}
                 >
                   {String(i + 1).padStart(2, '0')}
                 </span>
 
                 {/* Label */}
                 <span
-                  className={`text-[13px] font-mono tracking-wide transition-colors ${
-                    isActive ? 'text-white' : 'text-white/60 group-hover:text-white/90'
-                  }`}
+                  className={`text-[13px] font-mono tracking-wide transition-colors ${isActive ? 'text-white' : 'text-white/60 group-hover:text-white/90'
+                    }`}
                 >
                   {entry.label}
                 </span>
@@ -254,22 +277,22 @@ export const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
 
                 {/* Hero image — only render if the image is not a generic unsplash placeholder */}
                 {project.image && !project.image.includes('unsplash.com') && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.35, duration: 0.6 }}
-                  className="mb-12 md:mb-16"
-                >
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className={`w-full rounded-sm ${
-                      project.engineeringImageFit === 'contain'
-                        ? 'object-contain bg-white/[0.02] max-h-[420px]'
-                        : 'object-cover max-h-[480px]'
-                    }`}
-                  />
-                </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.35, duration: 0.6 }}
+                    className="mb-12 md:mb-16"
+                  >
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      loading="lazy"
+                      className={`w-full rounded-sm ${project.engineeringImageFit === 'contain'
+                          ? 'object-contain bg-white/[0.02] max-h-[420px]'
+                          : 'object-cover max-h-[480px]'
+                        }`}
+                    />
+                  </motion.div>
                 )}
 
                 {/* Lead paragraph */}
@@ -298,8 +321,26 @@ export const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
                   </motion.nav>
                 )}
 
+                {/* Loading skeleton for lazy content */}
+                {isLoadingContent && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="space-y-8 py-8"
+                  >
+                    {[1, 2, 3].map((n) => (
+                      <div key={n} className="space-y-3 animate-pulse">
+                        <div className="h-5 w-40 bg-white/10 rounded" />
+                        <div className="h-3 w-full bg-white/[0.06] rounded" />
+                        <div className="h-3 w-5/6 bg-white/[0.06] rounded" />
+                        <div className="h-3 w-4/6 bg-white/[0.06] rounded" />
+                      </div>
+                    ))}
+                  </motion.div>
+                )}
+
                 {/* Detail sections */}
-                {project.detailSections?.map((section, i) => {
+                {detailSections?.map((section, i) => {
                   const sectionId = section.heading ? toSlug(section.heading) : undefined;
                   return (
                     <motion.section
@@ -338,9 +379,9 @@ export const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
                           <img
                             src={section.image}
                             alt={section.imageCaption ?? ''}
-                            className={`rounded-sm ${
-                              section.imageFit === 'cover' ? 'object-cover' : 'object-contain'
-                            }`}
+                            loading="lazy"
+                            className={`rounded-sm ${section.imageFit === 'cover' ? 'object-cover' : 'object-contain'
+                              }`}
                             style={{
                               width: section.imageWidth || '100%',
                               maxHeight: section.imageMaxHeight ? `${section.imageMaxHeight}px` : '400px',
@@ -358,7 +399,7 @@ export const ProjectDetail = ({ project, onClose }: ProjectDetailProps) => {
                 })}
 
                 {/* Fallback */}
-                {(!project.detailSections || project.detailSections.length === 0) && (
+                {!isLoadingContent && (!detailSections || detailSections.length === 0) && (
                   <div className="py-24 text-center">
                     <p className="text-white/60 text-sm uppercase tracking-[0.2em] font-mono">
                       Detailed write-up coming soon

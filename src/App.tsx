@@ -1,11 +1,14 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, lazy, Suspense } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Hero } from './components/Hero';
 import { Projects } from './components/Projects';
 import { Skills } from './components/Skills';
 import { Contact } from './components/Contact';
-import { ProjectDetail } from './components/ProjectDetail';
 import { Project } from './types';
+
+const ProjectDetail = lazy(() =>
+  import('./components/ProjectDetail').then((m) => ({ default: m.ProjectDetail }))
+);
 
 function App() {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
@@ -50,8 +53,10 @@ function App() {
         </main>
       </div>
 
-      {/* Project Detail Overlay */}
-      <ProjectDetail project={activeProject} onClose={closeProjectDetail} />
+      {/* Project Detail Overlay — lazy loaded */}
+      <Suspense fallback={null}>
+        <ProjectDetail project={activeProject} onClose={closeProjectDetail} />
+      </Suspense>
     </div>
   );
 }

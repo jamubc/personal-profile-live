@@ -34,6 +34,7 @@ export const EngineeringList = ({ projects, onOpenDetail }: EngineeringListProps
               <img
                 src={project.icon}
                 alt=""
+                loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
               />
             ) : (

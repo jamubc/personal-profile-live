@@ -28,6 +28,8 @@ export interface Project {
   demoUrl?: string;
   repoUrl?: string;
   stars?: string;
+  /** Identifier for the markdown content file to lazy-load (e.g. 'apple-classifier') */
+  contentFile?: string;
   /** Rich detail content shown in the focus-mode overlay */
   detailSections?: ProjectDetailSection[];
 }

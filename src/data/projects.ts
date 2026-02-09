@@ -1,8 +1,37 @@
-import { Project } from '../types';
+import { Project, ProjectDetailSection } from '../types';
 import { parseProjectContent } from '../lib/parseProjectContent';
 
-import appleClassifierMd from '../content/apple-classifier.md?raw';
-import ppgMonitorMd from '../content/ppg-monitor.md?raw';
+/**
+ * Dynamically load and parse a project's markdown content file.
+ * The content is cached after the first load so subsequent opens are instant.
+ */
+const contentCache = new Map<string, ProjectDetailSection[]>();
+
+export async function loadProjectContent(
+  contentFile: string,
+): Promise<ProjectDetailSection[]> {
+  if (contentCache.has(contentFile)) {
+    return contentCache.get(contentFile)!;
+  }
+
+  // Vite's dynamic import with ?raw suffix — each .md becomes its own chunk
+  const modules: Record<string, () => Promise<{ default: string }>> =
+    import.meta.glob('../content/*.md', { query: '?raw', import: 'default', eager: false }) as any;
+
+  const key = `../content/${contentFile}.md`;
+  const loader = modules[key];
+  if (!loader) {
+    console.warn(`No content file found for "${contentFile}"`);
+    return [];
+  }
+
+  const raw = await (loader as any)();
+  // raw may be a string directly or { default: string } depending on Vite version
+  const text = typeof raw === 'string' ? raw : raw.default ?? raw;
+  const sections = parseProjectContent(text);
+  contentCache.set(contentFile, sections);
+  return sections;
+}
 
 export const projects: Project[] = [
   {
@@ -44,7 +73,7 @@ export const projects: Project[] = [
     assetsDir: '/projects/apple-classifier',
     icon: '/projects/apple-classifier/icon.png',
     repoUrl: 'https://github.com/jamubc/apple_classifier_private_Capstone',
-    detailSections: parseProjectContent(appleClassifierMd),
+    contentFile: 'apple-classifier',
   },
   {
     id: '5',
@@ -57,7 +86,7 @@ export const projects: Project[] = [
     category: 'Engineering & Research',
     assetsDir: '/projects/ppg-monitor',
     icon: '/projects/ppg-monitor/icon.png',
-    detailSections: parseProjectContent(ppgMonitorMd),
+    contentFile: 'ppg-monitor',
   },
   {
     id: '6',
