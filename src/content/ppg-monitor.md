@@ -18,7 +18,7 @@ edge triggering with a monostable multivibrator driving an LED output.
 Each stage was first simulated in LTSpice, then prototyped on a
 breadboard and verified with oscilloscope measurements.
 
-::image[/projects/ppg-monitor/images/handwritten%20starting%20planning%20on%20PPG%20monitor%20and%20simulation.png]{caption="Early planning notes and simulation sketches for the PPG signal chain" fit=contain maxHeight=420}
+::image[/projects/ppg-monitor/images/handwritten%20starting%20planning%20on%20PPG%20monitor%20and%20simulation.webp]{caption="Early planning notes and simulation sketches for the PPG signal chain" fit=contain maxHeight=420}
 
 ## Sensor Design & Signal Acquisition
 
@@ -52,9 +52,9 @@ that the photodiode had been connected with reversed polarity
 once corrected, the circuit immediately produced the expected PPG
 waveform.
 
-::image[/projects/ppg-monitor/images/Circuit%20diagram%20of%20PPG%20prototype%20circuit.png]{caption="Circuit diagram of the PPG prototype  from photodiode through TIA to output" fit=contain maxHeight=400}
+::image[/projects/ppg-monitor/images/Circuit%20diagram%20of%20PPG%20prototype%20circuit.webp]{caption="Circuit diagram of the PPG prototype  from photodiode through TIA to output" fit=contain maxHeight=400}
 
-::image[/projects/ppg-monitor/images/PPG%20pulse%20signal%20on%20oscilloscope%20(unprocessed).png]{caption="Raw unprocessed PPG pulse signal captured on the oscilloscope  38 mV pk-pk on a 4 V DC offset" fit=contain maxHeight=380}
+::image[/projects/ppg-monitor/images/PPG%20pulse%20signal%20on%20oscilloscope%20(unprocessed).webp]{caption="Raw unprocessed PPG pulse signal captured on the oscilloscope  38 mV pk-pk on a 4 V DC offset" fit=contain maxHeight=380}
 
 ## Signal Conditioning
 
@@ -83,11 +83,11 @@ gain and additional low-pass filtering. The resulting output swung
 to approximately 0.6 V peak around a 2.2 V DC operating point 
 over 15× amplification of the original 38 mV heartbeat.
 
-::image[/projects/ppg-monitor/images/Circuit%20schematic%20including%20stage%202.png]{caption="LTSpice schematic  full signal conditioning chain including the second filter and gain stage" fit=contain maxHeight=420}
+::image[/projects/ppg-monitor/images/Circuit%20schematic%20including%20stage%202.webp]{caption="LTSpice schematic  full signal conditioning chain including the second filter and gain stage" fit=contain maxHeight=420}
 
-::image[/projects/ppg-monitor/images/Processed%20PPG%20signal%20output%20on%20oscilloscope.png]{caption="Processed PPG signal after bandpass filtering and amplification  dramatically improved SNR" fit=contain maxHeight=380}
+::image[/projects/ppg-monitor/images/Processed%20PPG%20signal%20output%20on%20oscilloscope.webp]{caption="Processed PPG signal after bandpass filtering and amplification  dramatically improved SNR" fit=contain maxHeight=380}
 
-::image[/projects/ppg-monitor/images/Breadboard%20prototype%20circuit%20setup%20for%20PPG%20signal%20filter.png]{caption="Breadboard prototype of the gain and filtering stages" fit=contain maxHeight=420}
+::image[/projects/ppg-monitor/images/Breadboard%20prototype%20circuit%20setup%20for%20PPG%20signal%20filter.webp]{caption="Breadboard prototype of the gain and filtering stages" fit=contain maxHeight=420}
 
 ## Comparator Design
 
@@ -107,7 +107,7 @@ configuration) with a pair of 220 kΩ resistors to supply a stable
 the need for multiple voltage divider networks and preventing loading
 effects from distorting the conditioned signal upstream.
 
-::image[/projects/ppg-monitor/images/Buffer%20Amplifier%20Circuit%20Diagram.png]{caption="Buffer amplifier circuit diagram  providing an isolated 2.5 V reference" fit=contain maxHeight=380}
+::image[/projects/ppg-monitor/images/Buffer%20Amplifier%20Circuit%20Diagram.webp]{caption="Buffer amplifier circuit diagram  providing an isolated 2.5 V reference" fit=contain maxHeight=380}
 
 The comparator itself uses an LTC6078 configured as a **Schmitt
 trigger** with positive feedback through hysteresis resistors R8
@@ -126,11 +126,11 @@ point enough to push the signal outside the hysteresis window.
 Adding additional gain to the preceding stage stabilised the
 comparator behaviour.
 
-::image[/projects/ppg-monitor/images/Comparator%20Circuit%20Diagram.png]{caption="Comparator circuit diagram with hysteresis resistor network (R8 = 220 kΩ, R9 = 680 kΩ)" fit=contain maxHeight=380}
+::image[/projects/ppg-monitor/images/Comparator%20Circuit%20Diagram.webp]{caption="Comparator circuit diagram with hysteresis resistor network (R8 = 220 kΩ, R9 = 680 kΩ)" fit=contain maxHeight=380}
 
-::image[/projects/ppg-monitor/images/Circuit%20diagram%20in%20LTSpice%20(Comparator%20Design%0A).png]{caption="Full comparator design in LTSpice simulation" fit=contain maxHeight=420}
+::image[/projects/ppg-monitor/images/Circuit%20diagram%20in%20LTSpice%20(Comparator%20Design%0A).webp]{caption="Full comparator design in LTSpice simulation" fit=contain maxHeight=420}
 
-::image[/projects/ppg-monitor/images/Marked-up%20diagram%20of%20the%20hysteresis%20band%20from%20our%20comparator.png]{caption="Annotated hysteresis band of the Schmitt trigger  the dead zone prevents dicrotic notch false triggers" fit=contain maxHeight=400}
+::image[/projects/ppg-monitor/images/Marked-up%20diagram%20of%20the%20hysteresis%20band%20from%20our%20comparator.webp]{caption="Annotated hysteresis band of the Schmitt trigger  the dead zone prevents dicrotic notch false triggers" fit=contain maxHeight=400}
 
 The oscilloscope capture below validates the design at 2 V/div,
 250 ms/div in DC coupling mode. The yellow trace shows the cleaned
@@ -138,7 +138,7 @@ analog heartbeat waveform (systole → dicrotic notch → diastole),
 while the blue trace shows the comparator output switching cleanly
 on each beat with zero false edges from the notch.
 
-::image[/projects/ppg-monitor/images/Comparator%20trigger%20signal%20alongside%20time-varying%20PPG%20signal%20displaying%20the%20triggering%20characteristics%20of%20the%20comparator..png]{caption="Comparator trigger signal alongside the time-varying PPG waveform  clean digital pulse on every heartbeat" fit=contain maxHeight=400}
+::image[/projects/ppg-monitor/images/Comparator%20trigger%20signal%20alongside%20time-varying%20PPG%20signal%20displaying%20the%20triggering%20characteristics%20of%20the%20comparator..webp]{caption="Comparator trigger signal alongside the time-varying PPG waveform  clean digital pulse on every heartbeat" fit=contain maxHeight=400}
 
 ## Monostable Multivibrator & Final Output
 
@@ -176,9 +176,9 @@ The result is a visible green flash for every single heartbeat  a
 tangible, real-time confirmation that the entire four-stage analog
 chain is working end to end, from photon to pulse.
 
-::image[/projects/ppg-monitor/images/Final%20simulated%20circuit%20diagram.png]{caption="LTSpice simulation of the complete final stage  edge trigger, monostable multivibrator, and LED driver" fit=contain maxHeight=420}
+::image[/projects/ppg-monitor/images/Final%20simulated%20circuit%20diagram.webp]{caption="LTSpice simulation of the complete final stage  edge trigger, monostable multivibrator, and LED driver" fit=contain maxHeight=420}
 
-::image[/projects/ppg-monitor/images/Picture%20of%20our%20breadboards%20final%20setup.png]{caption="Final breadboard  the complete PPG signal processing chain from sensor to LED output" fit=contain maxHeight=450}
+::image[/projects/ppg-monitor/images/Picture%20of%20our%20breadboards%20final%20setup.webp]{caption="Final breadboard  the complete PPG signal processing chain from sensor to LED output" fit=contain maxHeight=450}
 
 ## Key Engineering Challenges
 

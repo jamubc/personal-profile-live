@@ -16,7 +16,7 @@ all in under five seconds. The prototype achieved 96% accuracy in
 controlled tests on a total build cost of $187, well within the
 $500 capstone budget.
 
-::image[/projects/apple-classifier/images/State%20Diagram%20for%20the%20system.png]{caption="State diagram  the full detection-to-classification pipeline" fit=contain maxHeight=400}
+::image[/projects/apple-classifier/images/State%20Diagram%20for%20the%20system.webp]{caption="State diagram  the full detection-to-classification pipeline" fit=contain maxHeight=400}
 
 ## My Role & Contributions
 
@@ -34,7 +34,7 @@ hardware orientation  where to mount the camera, IR sensors, and
 compute module to keep the apple centred in frame and the cable
 runs manageable.
 
-::image[/projects/apple-classifier/images/apple%20classifier%20creative%20sketch%20(thinking%20about%20the%20system).jpg]{caption="Early concept sketch  working out camera placement, IR sensor orientation, and structural layout" fit=contain maxHeight=420}
+::image[/projects/apple-classifier/images/apple%20classifier%20creative%20sketch%20(thinking%20about%20the%20system).webp]{caption="Early concept sketch  working out camera placement, IR sensor orientation, and structural layout" fit=contain maxHeight=420}
 
 That sketch revealed the critical components we still needed to
 source. The client provided a Raspberry Pi CM4 Compute Module, but
@@ -52,7 +52,7 @@ team understand the physical constraints, and immediately revealed
 issues like the camera's placement limitations due to its short
 ribbon cable.
 
-::image[/projects/apple-classifier/images/solidworks%20render%20and%20vision%20for%20the%20apple%20classifier.png]{caption="SolidWorks render  visualising the full machine assembly before cutting any material" fit=contain maxHeight=450}
+::image[/projects/apple-classifier/images/solidworks%20render%20and%20vision%20for%20the%20apple%20classifier.webp]{caption="SolidWorks render  visualising the full machine assembly before cutting any material" fit=contain maxHeight=450}
 
 ## Prototyping & Construction
 
@@ -79,7 +79,7 @@ closely with my team to integrate the system, a task complicated
 by the RPi platform's sensitivity: small hardware or software
 changes could disrupt everything.
 
-::image[/projects/apple-classifier/images/the%20physical%20circuit.jpg]{caption="The breadboard circuit  IR sensor, pull-up resistor, and RPi GPIO wiring" fit=contain maxHeight=400}
+::image[/projects/apple-classifier/images/the%20physical%20circuit.webp]{caption="The breadboard circuit  IR sensor, pull-up resistor, and RPi GPIO wiring" fit=contain maxHeight=400}
 
 To manage costs within our $500 budget, I researched suppliers
 online and locally, creating a spreadsheet to track component
@@ -92,7 +92,7 @@ requirement. The iterative process  from rough concepts to a
 working machine  taught me to balance functionality with real-world
 constraints like cost, time, and material availability.
 
-::image[/projects/apple-classifier/images/example%20working%20setup%20(showing%20the%20machine%20and%20an%20apple%20in%20position%20for%20scanning).png]{caption="The finished prototype in a ready-to-scan state  apple positioned under the camera with IR beam active" fit=contain maxHeight=450}
+::image[/projects/apple-classifier/images/example%20working%20setup%20(showing%20the%20machine%20and%20an%20apple%20in%20position%20for%20scanning).webp]{caption="The finished prototype in a ready-to-scan state  apple positioned under the camera with IR beam active" fit=contain maxHeight=450}
 
 ## Software Integration & Operator Interface
 
@@ -113,9 +113,9 @@ the captured image and the model's classification result side by
 side. The design philosophy was deliberate: one cable to power,
 connect a display over the network, and scan.
 
-::image[/projects/apple-classifier/images/sample_operator_output_goodApple.png]{caption="Operator output  a 'Good Apple' classification result displayed in real time" fit=contain maxHeight=380}
+::image[/projects/apple-classifier/images/sample_operator_output_goodApple.webp]{caption="Operator output  a 'Good Apple' classification result displayed in real time" fit=contain maxHeight=380}
 
-::image[/projects/apple-classifier/images/sample_operator_output_badApple.png]{caption="Operator output  a 'Bad Apple' classification flagging visible surface defects" fit=contain maxHeight=380}
+::image[/projects/apple-classifier/images/sample_operator_output_badApple.webp]{caption="Operator output  a 'Bad Apple' classification flagging visible surface defects" fit=contain maxHeight=380}
 
 ## What I Learned
 
@@ -260,7 +260,7 @@ and the industry client.
 
 ## Project Poster
 
-::image[/projects/apple-classifier/images/project_poster_page_1.png]{caption=" Capstone Project Poster  Apple Grade Classification for client" fit=contain maxHeight=800}
+::image[/projects/apple-classifier/images/project_poster_page_1.webp]{caption=" Capstone Project Poster  Apple Grade Classification for client" fit=contain maxHeight=800}
 
 ## Key Challenges & Future Work
 
