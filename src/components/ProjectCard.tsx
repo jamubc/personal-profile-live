@@ -1,4 +1,3 @@
-import { ArrowUpRight } from 'lucide-react';
 import { Project } from '../types';
 
 interface ProjectCardProps {

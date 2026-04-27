@@ -7,7 +7,7 @@ interface ProjectsProps {
   onOpenDetail: (project: Project) => void;
 }
 
-export const Projects = ({ onOpenDetail }: ProjectsProps) => {
+export const Projects = ({}: ProjectsProps) => {
   const softwareProjects = projects.filter(p => p.category === 'Open-Source Development');
 
   return (
