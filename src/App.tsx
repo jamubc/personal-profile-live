@@ -2,7 +2,7 @@ import { useState, useCallback, lazy, Suspense } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Hero } from './components/Hero';
 import { Projects } from './components/Projects';
-import { Skills } from './components/Skills';
+import { Engineering } from './components/Engineering';
 import { Contact } from './components/Contact';
 import { Project } from './types';
 
@@ -48,7 +48,7 @@ function App() {
         <main className="relative">
           <Hero />
           <Projects onOpenDetail={openProjectDetail} />
-          <Skills />
+          <Engineering onOpenDetail={openProjectDetail} />
           <Contact />
         </main>
       </div>

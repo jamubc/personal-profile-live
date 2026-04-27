@@ -37,30 +37,30 @@ export const projects: Project[] = [
   {
     id: '1',
     title: 'Gemini MCP Tool',
-    description: 'An MCP server enabling AI assistants to interact directly with the Google Gemini CLI. This tool leverages Gemini\'s massive token window for deep codebase understanding and large file analysis.',
+    description: 'Give your favorite agent or tool access to Google Gemini models and their coding powers with this open source MCP.',
     image: 'https://jamubc.github.io/gemini-mcp-tool/icon.png',
     techStack: ['TypeScript', 'Node.js', 'Gemini CLI', 'AI Agents'],
-    category: 'Software Development',
+    category: 'Open-Source Development',
     repoUrl: 'https://github.com/jamubc/gemini-mcp-tool',
     stars: '1.6k'
   },
   {
     id: '2',
-    title: 'Logic Pro MCP Server',
-    description: 'Model Context Protocol (MCP) server for Logic Pro integration, enabling AI-assisted music production workflows and automation.',
+    title: 'Logic Pro MCP',
+    description: 'A creative, experimental MCP for Logic Pro DAW. Experiment with AI generated arrangements, chord progressions and quality of life improvements for music producers.',
     image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=800&q=80',
     techStack: ['Python', 'AppleScript', 'MCP Protocol', 'Music Theory', 'UV Package Manager'],
-    category: 'Software Development',
+    category: 'Open-Source Development',
     repoUrl: 'https://github.com/jamubc/logic-pro-mcp',
     demoUrl: 'https://logic-pro-mcp-website.vercel.app/'
   },
   {
     id: '3',
-    title: 'Environment Manager TUI',
-    description: 'Secure terminal-based environment variable manager with AES-256-GCM encryption for storing and organizing sensitive configuration.',
+    title: 'Env Manager TUI',
+    description: 'A terminal-based environment variable manager with AES-256-GCM encryption for storing, organizing sensitive values. Created to optimize organization of multiple API keys.',
     image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
     techStack: ['Python', 'Textual', 'Cryptography', 'Shell Scripting'],
-    category: 'Software Development',
+    category: 'Open-Source Development',
     repoUrl: 'https://github.com/jamubc/env-manager'
   },
   {
