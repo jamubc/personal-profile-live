@@ -4,6 +4,7 @@ import { Hero } from './components/Hero';
 import { Projects } from './components/Projects';
 import { Engineering } from './components/Engineering';
 import { Contact } from './components/Contact';
+import { Works } from './components/Works';
 import { Project } from './types';
 
 const ProjectDetail = lazy(() =>
@@ -12,6 +13,10 @@ const ProjectDetail = lazy(() =>
 
 function App() {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+
+  if (window.location.pathname === '/works' || window.location.hash === '#works') {
+    return <Works />;
+  }
 
   const openProjectDetail = useCallback((project: Project) => {
     setActiveProject(project);

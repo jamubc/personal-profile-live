@@ -65,6 +65,7 @@ export const Navbar = () => {
     { label: 'Home', href: '#hero' },
     { label: 'Projects', href: '#projects' },
     { label: 'Creative', href: '#engineering' },
+    { label: 'Works', href: '/works' },
   ];
 
   return (
