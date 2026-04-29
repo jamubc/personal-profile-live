@@ -1,4 +1,3 @@
-import { ArrowUpRight } from 'lucide-react';
 import { Project } from '../types';
 
 interface ProjectCardProps {
@@ -25,7 +24,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       href={project.repoUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex flex-col overflow-hidden h-full min-h-[380px] w-full border border-white/10 shadow-2xl transition-transform duration-500 hover:-translate-y-1"
+      className="group relative flex flex-col overflow-hidden h-full min-h-[380px] w-full border-2 border-white/20 shadow-2xl transition-transform duration-500 hover:-translate-y-1"
     >
       {/* Full Background Image */}
       <div className="absolute inset-0 z-0">
@@ -33,7 +32,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           src={project.image}
           alt={project.title}
           loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:grayscale group-hover:blur-md"
         />
         {/* Gradient Overlay for Contrast - Ensures text readability even without the blur card, but adds depth */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 transition-opacity group-hover:opacity-40" />
@@ -42,10 +41,24 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col h-full justify-between p-4 sm:p-6">
 
-        {/* Top Bar: Actions */}
-        <div className="flex justify-end items-center gap-3">
+        {/* Top Area: Title and Description */}
+        <div className="flex flex-col gap-3 w-full">
+          <div className="inline-block self-start max-w-full">
+            <h3 className="text-xl md:text-2xl font-bold text-black tracking-tight truncate w-full bg-white px-3 py-1 rounded-sm">
+              {project.title}
+            </h3>
+          </div>
+          <div className="transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none group-hover:pointer-events-auto">
+            <p className="text-base text-white leading-relaxed font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] shadow-black">
+              {project.description}
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Area: Actions */}
+        <div className="mt-auto flex justify-end w-full">
           {project.stars && githubPath && (
-            <div className="hidden sm:block overflow-hidden opacity-90 hover:opacity-100 transition-opacity shadow-lg">
+            <div className="shrink-0 hidden sm:block overflow-hidden opacity-90 hover:opacity-100 transition-opacity shadow-lg">
               <img
                 src={`https://img.shields.io/github/stars/${githubPath}?style=social`}
                 alt="GitHub Stars"
@@ -54,29 +67,6 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
               />
             </div>
           )}
-          <div className="p-2.5 bg-black/40 backdrop-blur-md border border-white/20 text-white hover:bg-white hover:text-black transition-all duration-300 shadow-lg">
-            <ArrowUpRight className="w-5 h-5" />
-          </div>
-        </div>
-
-        {/* Bottom Text Content with Glassmorphism Blur */}
-        <div className="mt-auto">
-          <div className="bg-black/40 backdrop-blur-xl border border-white/10 p-5 shadow-2xl hover:bg-black/50 transition-colors">
-            <h3 className="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight shadow-black drop-shadow-lg">
-              {project.title}
-            </h3>
-            <p className="text-sm text-gray-200 leading-relaxed line-clamp-2 mb-4 font-medium drop-shadow-md">
-              {project.description}
-            </p>
-
-            <div className="flex flex-wrap gap-2">
-              {project.techStack.slice(0, 3).map(tech => (
-                <span key={tech} className="text-[10px] font-bold uppercase tracking-widest text-white/90 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 shadow-sm">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </a>

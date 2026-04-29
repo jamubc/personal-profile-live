@@ -35,7 +35,7 @@
   }
 
   .noise-texture {
-    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.08), transparent 35%);
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.02), transparent 35%);
     background-size: 4px 4px;
   }
 
