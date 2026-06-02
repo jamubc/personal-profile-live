@@ -1,0 +1,17 @@
+{
+  "name": "Andrew Manson — Electrical Engineer & AI / MCP Developer",
+  "short_name": "Andrew Manson",
+  "description": "Portfolio of Andrew Manson: electrical engineering and open-source AI / MCP development.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#010208",
+  "theme_color": "#010208",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
