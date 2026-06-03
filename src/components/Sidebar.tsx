@@ -24,7 +24,7 @@ export const Sidebar = () => {
           Andrew
         </div>
         <p className="text-[11px] text-white/70 uppercase tracking-[0.2em] mt-2 leading-relaxed">
-          Electrical Engineering<br />Student
+          Electrical Engineer<br />AI / MCP Developer
         </p>
       </div>
 
