@@ -48,7 +48,7 @@ export const projects: Project[] = [
   {
     id: '2',
     title: 'Logic Pro MCP',
-    description: 'A creative, experimental MCP for the Logic Pro DAW. Experiment with AI generated arrangements, chord progressions and quality of life improvements for music producers.',
+    description: 'A creative, experimental MCP for the Logic Pro DAW. Experiment with AI-generated arrangements, chord progressions and quality of life improvements for music producers.',
     image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=800&q=80',
     techStack: ['Python', 'AppleScript', 'MCP Protocol', 'Music Theory', 'UV Package Manager'],
     category: 'Open-Source Development',
