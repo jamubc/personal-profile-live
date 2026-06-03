@@ -4,9 +4,7 @@
 User-agent: *
 Allow: /
 
-# Explicitly welcome major AI / LLM crawlers for AI-optimized discovery
-User-agent: GPTBot
-Allow: /
+# --- AI SEARCH & RETRIEVAL ---
 
 User-agent: OAI-SearchBot
 Allow: /
@@ -14,22 +12,80 @@ Allow: /
 User-agent: ChatGPT-User
 Allow: /
 
-User-agent: ClaudeBot
+# Anthropic retrieval bots (NOT the training scraper ClaudeBot)
+User-agent: Claude-SearchBot
 Allow: /
 
-User-agent: Claude-Web
+User-agent: Claude-User
+Allow: /
+
+# Anthropic legacy fallback user-agent
+User-agent: anthropic-ai
 Allow: /
 
 User-agent: PerplexityBot
 Allow: /
 
+# Perplexity user-triggered fetcher
+User-agent: Perplexity-User
+Allow: /
+
+# Explicit inclusion (also covered by wildcard above)
+User-agent: Googlebot
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: TavilyBot
+Allow: /
+
+User-agent: PhindBot
+Allow: /
+
+# --- AI TRAINING OPT-IN TOKENS (not actual crawlers) ---
+
+# Permit Google/Apple to use crawled content for generative AI training
 User-agent: Google-Extended
 Allow: /
 
 User-agent: Applebot-Extended
 Allow: /
 
+# --- TRAINING SCRAPERS ---
+
+# GPTBot = OpenAI training scraper (not the search bot)
+User-agent: GPTBot
+Allow: /
+
+# ClaudeBot = Anthropic training scraper (not the search bot)
+User-agent: ClaudeBot
+Allow: /
+
+# CCBot feeds open-source LLM training corpora
 User-agent: CCBot
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# --- DEPRECATED (ineffective but harmless) ---
+User-agent: Claude-Web
 Allow: /
 
 Sitemap: https://www.jandrewmanson.engineer/sitemap.xml
