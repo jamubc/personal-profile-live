@@ -1,0 +1,31 @@
+# Andrew Manson
+
+> - Electrical Engineering EIT from the University of British Columbia and open-source developer. I build Model Context Protocol (MCP) servers, AI tooling, harnesses, and work across embedded systems, machine vision, and analog electronics. I like solving real-world problems with simple solutions. Everything I create it so solve a problem I have, so i test my solutions thouroughly. I hope my open source works reach many people and bring value to peoples lives and workflows.
+
+- Website: https://www.jandrewmanson.engineer/
+- GitHub: https://github.com/jamubc
+- LinkedIn: https://www.linkedin.com/in/jandrewmanson/
+- Email: taros_archers4u@icloud.com
+
+## Open-Source & AI Projects
+
+- [Gemini MCP Tool](https://github.com/jamubc/gemini-mcp-tool): MCP server that lets AI assistants interface with the Google Gemini CLI to analyze large-context files and codebases. 2.2k+ GitHub stars. (TypeScript, Node.js)
+- [Logic Pro MCP](https://github.com/jamubc/logic-pro-mcp): Experimental MCP for the Logic Pro DAW — AI-generated arrangements, chord progressions, and producer quality-of-life tooling. (Python, AppleScript)
+- [Qwen MCP Tool](https://github.com/jamubc/qwen-mcp-tool): MCP server for driving the Qwen CLI and any OpenAI-compatible endpoint for large-context analysis. Published on npm. (TypeScript)
+- [2ManyTabs MCP](https://github.com/jamubc/2ManyTabs-MCP): Manage browser tabs (list, group, deduplicate, bulk-close) with natural language from any MCP client; runs locally over loopback. (JavaScript, Chrome Extension, Node.js)
+- [Jarvis — Local AI Assistant](https://github.com/jamubc/JarvisAtHome): Fully local, offline voice assistant pipeline (VAD, wake word, Whisper STT, intent matching, TTS). No cloud APIs. (JavaScript, Node.js)
+- [Canvas Downloader](https://github.com/jamubc/Canvas_Downloader): Fast, strictly read-only CLI for downloading and organizing Canvas LMS course content. Published on PyPI. (Python)
+- [Env Manager TUI](https://github.com/jamubc/env-manager): Terminal environment-variable manager with AES-256-GCM encrypted local storage. (Python, Textual)
+- [JamCLI](https://github.com/jamubc/jamcli): Efficient multi-model terminal CLI with Ollama and OpenRouter support. (TypeScript)
+
+## Engineering & Research
+
+- Automated Apple Grade Classification: CNN-based machine-vision grading on a Raspberry Pi, 96% accuracy on a $187 budget. (Python, TensorFlow Lite, OpenCV, Edge ML)
+- Analog PPG Heart Rate Monitor: Heart-rate measurement via photoplethysmogram using a multi-stage analog signal filter, validated in LTSpice.
+- Automotive engineering: exhaust system repair, rust restoration, and a 4-cylinder engine rebuild (welding, fabrication, mechanical).
+
+## Selected Works
+
+- Oli's Oils: website development and design — https://www.olisoils.ca/
+- UBC Workday to Calendar: schedule export utility — https://jamubc.github.io/UBC-workday-to-calendar/
+- Element Selector Tree Tool: DOM selection utility — https://github.com/jamubc/Element-Selector-tree-tool
