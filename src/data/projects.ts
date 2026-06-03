@@ -52,7 +52,8 @@ export const projects: Project[] = [
     techStack: ['Python', 'AppleScript', 'MCP Protocol', 'Music Theory', 'UV Package Manager'],
     category: 'Open-Source Development',
     repoUrl: 'https://github.com/jamubc/logic-pro-mcp',
-    demoUrl: 'https://logic-pro-mcp-website.vercel.app/'
+    demoUrl: 'https://logic-pro-mcp-website.vercel.app/',
+    hideStars: true
   },
   {
     id: 'qwen-mcp-tool',
@@ -118,6 +119,7 @@ export const projects: Project[] = [
     assetsDir: '/projects/apple-classifier',
     icon: '/projects/apple-classifier/icon.webp',
     repoUrl: 'https://github.com/jamubc/apple_classifier_private_Capstone',
+    hideStars: true,
     contentFile: 'apple-classifier',
   },
   {
