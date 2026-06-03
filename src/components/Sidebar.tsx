@@ -21,11 +21,8 @@ export const Sidebar = () => {
       {/* Identity Block */}
       <div className="px-6 pt-8 pb-6 border-b border-white/10">
         <div className="text-2xl font-bold tracking-tight uppercase leading-tight">
-          Andrew
+          Andrew Manson
         </div>
-        <p className="text-[11px] text-white/70 uppercase tracking-[0.2em] mt-2 leading-relaxed">
-          Electrical Engineer<br />AI / MCP Developer
-        </p>
       </div>
 
       {/* Decorative Technical Lines */}
@@ -61,8 +58,8 @@ export const Sidebar = () => {
               >
                 <span
                   className={`h-px transition-all duration-300 ${hoveredLink === link.label
-                      ? 'w-6 bg-white'
-                      : 'w-3 bg-white/30'
+                    ? 'w-6 bg-white'
+                    : 'w-3 bg-white/30'
                     }`}
                 />
                 {link.label}
@@ -81,7 +78,7 @@ export const Sidebar = () => {
           <a href="https://www.linkedin.com/in/jandrewmanson/" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors mb-0">
             <Linkedin className="w-[18px] h-[18px]" />
           </a>
-          <a href="mailto:andrew@jandrewmanson.engineer" className="text-white/40 hover:text-white transition-colors mb-3">
+          <a href="mailto:taros_archers4u@icloud.com" className="text-white/40 hover:text-white transition-colors mb-3">
             <Mail className="w-[18px] h-[18px]" />
           </a>
         </div>

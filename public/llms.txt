@@ -1,11 +1,11 @@
 # Andrew Manson
 
-> Graduating electrical engineering student at the University of British Columbia, Okanagan (UBCO) and open-source developer. I build Model Context Protocol (MCP) servers and AI tooling, and work across embedded systems, machine vision, and analog electronics. I like solving real-world problems with simple solutions.
+> - Electrical Engineering EIT from the University of British Columbia and open-source developer. I build Model Context Protocol (MCP) servers, AI tooling, harnesses, and work across embedded systems, machine vision, and analog electronics. I like solving real-world problems with simple solutions. Everything I create it so solve a problem I have, so i test my solutions thouroughly. I hope my open source works reach many people and bring value to peoples lives and workflows.
 
 - Website: https://www.jandrewmanson.engineer/
 - GitHub: https://github.com/jamubc
 - LinkedIn: https://www.linkedin.com/in/jandrewmanson/
-- Email: andrew@jandrewmanson.engineer
+- Email: taros_archers4u@icloud.com
 
 ## Open-Source & AI Projects
 
