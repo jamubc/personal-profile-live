@@ -23,13 +23,13 @@
     Andrew Manson
   </text>
   <text x="130" y="248" fill="#B7CEE8" font-family="Open Sans, Arial, sans-serif" font-size="36" font-weight="600">
-    Electrical Engineering Student
+    Electrical Engineer  ·  AI / MCP Developer
   </text>
 
-  <rect x="130" y="287" width="590" height="4" fill="url(#line)"/>
+  <rect x="130" y="287" width="620" height="4" fill="url(#line)"/>
 
   <text x="130" y="350" fill="#D5E5F8" font-family="Open Sans, Arial, sans-serif" font-size="30" font-weight="400">
-    Embedded Systems  |  Power Electronics  |  Robotics
+    MCP &amp; AI Tooling  |  Embedded Systems  |  Machine Vision
   </text>
 
   <text x="130" y="430" fill="#8CC6FF" font-family="Open Sans, Arial, sans-serif" font-size="28" font-weight="600">

@@ -20,11 +20,11 @@ export const Sidebar = () => {
     <div className="flex flex-col h-full">
       {/* Identity Block */}
       <div className="px-6 pt-8 pb-6 border-b border-white/10">
-        <h1 className="text-2xl font-bold tracking-tight uppercase leading-tight">
+        <div className="text-2xl font-bold tracking-tight uppercase leading-tight">
           Andrew
-        </h1>
+        </div>
         <p className="text-[11px] text-white/70 uppercase tracking-[0.2em] mt-2 leading-relaxed">
-          Electrical Engineering<br />Student
+          Electrical Engineer<br />AI / MCP Developer
         </p>
       </div>
 
