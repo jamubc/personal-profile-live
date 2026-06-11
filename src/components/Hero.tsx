@@ -14,7 +14,7 @@ export const Hero = () => {
             Electrical Engineer <span className="text-white/40">/</span> AI &amp; MCP Innovator
           </p>
           <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-2xl mb-4">
-            I'm a graduating electrical engineering student at UBCO. I love to solve real-world problems with simple solutions to make life easier.
+            I'm an electrical engineering graduate from UBCO. I love to solve real-world problems with simple solutions to make life easier.
           </p>
           <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-2xl">
             I have worked extensively with AI and AI systems, trying to break them and finding what works.
