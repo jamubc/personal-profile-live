@@ -1,31 +1,19 @@
-import { useState, useCallback, lazy, Suspense } from 'react';
+import { useState, useCallback, lazy, Suspense, ReactNode } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Hero } from './components/Hero';
 import { Projects } from './components/Projects';
 import { Engineering } from './components/Engineering';
 import { Contact } from './components/Contact';
 import { Works } from './components/Works';
+import { Writing } from './components/Writing';
 import { Project } from './types';
 
 const ProjectDetail = lazy(() =>
   import('./components/ProjectDetail').then((m) => ({ default: m.ProjectDetail }))
 );
 
-function App() {
-  const [activeProject, setActiveProject] = useState<Project | null>(null);
-
-  if (window.location.pathname === '/works' || window.location.hash === '#works') {
-    return <Works />;
-  }
-
-  const openProjectDetail = useCallback((project: Project) => {
-    setActiveProject(project);
-  }, []);
-
-  const closeProjectDetail = useCallback(() => {
-    setActiveProject(null);
-  }, []);
-
+/** Sidebar + background effects + sidebar-offset content area. */
+function Shell({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-screen bg-dark text-white selection:bg-primary selection:text-dark overflow-hidden">
       {/* Sidebar */}
@@ -50,19 +38,49 @@ function App() {
         </div>
 
         {/* Content */}
-        <main className="relative">
-          <Hero />
-          <Projects onOpenDetail={openProjectDetail} />
-          <Engineering onOpenDetail={openProjectDetail} />
-          <Contact />
-        </main>
+        <main className="relative">{children}</main>
       </div>
+    </div>
+  );
+}
+
+function App() {
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
+
+  if (window.location.pathname === '/works' || window.location.hash === '#works') {
+    return <Works />;
+  }
+
+  if (window.location.pathname === '/writing') {
+    return (
+      <Shell>
+        <Writing />
+      </Shell>
+    );
+  }
+
+  const openProjectDetail = useCallback((project: Project) => {
+    setActiveProject(project);
+  }, []);
+
+  const closeProjectDetail = useCallback(() => {
+    setActiveProject(null);
+  }, []);
+
+  return (
+    <>
+      <Shell>
+        <Hero />
+        <Projects onOpenDetail={openProjectDetail} />
+        <Engineering onOpenDetail={openProjectDetail} />
+        <Contact />
+      </Shell>
 
       {/* Project Detail Overlay — lazy loaded */}
       <Suspense fallback={null}>
         <ProjectDetail project={activeProject} onClose={closeProjectDetail} />
       </Suspense>
-    </div>
+    </>
   );
 }
 

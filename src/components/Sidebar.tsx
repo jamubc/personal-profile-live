@@ -3,11 +3,14 @@ import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
-  { label: 'Home', href: '#hero' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Creative', href: '#engineering' },
+  // Absolute so section anchors resolve from any route (e.g. /writing), not
+  // just '/'. From the home page these stay in-page scrolls.
+  { label: 'Home', href: '/#hero' },
+  { label: 'Projects', href: '/#projects' },
+  { label: 'Creative', href: '/#engineering' },
   { label: 'Works', href: '/works' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Writing', href: '/writing' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 export const Sidebar = () => {
@@ -39,7 +42,7 @@ export const Sidebar = () => {
         {/* CTA */}
         <div className="px-6 pb-8">
           <a
-            href="#contact"
+            href="/#contact"
             onClick={closeMobile}
             className="block w-full text-center px-4 py-3 border border-white/20 text-[11px] uppercase tracking-[0.2em] text-white hover:bg-white hover:text-black transition-all bg-black/20"
           >
