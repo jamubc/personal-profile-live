@@ -12,15 +12,7 @@ export const Projects = ({}: ProjectsProps) => {
 
   return (
     <section id="projects" className="relative pt-8 pb-24">
-      {/* Ambient color transition from hero */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
-
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="mb-14">
-          <h2 className="text-3xl md:text-4xl font-semibold text-white">Projects & Engineering</h2>
-        </div>
 
         {/* Software Projects */}
         <div className="mb-20">
