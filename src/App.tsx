@@ -71,8 +71,8 @@ function App() {
     <>
       <Shell>
         <Hero />
-        <Projects onOpenDetail={openProjectDetail} />
         <Engineering onOpenDetail={openProjectDetail} />
+        <Projects onOpenDetail={openProjectDetail} />
         <Contact />
       </Shell>
 

@@ -26,24 +26,8 @@ export const categoryLabels: Record<ArticleCategory, string> = {
  * publish. Order here is irrelevant; the view sorts by date.
  */
 export const articles: Article[] = [
-  {
-    slug: 'gemini-3-release',
-    title: 'Google Releases Gemini 3',
-    subject: 'Aggressive rollout across Search and developer platforms',
-    date: '2025-11-18',
-    category: 'ai',
-    summary:
-      "Google's Gemini 3 marks a strategic shift with same-day deployment across Search and developer tools, featuring PhD-level reasoning and new agentic capabilities.",
-  },
-  {
-    slug: 'coding-with-ai',
-    title: 'AI coding',
-    subject: 'Although the space is constantly evolving, here are my top picks',
-    date: '2025-11-17',
-    category: 'ai',
-    summary:
-      "A developer's comparison of Anthropic's Claude and OpenAI's Codex, focusing on their current strengths and the practical costs involved.",
-  },
+  // 'gemini-3-release' and 'coding-with-ai' are unpublished pending a rewrite;
+  // their markdown stays in src/content/writing/.
   {
     slug: 'weathernext-2',
     title: 'WeatherNext 2: AI weather forecasting for the scenario era',

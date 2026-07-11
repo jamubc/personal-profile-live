@@ -42,7 +42,7 @@ export const projects: Project[] = [
     techStack: ['TypeScript', 'Node.js', 'Gemini CLI', 'AI Agents'],
     category: 'Open-Source Development',
     repoUrl: 'https://github.com/jamubc/gemini-mcp-tool',
-    stars: '1.6k'
+    stars: '2.2k'
   },
   {
     id: '2',
@@ -72,8 +72,18 @@ export const projects: Project[] = [
     category: 'Engineering & Research',
     assetsDir: '/projects/apple-classifier',
     icon: '/projects/apple-classifier/icon.webp',
-    repoUrl: 'https://github.com/jamubc/apple_classifier_private_Capstone',
     contentFile: 'apple-classifier',
+  },
+  {
+    id: '9',
+    title: 'Okanagan Hydrail: Economic Feasibility',
+    description: 'Built the economic case for a 342 km hydrogen tram-train network across the Okanagan for a course debate, working from published NPV, BCR, and IRR studies and our own hydrogen cost research.',
+    image: 'https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=800&q=80',
+    techStack: ['Engineering Economics', 'Cost-Benefit Analysis', 'Hydrogen Systems', 'Research Synthesis'],
+    category: 'Engineering & Research',
+    assetsDir: '/projects/okanagan-hydrail',
+    icon: '/projects/okanagan-hydrail/icon.webp',
+    contentFile: 'okanagan-hydrail',
   },
   {
     id: '5',

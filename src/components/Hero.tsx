@@ -11,14 +11,15 @@ export const Hero = () => {
           className="md:pl-[10%]"
         >
           <p className="text-sm md:text-base text-secondary uppercase tracking-[0.25em] mb-6">
-            Electrical Engineer <span className="text-white/40">/</span> AI &amp; MCP Innovator
+            Electrical Engineer <span className="text-white/40">/</span> EGBC EIT
           </p>
           <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-2xl mb-4">
-            I'm an electrical engineering graduate from UBCO. I love to solve real-world problems with simple solutions to make life easier.
+            I'm an electrical engineering graduate from UBCO and a registered EIT with Engineers and Geoscientists BC.
+            I love to solve real-world problems with simple solutions to make life easier.
           </p>
           <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-2xl">
-            I have worked extensively with AI and AI systems, trying to break them and finding what works.
-            Here is where I share what I'm building.
+            For my capstone I designed and built a machine vision system that grades apples in real time on a Raspberry Pi.
+            I also work extensively with AI systems, testing and hardening them. Here is where I share what I'm building.
           </p>
         </motion.div>
       </div>
