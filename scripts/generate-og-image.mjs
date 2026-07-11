@@ -1,6 +1,11 @@
 // Generates public/og-image.png (1200x630) from an inline SVG via sharp.
 // Run: node scripts/generate-og-image.mjs
 import sharp from 'sharp';
+import { join } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const OUTPUT_PATH = join(__dirname, '..', 'public', 'og-image.png');
 
 const W = 1200;
 const H = 630;
@@ -58,5 +63,5 @@ const svg = `
   </g>
 </svg>`;
 
-await sharp(Buffer.from(svg)).png().toFile('public/og-image.png');
-console.log('wrote public/og-image.png');
+await sharp(Buffer.from(svg)).png().toFile(OUTPUT_PATH);
+console.log(`wrote ${OUTPUT_PATH}`);
