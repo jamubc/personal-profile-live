@@ -1,0 +1,10 @@
+.cut-mark { position: absolute; display: block; width: 28px; height: 64px; color: var(--redline); }
+.cut-mark svg { display: block; }
+.cut-mark svg g { transition: stroke-width 120ms linear; }
+.cut-mark svg text { transition: font-weight 120ms linear; }
+.cut-mark:hover svg g,
+.cut-mark:focus-visible svg g,
+.cut-mark[data-active='true'] svg g { stroke-width: 3; }
+.cut-mark:hover svg text,
+.cut-mark:focus-visible svg text,
+.cut-mark[data-active='true'] svg text { font-weight: 600; }

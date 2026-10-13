@@ -1,0 +1,18 @@
+/* A drafting dimension line: extension lines at both ends, a hairline with 5px arrowheads and the
+   value on a paper backing. All CSS, so the server render reserves the same 20px with no shift. */
+.dim { position: relative; display: block; height: 20px; color: var(--pen); }
+.dim[data-measuring='true'] { visibility: hidden; }
+.dim::before,
+.dim::after { content: ''; position: absolute; top: 3px; bottom: 3px; width: 0; border-left: 1px solid currentColor; }
+.dim::before { left: 0; }
+.dim::after { right: 0; }
+.dim-line { position: absolute; left: 1px; right: 1px; top: 50%; height: 0; border-top: 1px solid currentColor; }
+.dim-line::before,
+.dim-line::after { content: ''; position: absolute; top: -3px; width: 0; height: 0; border-top: 3px solid transparent; border-bottom: 3px solid transparent; }
+.dim-line::before { left: 0; border-right: 6px solid currentColor; }
+.dim-line::after { right: 0; border-left: 6px solid currentColor; }
+.dim-label {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  padding: 0 6px; background: var(--paper); white-space: nowrap;
+  font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1rem; font-variant-numeric: tabular-nums;
+}

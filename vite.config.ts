@@ -14,7 +14,7 @@ const buildSha = (): string => {
 };
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   plugins: [react()],
   define: {
     __BUILD_DATE__: JSON.stringify(new Date().toISOString().slice(0, 10)),
@@ -25,11 +25,12 @@ export default defineConfig({
     target: 'es2020',
     rollupOptions: {
       output: {
-        // Long-lived, cacheable vendor chunk. Each Markdown write-up stays its own lazy chunk.
-        manualChunks: { 'vendor-react': ['react', 'react-dom', 'react-router-dom'] },
+        // Long-lived, cacheable vendor chunk (client only: the prerender bundle keeps React external).
+        // Each Markdown write-up stays its own lazy chunk.
+        manualChunks: isSsrBuild ? undefined : { 'vendor-react': ['react', 'react-dom', 'react-router-dom'] },
       },
     },
   },
   // Prerender bundle: process these so their CSS imports and ESM entry points resolve.
   ssr: { noExternal: [/^@fontsource\//, 'react-router-dom'] },
-});
+}));

@@ -53,7 +53,7 @@ export const engineering: EngineeringEntry[] = [
     slug: 'apple-classifier',
     title: 'Automated Apple Grade Classification',
     description:
-      'A CNN-based classification system deployed on a Raspberry Pi to grade apples as Good or Bad in near real time using machine vision, achieving 96% accuracy for our client with a $187.11 build against a $500 budget.',
+      'A CNN-based classification system deployed on a Raspberry Pi to grade apples as Good or Bad in near real time using machine vision, achieving 96% accuracy in controlled tests with a $187.11 build against a $500 budget.',
     tags: ['Python', 'TensorFlow Lite', 'OpenCV', 'Raspberry Pi', 'CNN', 'Edge ML', 'Embedded Systems'],
     keyFigure: '96 % accuracy · $187.11 build',
     status: 'issued',
@@ -68,7 +68,7 @@ export const engineering: EngineeringEntry[] = [
     results: {
       label: 'Schedule of results',
       cells: [
-        { value: '96 %', label: 'Accuracy', note: 'target 80 %' },
+        { value: '96 %', label: 'Accuracy', note: 'controlled tests · target 80 %' },
         { value: '< 5 s', label: 'Per apple', note: 'beam-break to displayed result' },
         { value: '$187.11', label: 'Build cost', note: 'of $500 budget' },
       ],
@@ -80,9 +80,9 @@ export const engineering: EngineeringEntry[] = [
     sheet: 'E-102',
     slug: 'ppg-monitor',
     title: 'Analog PPG Heart Rate Monitor',
-    description: 'Measuring heart rate via photoplethysmogram with a multi stage analog signal filter',
+    description: 'Measuring heart rate via photoplethysmogram with a multi-stage analog signal filter',
     tags: ['Analog Circuit Design', 'LTSpice validation', 'Signals', 'Prototyping'],
-    keyFigure: '38 mV pk-pk → LED pulse',
+    keyFigure: '38 mV pk-pk in, LED pulse out',
     status: 'issued',
     meta: [
       { label: 'Course', value: 'ENGR 352 Microelectronics II, UBC Okanagan' },
@@ -133,7 +133,7 @@ export const engineering: EngineeringEntry[] = [
     ],
     results: {
       label: 'Published figures',
-      source: "BORAY ET AL., 2024. NOT THE AUTHOR'S OWN CALCULATIONS.",
+      source: 'FROM BORAY ET AL., 2024. NOT MY OWN CALCULATIONS.',
       cells: [
         { value: '≈ $40 B CAD', label: 'NPV', note: '30 yr at 6 %' },
         { value: '9 : 1', label: 'Benefit-cost ratio', note: 'typical successful North American light rail: 2.5 to 3.5' },

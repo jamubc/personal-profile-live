@@ -37,6 +37,17 @@ export const DISCIPLINE_NAMES: Record<Discipline, string> = {
   X: 'Error',
 };
 
+/** One-word discipline labels for the narrow header rail. */
+export const DISCIPLINE_SHORT: Record<Discipline, string> = {
+  G: 'Cover',
+  E: 'Engineering',
+  S: 'Open source',
+  W: 'Writing',
+  P: 'Works',
+  C: 'Contact',
+  X: 'Error',
+};
+
 export const sheets: Sheet[] = [
   { id: 'G-001', discipline: 'G', title: 'Andrew Manson: engineering and open-source portfolio', short: 'Cover', rail: 'Cover & drawing index', route: '/', status: 'issued', kind: 'cover' },
   { id: 'E-100', discipline: 'E', title: 'Engineering & Research', short: 'Engineering', route: '/projects', status: 'issued', kind: 'schedule' },

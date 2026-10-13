@@ -13,25 +13,56 @@
  *   | a | b |  + |---|---|        → table
  *   ---                           → horizontal rule
  *   ![alt](src "caption")         → figure
- *   ::image[src]{caption="…" maxHeight=400 fit=contain width=80%}
- *                                 → figure (legacy directive, kept for the
- *                                   existing project write-ups)
+ *   ::image[src]{caption="…" alt="…" plate=light|none cut=A|B|C readout="…"
+ *                maxHeight=400 fit=contain width=80%}
+ *                                 → figure; every attribute is optional and
+ *                                   they may come in any order
  *
+ * Figures are numbered by document order (1, 2, …) across the whole document.
  * Inline emphasis, code and links are left verbatim and rendered by
  * renderInline at render time.
  */
 
+export type FigureCut = 'A' | 'B' | 'C';
+export type FigurePlateKind = 'light' | 'none';
+
+export interface HeadingBlock {
+  type: 'heading';
+  level: 1 | 2 | 3 | 4;
+  text: string;
+  id: string;
+}
+
+export interface ImageBlock {
+  type: 'image';
+  src: string;
+  /** Explicit alt text, or '' when the author gave none: use figureAlt(). Never a copy of the caption. */
+  alt: string;
+  caption?: string;
+  maxHeight?: number;
+  fit?: 'cover' | 'contain';
+  width?: string;
+  /** Plate override. Absent means "decide from the luminance measured in src/generated/figures.json". */
+  plate?: FigurePlateKind;
+  /** Section cut this picture was taken at (E-102 signal chain). */
+  cut?: FigureCut;
+  /** Text legible on an instrument screen in the picture, transcribed by the author. */
+  readout?: string;
+}
+
 export type Block =
-  | { type: 'heading'; level: 1 | 2 | 3 | 4; text: string; id: string }
+  | HeadingBlock
   | { type: 'paragraph'; text: string }
   | { type: 'list'; ordered: boolean; items: string[] }
   | { type: 'quote'; text: string }
   | { type: 'code'; code: string; lang?: string }
   | { type: 'table'; headers: string[]; rows: string[][] }
-  | { type: 'image'; src: string; alt: string; caption?: string; maxHeight?: number; fit?: 'cover' | 'contain'; width?: string }
+  | ImageBlock
   | { type: 'rule' };
 
 export interface TocEntry { id: string; text: string; level: number }
+export interface TocSection { id: string; n?: number; title: string }
+export interface TocFigure { n: number; id: string; title: string }
 
 export const slugify = (s: string): string =>
   s
@@ -60,26 +91,35 @@ const splitRow = (line: string): string[] =>
     .split('|')
     .map((cell) => cell.trim());
 
-function parseImageDirective(line: string): Block | null {
+/** key="quoted value" or key=bare. Scanning left to right means a quoted value is never re-scanned for keys. */
+const ATTRIBUTE = /([A-Za-z]+)=(?:"([^"]*)"|(\S+))/g;
+
+function parseAttributes(source: string): Record<string, string | undefined> {
+  const attrs: Record<string, string | undefined> = {};
+  for (const m of source.matchAll(ATTRIBUTE)) attrs[m[1]] = (m[2] ?? m[3]).trim();
+  return attrs;
+}
+
+function parseImageDirective(line: string): ImageBlock | null {
   const m = line.match(/^::image\[(.+?)\](?:\{(.*)\})?$/);
   if (!m) return null;
-  const attrs = m[2] ?? '';
-  const block: Extract<Block, { type: 'image' }> = { type: 'image', src: m[1], alt: '' };
-  const caption = attrs.match(/caption="([^"]*)"/);
-  if (caption) { block.caption = caption[1].trim(); block.alt = block.caption; }
-  const maxHeight = attrs.match(/maxHeight=(\d+)/);
-  if (maxHeight) block.maxHeight = parseInt(maxHeight[1], 10);
-  const fit = attrs.match(/fit=(cover|contain)/);
-  if (fit) block.fit = fit[1] as 'cover' | 'contain';
-  const width = attrs.match(/width=(\S+)/);
-  if (width) block.width = width[1];
+  const attrs = parseAttributes(m[2] ?? '');
+  const block: ImageBlock = { type: 'image', src: m[1], alt: attrs.alt ?? '' };
+  if (attrs.caption) block.caption = attrs.caption;
+  if (attrs.maxHeight && /^\d+$/.test(attrs.maxHeight)) block.maxHeight = parseInt(attrs.maxHeight, 10);
+  if (attrs.fit === 'cover' || attrs.fit === 'contain') block.fit = attrs.fit;
+  if (attrs.width) block.width = attrs.width;
+  if (attrs.plate === 'light' || attrs.plate === 'none') block.plate = attrs.plate;
+  const cut = attrs.cut?.toUpperCase();
+  if (cut === 'A' || cut === 'B' || cut === 'C') block.cut = cut;
+  if (attrs.readout) block.readout = attrs.readout;
   return block;
 }
 
-function parseMarkdownImage(line: string): Block | null {
+function parseMarkdownImage(line: string): ImageBlock | null {
   const m = line.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)$/);
   if (!m) return null;
-  const block: Extract<Block, { type: 'image' }> = { type: 'image', src: m[2], alt: m[1] };
+  const block: ImageBlock = { type: 'image', src: m[2], alt: m[1] };
   if (m[3]) block.caption = m[3];
   return block;
 }
@@ -187,7 +227,7 @@ export function parseMarkdown(raw: string): Block[] {
 
 export function extractToc(blocks: Block[], levels: number[] = [2]): TocEntry[] {
   return blocks
-    .filter((b): b is Extract<Block, { type: 'heading' }> => b.type === 'heading' && levels.includes(b.level))
+    .filter((b): b is HeadingBlock => b.type === 'heading' && levels.includes(b.level))
     .map((b) => ({ id: b.id, text: plainText(b.text), level: b.level }));
 }
 
@@ -217,3 +257,87 @@ export const readingMinutes = (blocks: Block[], wpm = 220): number => Math.max(1
 
 /** Count figures so captions can be numbered "Fig. 3". */
 export const figureCount = (blocks: Block[]): number => blocks.filter((b) => b.type === 'image').length;
+
+/* ---- Numbering, titles and tables of contents ------------------------------------------------ */
+
+/** Anchor id of figure n. FigurePlate, the TOC and the signal-chain diagram all link through it. */
+export const figureId = (n: number): string => `fig-${n}`;
+
+/** Level 1-2 headings are the sections of a document (rendered as h2); levels 3-4 are sub-headings (h3). */
+export const isSectionHeading = (b: Block): b is HeadingBlock => b.type === 'heading' && b.level <= 2;
+
+/** Document-order numbers (1, 2, …) of the blocks of one type, keyed by block index. */
+export function numberBlocks(blocks: Block[], type: Block['type']): Map<number, number> {
+  const numbers = new Map<number, number>();
+  blocks.forEach((b, i) => {
+    if (b.type === type) numbers.set(i, numbers.size + 1);
+  });
+  return numbers;
+}
+
+/** Every figure with its document-order number. */
+export function figureBlocks(blocks: Block[]): { n: number; block: ImageBlock }[] {
+  const figures: { n: number; block: ImageBlock }[] = [];
+  for (const b of blocks) if (b.type === 'image') figures.push({ n: figures.length + 1, block: b });
+  return figures;
+}
+
+/** The caption up to its first em dash, as plain text. Used as the default alt text and as the TOC title. */
+export const captionTitle = (caption: string): string => plainText(caption.split('—')[0]);
+
+/** Alt text of a figure: the author's own, else the caption before its first em dash. */
+export const figureAlt = (b: Pick<ImageBlock, 'alt' | 'caption'>): string => b.alt.trim() || captionTitle(b.caption ?? '');
+
+/** Caption title for the figure list in the TOC: at most `max` characters, cut at a word and ended with an ellipsis. */
+export function figureTitle(caption: string, max = 44): string {
+  const title = captionTitle(caption);
+  if (title.length <= max) return title;
+  const head = title.slice(0, max - 1);
+  const space = head.lastIndexOf(' ');
+  return `${(space > max / 2 ? head.slice(0, space) : head).trimEnd()}…`;
+}
+
+/**
+ * Props for TableOfContents. Case studies pass numbered = true (sections get 01, 02, …); posts pass false.
+ * Sections are the level 1-2 headings, exactly the ones ProseRenderer and ArticleRenderer render as h2.
+ */
+export function documentToc(blocks: Block[], numbered: boolean): { sections: TocSection[]; figures: TocFigure[] } {
+  const sections = blocks.filter(isSectionHeading).map((b, i) => ({
+    id: b.id,
+    ...(numbered ? { n: i + 1 } : {}),
+    title: plainText(b.text),
+  }));
+  const figures = figureBlocks(blocks).map(({ n, block }) => ({ n, id: figureId(n), title: figureTitle(block.caption ?? '') }));
+  return { sections, figures };
+}
+
+/* ---- Inline grammar -------------------------------------------------------------------------- */
+
+export type InlineToken =
+  | { type: 'text'; text: string }
+  | { type: 'code'; text: string }
+  | { type: 'link'; href: string; text: string }
+  | { type: 'strong'; text: string }
+  | { type: 'em'; text: string };
+
+const INLINE = /(`([^`]+)`)|(\[([^\]]+)\]\(([^)\s]+)\))|(\*\*([^*]+)\*\*)|(\*([^*]+)\*)/g;
+
+/**
+ * Splits one run of inline Markdown into tokens: `code`, [label](href), **strong** and *em*. A token's own
+ * text is raw Markdown again (a link label may hold bold), so the renderer tokenises it in turn. matchAll
+ * iterates a private copy of the pattern: tokenising inside a token never disturbs the outer scan.
+ */
+export function tokenizeInline(text: string): InlineToken[] {
+  const tokens: InlineToken[] = [];
+  let last = 0;
+  for (const m of text.matchAll(INLINE)) {
+    if (m.index > last) tokens.push({ type: 'text', text: text.slice(last, m.index) });
+    if (m[1]) tokens.push({ type: 'code', text: m[2] });
+    else if (m[3]) tokens.push({ type: 'link', href: m[5], text: m[4] });
+    else if (m[6]) tokens.push({ type: 'strong', text: m[7] });
+    else tokens.push({ type: 'em', text: m[9] });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) tokens.push({ type: 'text', text: text.slice(last) });
+  return tokens;
+}

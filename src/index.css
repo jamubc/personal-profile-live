@@ -62,6 +62,12 @@
     outline: none;
   }
 
+  /* The main landmark takes programmatic focus on route changes. It is not a control, so it shows no ring
+     (Chrome treats script focus as keyboard focus, which would otherwise draw one). */
+  #main:focus {
+    outline: none;
+  }
+
   table {
     border-collapse: collapse;
   }

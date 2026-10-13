@@ -1,67 +1,43 @@
-// Generates public/og-image.png (1200x630) from an inline SVG via sharp.
-// Run: node scripts/generate-og-image.mjs
-import sharp from 'sharp';
-import { join } from 'path';
-import { fileURLToPath } from 'url';
+/* global document */
+// Renders public/og-image.png (1200x630) from scripts/og-template.html in headless Chromium, so the
+// real IBM Plex files are used. Run locally and commit the PNG; never runs on Vercel.
+//   node scripts/generate-og-image.mjs
+import { readFileSync, writeFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { createRequire } from 'node:module';
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const OUTPUT_PATH = join(__dirname, '..', 'public', 'og-image.png');
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+let chromium;
+try {
+  chromium = createRequire(import.meta.url)('playwright').chromium;
+} catch {
+  try {
+    chromium = createRequire('/opt/node-tools/node_modules/')('playwright').chromium;
+  } catch {
+    console.error('generate-og-image: Playwright is not installed; install it locally to regenerate the image.');
+    process.exit(1);
+  }
+}
 
-const W = 1200;
-const H = 630;
+const font = (pkg, file) => pathToFileURL(join(root, 'node_modules', '@fontsource', pkg, 'files', file)).href;
+const html = readFileSync(join(root, 'scripts', 'og-template.html'), 'utf8')
+  .replace('{{MONO_600}}', font('ibm-plex-mono', 'ibm-plex-mono-latin-600-normal.woff2'))
+  .replace('{{MONO_500}}', font('ibm-plex-mono', 'ibm-plex-mono-latin-500-normal.woff2'))
+  .replace('{{MONO_400}}', font('ibm-plex-mono', 'ibm-plex-mono-latin-400-normal.woff2'))
+  .replace('{{SANS_400}}', font('ibm-plex-sans', 'ibm-plex-sans-latin-400-normal.woff2'));
 
-const svg = `
-<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#05060f"/>
-      <stop offset="0.55" stop-color="#020308"/>
-      <stop offset="1" stop-color="#05060f"/>
-    </linearGradient>
-    <radialGradient id="glowCyan" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#00f7ff" stop-opacity="0.16"/>
-      <stop offset="1" stop-color="#00f7ff" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="glowBlue" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#3b6fff" stop-opacity="0.12"/>
-      <stop offset="1" stop-color="#3b6fff" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#00f7ff" stop-opacity="0.9"/>
-      <stop offset="1" stop-color="#00f7ff" stop-opacity="0"/>
-    </linearGradient>
-    <pattern id="dots" width="32" height="32" patternUnits="userSpaceOnUse">
-      <circle cx="1" cy="1" r="1" fill="#ffffff" fill-opacity="0.05"/>
-    </pattern>
-  </defs>
-
-  <rect width="${W}" height="${H}" fill="url(#bg)"/>
-  <rect width="${W}" height="${H}" fill="url(#dots)"/>
-  <circle cx="1080" cy="40" r="420" fill="url(#glowCyan)"/>
-  <circle cx="120" cy="600" r="380" fill="url(#glowBlue)"/>
-
-  <rect x="64" y="64" width="${W - 128}" height="${H - 128}" rx="20"
-        fill="rgba(8,10,24,0.55)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
-
-  <g font-family="Open Sans, Helvetica Neue, Arial, sans-serif">
-    <text x="128" y="196" font-size="24" font-weight="600" letter-spacing="7"
-          fill="#00f7ff">ELECTRICAL ENGINEER · EGBC EIT</text>
-
-    <text x="128" y="292" font-size="86" font-weight="700"
-          fill="#f5f7fa">Andrew Manson</text>
-
-    <rect x="130" y="330" width="520" height="3" fill="url(#rule)"/>
-
-    <text x="128" y="404" font-size="31" font-weight="400"
-          fill="#c3cad6">Machine Vision  |  Embedded Systems  |  Open-Source AI</text>
-
-    <text x="128" y="486" font-size="28" font-weight="700"
-          fill="#7ddfff">jandrewmanson.engineer</text>
-
-    <text x="128" y="528" font-size="22" font-weight="400"
-          fill="#8b93a5">linkedin.com/in/jandrewmanson  |  github.com/jamubc</text>
-  </g>
-</svg>`;
-
-await sharp(Buffer.from(svg)).png().toFile(OUTPUT_PATH);
-console.log(`wrote ${OUTPUT_PATH}`);
+const tmp = join(root, 'scripts', '.og-render.html');
+writeFileSync(tmp, html);
+const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, args: ['--no-sandbox'] });
+const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
+await page.goto(pathToFileURL(tmp).href);
+await page.evaluate(() => document.fonts.ready);
+// Fonts load lazily; re-run layout-dependent drawing by reloading once they are cached.
+await page.reload();
+await page.evaluate(() => document.fonts.ready);
+await page.waitForTimeout(300);
+await page.screenshot({ path: join(root, 'public', 'og-image.png'), clip: { x: 0, y: 0, width: 1200, height: 630 } });
+await browser.close();
+import('node:fs').then((fs) => fs.rmSync(tmp, { force: true }));
+console.log('wrote public/og-image.png');

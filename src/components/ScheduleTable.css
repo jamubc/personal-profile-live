@@ -1,0 +1,380 @@
+/*
+ * ScheduleTable: one DOM, two layouts. A real table from 768px up; below that the table elements
+ * become blocks and every body row a wrapping flex stack. The markup re-asserts the ARIA table roles
+ * because display: block and flex drop native table semantics in some screen readers.
+ * Colours are tokens only. Motion is colour and background at 120ms linear.
+ */
+
+.sched {
+  container-type: inline-size;
+  background: var(--paper);
+  border: 1px solid var(--rule-strong);
+}
+
+.sched-band {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.sched-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.sched-th {
+  padding: 0.625rem 0.75rem;
+  text-align: left;
+  white-space: nowrap;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+/* --- Rows and cells ------------------------------------------------------------------------- */
+
+.sched-row {
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+  transition: background-color 120ms linear;
+}
+
+.sched-row:last-child {
+  border-bottom: 0;
+}
+
+.sched-row[aria-disabled='true'] {
+  border-bottom-style: dashed;
+  border-bottom-color: var(--rule-strong);
+  cursor: default;
+}
+
+.sched-cell {
+  padding: 0;
+  text-align: left;
+  vertical-align: middle;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+  transition: color 120ms linear;
+}
+
+.sched-cell--mono {
+  font-family: var(--font-mono);
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+
+.sched-cell--quiet {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-3);
+}
+
+.sched-row[aria-disabled='true'] .sched-cell {
+  color: var(--ink-3);
+}
+
+/* --- Title cell, thumbnail, abstract, link ---------------------------------------------------- */
+
+.sched-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sched-title-text {
+  min-width: 0;
+}
+
+.sched-thumb {
+  flex: none;
+  width: 4rem;
+  height: 3rem;
+  overflow: hidden;
+}
+
+.sched-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sched-name,
+.sched-link {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.375;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.sched-cell--mono .sched-name,
+.sched-cell--mono .sched-link {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.sched-row[aria-disabled='true'] .sched-name {
+  color: var(--ink-3);
+}
+
+.sched-abstract {
+  margin-top: 0.25rem;
+  max-width: 60ch;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.sched-arrow {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-left: 0.25rem;
+  vertical-align: baseline;
+  flex: none;
+  color: var(--ink-3);
+  transition: color 120ms linear;
+}
+
+/* Stretched link: the title is the link, ::after makes the whole row its hit area. */
+.sched-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* The focus ring moves from the title text to the whole row, inside its edges so neighbours stay clear. */
+.sched-link:focus-visible {
+  outline: none;
+}
+
+.sched-link:focus-visible::after {
+  outline: 2px solid var(--pen);
+  outline-offset: -2px;
+}
+
+/* Links inside other cells (REF) sit above the stretched hit area. */
+.sched-cell a:not(.sched-link) {
+  position: relative;
+  z-index: 2;
+}
+
+/* --- Interaction ------------------------------------------------------------------------------ */
+
+.sched-row[data-link] {
+  cursor: pointer;
+}
+
+.sched-row[data-link]:hover {
+  background-color: var(--paper-3);
+}
+
+.sched-row[data-link]:hover .sched-cell {
+  color: var(--ink);
+}
+
+.sched-row[data-link]:hover .sched-cell--sheet,
+.sched-row[data-link]:hover .sched-arrow {
+  color: var(--pen);
+}
+
+.sched-row[data-link]:has(.sched-link:focus-visible) .sched-cell--sheet,
+.sched-row[data-link]:has(.sched-link:focus-visible) .sched-arrow {
+  color: var(--pen);
+}
+
+.sched-row[data-link]:has(.sched-link:focus-visible) .leader {
+  transform: scaleX(1);
+}
+
+.sched-leader {
+  width: 0.75rem;
+  margin-left: 0.25rem;
+  vertical-align: middle;
+}
+
+/* --- Table layout, 768px and up --------------------------------------------------------------- */
+
+@media (min-width: 768px) {
+  .sched-cell {
+    height: 3rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .sched-cell:first-child,
+  .sched-th:first-child {
+    padding-left: 1rem;
+  }
+
+  .sched-cell:last-child,
+  .sched-th:last-child {
+    padding-right: 1rem;
+  }
+
+  .sched-cell--sheet {
+    padding-right: 0.25rem;
+    white-space: nowrap;
+  }
+
+  .sched-cell--right,
+  .sched-th--right {
+    text-align: right;
+  }
+
+  .sched-stack-only {
+    display: none;
+  }
+}
+
+/* showAbstract="narrow": the abstract stands in for a description column that has dropped out. */
+@media (min-width: 768px) {
+  @container (min-width: 900px) {
+    .sched-abstract--narrow {
+      display: none;
+    }
+  }
+}
+
+/* 'lg' columns drop out while the table is under 900px wide: tablets, and desktops from 1100px,
+   where the index column leaves the sheet only 716px. */
+@media (min-width: 768px) {
+  @container (max-width: 899.98px) {
+    .sched-hide-lg {
+      display: none;
+    }
+  }
+}
+
+/* --- Stacked layout, under 768px ---------------------------------------------------------------- */
+
+@media (max-width: 767.98px) {
+  .sched-table,
+  .sched-table thead,
+  .sched-table tbody,
+  .sched-head-row {
+    display: block;
+  }
+
+  .sched-table colgroup {
+    display: none;
+  }
+
+  /* Column headers stay in the accessibility tree but leave the layout. */
+  .sched-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .sched-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.5rem;
+    min-height: 4.5rem;
+    padding: 1rem;
+  }
+
+  .sched-row[data-aside] {
+    padding-right: calc(1rem + var(--aside-w) + 0.75rem);
+  }
+
+  .sched-cell {
+    flex: 1 0 100%;
+    order: 1;
+    min-width: 0;
+  }
+
+  .sched-cell--mono {
+    font-size: 0.8125rem;
+  }
+
+  .sched-cell[data-stack='lead'] {
+    flex: 0 0 auto;
+    order: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    color: var(--ink-3);
+  }
+
+  .sched-cell[data-stack='lead'] > *:not(.sched-leader) {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.5rem;
+  }
+
+  .sched-cell[data-stack='lead'] > *:not(.sched-leader) > * {
+    margin-top: 0;
+  }
+
+  /* Middle dot after every lead cell that has another lead cell behind it: when the line wraps it
+     trails the line rather than leading the next one. */
+  .sched-cell[data-stack='lead']:has(~ .sched-cell[data-stack='lead'])::after {
+    content: '\00b7';
+    content: '\00b7' / ''; /* empty alt text: the dot stays out of the row header's accessible name */
+    margin-left: 0.5rem;
+  }
+
+  .sched-cell[data-stack='aside'] {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    justify-content: center;
+    flex: none;
+    width: var(--aside-w);
+  }
+
+  .sched-cell[data-stack='hide'],
+  .sched-cell:empty {
+    display: none;
+  }
+
+  /* A label only where position does not already say what the value is. */
+  .sched-cell[data-label]::before {
+    content: attr(data-label);
+    margin-right: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .sched-title {
+    display: block;
+  }
+
+  .sched-thumb {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: var(--aside-w);
+  }
+
+  .sched-leader {
+    display: none;
+  }
+}

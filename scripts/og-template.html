@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face { font-family: 'Plex Mono'; font-weight: 600; src: url('{{MONO_600}}') format('woff2'); }
+  @font-face { font-family: 'Plex Mono'; font-weight: 500; src: url('{{MONO_500}}') format('woff2'); }
+  @font-face { font-family: 'Plex Mono'; font-weight: 400; src: url('{{MONO_400}}') format('woff2'); }
+  @font-face { font-family: 'Plex Sans'; font-weight: 400; src: url('{{SANS_400}}') format('woff2'); }
+  :root { --paper:#0B0E14; --paper-2:#10141C; --ink:#E8ECF1; --ink-2:#B6BEC9; --ink-3:#8A94A3; --rule:#2A313C; --rule-strong:#3A4350; --pen:#5FD3F3; --ch1:#F2C14E; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1200px; height: 630px; background: var(--paper); overflow: hidden; }
+  body { position: relative; color: var(--ink); font-family: 'Plex Sans', system-ui, sans-serif; }
+  .frame { position: absolute; inset: 32px; border: 1px solid var(--rule-strong); }
+  .mono { font-family: 'Plex Mono', ui-monospace, monospace; }
+  .mark { position: absolute; left: 80px; top: 72px; width: 44px; height: 44px; color: var(--ink); }
+  .rail { position: absolute; left: 140px; top: 84px; font: 400 15px/1 'Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  #dim { position: absolute; left: 80px; top: 168px; height: 20px; }
+  #name { position: absolute; left: 80px; top: 196px; font: 600 76px/1 'Plex Mono', monospace; letter-spacing: -0.01em; text-transform: uppercase; white-space: nowrap; }
+  .role { position: absolute; left: 80px; top: 304px; font: 500 24px/1 'Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--pen); }
+  .line { position: absolute; left: 80px; top: 352px; font: 400 28px/1.3 'Plex Sans', sans-serif; color: var(--ink-2); width: 560px; }
+  .site { position: absolute; left: 80px; top: 470px; font: 500 26px/1 'Plex Mono', monospace; color: var(--ink); }
+  .fig { position: absolute; left: 700px; top: 96px; width: 424px; }
+  .fig canvas { display: block; width: 424px; height: 318px; border: 1px solid var(--rule-strong); background: var(--paper-2); }
+  .cap { margin-top: 10px; font: 400 12px/1.5 'Plex Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+  .tb { position: absolute; right: 80px; bottom: 72px; width: 424px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule-strong); border: 2px solid var(--ink-3); }
+  .tb div { background: var(--paper); padding: 8px 10px; }
+  .tb small { display: block; font: 400 10px/1 'Plex Mono', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  .tb b { display: block; margin-top: 5px; font: 500 15px/1 'Plex Mono', monospace; color: var(--ink); }
+  .tb .wide { grid-column: span 4; }
+</style>
+</head>
+<body>
+<div class="frame"></div>
+<svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"><circle cx="12" cy="12" r="8"/><path d="M12 1.5v21M1.5 12h21" stroke-dasharray="8 3 2 3"/></svg>
+<div class="rail">Sheet G-001 · Set AM-PF</div>
+<svg id="dim"></svg>
+<div id="name">Andrew Manson</div>
+<div class="role">Electrical engineer · EGBC EIT</div>
+<div class="line">Machine vision, embedded systems and open-source AI tooling.</div>
+<div class="site">jandrewmanson.engineer</div>
+<div class="fig"><canvas id="scope" width="848" height="636"></canvas><div class="cap">Fig. 1 · Synthetic PPG (ch1) and Schmitt-trigger output (ch2)</div></div>
+<div class="tb"><div><small>Set</small><b>AM-PF</b></div><div><small>Sheet</small><b>G-001</b></div><div><small>Scale</small><b>1:1</b></div><div><small>Checked</small><b>—</b></div></div>
+<script>
+  // Dimension line: measured from the rendered name, as on the site (note 1: all dimensions in pixels).
+  const name = document.getElementById('name');
+  const w = Math.round(name.getBoundingClientRect().width);
+  const dim = document.getElementById('dim');
+  dim.setAttribute('width', w); dim.setAttribute('viewBox', '0 0 ' + w + ' 20');
+  const label = w + ' px';
+  dim.innerHTML = '<g stroke="#5FD3F3" stroke-width="1"><line x1="0.5" y1="2" x2="0.5" y2="18"/><line x1="' + (w - 0.5) + '" y1="2" x2="' + (w - 0.5) + '" y2="18"/><line x1="6" y1="10" x2="' + (w - 6) + '" y2="10"/></g>' +
+    '<g fill="#5FD3F3"><path d="M0.5 10 l6 -3 v6z"/><path d="M' + (w - 0.5) + ' 10 l-6 -3 v6z"/></g>' +
+    '<rect x="' + (w / 2 - 34) + '" y="1" width="68" height="18" fill="#0B0E14"/><text x="' + (w / 2) + '" y="14.5" text-anchor="middle" font-family="Plex Mono" font-size="13" font-weight="500" fill="#5FD3F3">' + label + '</text>';
+
+  // Synthetic PPG through a Schmitt trigger (same model as the cover scope on the site; not measured data).
+  const T = 60 / 72, HI = 0.64, LO = 0.33;
+  const g = (d, s) => Math.exp(-0.5 * (d / s) ** 2);
+  const wrap = (d) => (((d + 0.5) % 1) + 1) % 1 - 0.5;
+  const raw = (p) => g(wrap(p - 0.22), 0.09) + 0.55 * g(wrap(p - 0.54), 0.13);
+  const MAX = Math.max(...Array.from({ length: 1000 }, (_, i) => raw(i / 1000)));
+  const ppg = (t) => raw((((t / T) % 1) + 1) % 1) / MAX;
+  const c = document.getElementById('scope'), x = c.getContext('2d');
+  const W = c.width, H = c.height;
+  x.strokeStyle = '#2A313C'; x.lineWidth = 1;
+  for (let i = 0; i <= 8; i++) { const px = Math.round(i * W / 8) + 0.5; x.beginPath(); x.moveTo(px, 0); x.lineTo(px, H); x.stroke(); }
+  for (let j = 0; j <= 6; j++) { const py = Math.round(j * H / 6) + 0.5; x.beginPath(); x.moveTo(0, py); x.lineTo(W, py); x.stroke(); }
+  const yP = (v) => H * (0.92 - 0.52 * v);
+  x.setLineDash([8, 8]); x.strokeStyle = '#3A4350';
+  for (const lv of [HI, LO]) { x.beginPath(); x.moveTo(0, yP(lv)); x.lineTo(W, yP(lv)); x.stroke(); }
+  x.setLineDash([]);
+  const secs = 4, step = secs / W; let hi = false; const out = [];
+  x.strokeStyle = '#F2C14E'; x.lineWidth = 3; x.beginPath();
+  for (let i = 0; i <= W; i++) { const v = ppg(0.3 + i * step); if (!hi && v >= HI) hi = true; else if (hi && v <= LO) hi = false; out.push(hi); if (i === 0) x.moveTo(i, yP(v)); else x.lineTo(i, yP(v)); }
+  x.stroke();
+  x.strokeStyle = '#5FD3F3'; x.beginPath();
+  const lowY = H * 0.30, highY = H * 0.14;
+  out.forEach((h, i) => { const y = h ? highY : lowY; if (i === 0) x.moveTo(0, y); else { x.lineTo(i, out[i - 1] ? highY : lowY); x.lineTo(i, y); } });
+  x.stroke();
+  document.title = 'ready';
+</script>
+</body>
+</html>

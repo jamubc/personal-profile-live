@@ -59,7 +59,7 @@ ribbon cable.
 The design team hit a roadblock early on: limited apple datasets
 and hardware dependencies were stalling the ML side. Researching
 public sources proved insufficient, so I pushed for an early working
-prototype to capture a custom dataset. This decision paid off 
+prototype to capture a custom dataset. This decision paid off —
 it provided the data the ML model needed and reinforced the
 iterative nature of the design process.
 
@@ -119,7 +119,7 @@ connect a display over the network, and scan.
 
 ## What I Learned
 
-Capstone allowed me to engage with a longterm design project, driven by client requirements.
+Capstone allowed me to engage with a long-term design project, driven by client requirements.
 Prior coursework gave me practice in project timelines and
 professional communication, but ENGR 499 required sustained
 interaction with a real client and multiple advisors through

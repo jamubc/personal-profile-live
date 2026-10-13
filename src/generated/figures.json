@@ -1,0 +1,128 @@
+{
+  "/projects/apple-classifier/images/concept-sketch.webp": {
+    "w": 1165,
+    "h": 1260,
+    "lum": 170,
+    "plate": "none"
+  },
+  "/projects/apple-classifier/images/physical-circuit.webp": {
+    "w": 1280,
+    "h": 513,
+    "lum": 156,
+    "plate": "none"
+  },
+  "/projects/apple-classifier/images/project_poster_page_1.webp": {
+    "w": 1200,
+    "h": 1600,
+    "lum": 224,
+    "plate": "light"
+  },
+  "/projects/apple-classifier/images/sample_operator_output_badApple.webp": {
+    "w": 1280,
+    "h": 515,
+    "lum": 79,
+    "plate": "none"
+  },
+  "/projects/apple-classifier/images/sample_operator_output_goodApple.webp": {
+    "w": 1276,
+    "h": 562,
+    "lum": 96,
+    "plate": "none"
+  },
+  "/projects/apple-classifier/images/solidworks-render.webp": {
+    "w": 1280,
+    "h": 878,
+    "lum": 155,
+    "plate": "none"
+  },
+  "/projects/apple-classifier/images/state-diagram.webp": {
+    "w": 618,
+    "h": 293,
+    "lum": 242,
+    "plate": "light"
+  },
+  "/projects/apple-classifier/images/working-setup.webp": {
+    "w": 1152,
+    "h": 789,
+    "lum": 96,
+    "plate": "none"
+  },
+  "/projects/ppg-monitor/images/breadboard-filter-stages.webp": {
+    "w": 207,
+    "h": 294,
+    "lum": 126,
+    "plate": "none"
+  },
+  "/projects/ppg-monitor/images/breadboard-final.webp": {
+    "w": 592,
+    "h": 206,
+    "lum": 164,
+    "plate": "none"
+  },
+  "/projects/ppg-monitor/images/buffer-amplifier-schematic.webp": {
+    "w": 325,
+    "h": 199,
+    "lum": 247,
+    "plate": "light"
+  },
+  "/projects/ppg-monitor/images/comparator-ltspice.webp": {
+    "w": 610,
+    "h": 252,
+    "lum": 244,
+    "plate": "light"
+  },
+  "/projects/ppg-monitor/images/comparator-schematic.webp": {
+    "w": 420,
+    "h": 287,
+    "lum": 248,
+    "plate": "light"
+  },
+  "/projects/ppg-monitor/images/final-stage-ltspice.webp": {
+    "w": 1244,
+    "h": 451,
+    "lum": 247,
+    "plate": "light"
+  },
+  "/projects/ppg-monitor/images/handwritten-planning.webp": {
+    "w": 617,
+    "h": 209,
+    "lum": 235,
+    "plate": "light"
+  },
+  "/projects/ppg-monitor/images/ltspice-stage-2-schematic.webp": {
+    "w": 1124,
+    "h": 494,
+    "lum": 244,
+    "plate": "light"
+  },
+  "/projects/ppg-monitor/images/prototype-circuit-diagram.webp": {
+    "w": 540,
+    "h": 235,
+    "lum": 242,
+    "plate": "light"
+  },
+  "/projects/ppg-monitor/images/scope-comparator-vs-ppg.webp": {
+    "w": 378,
+    "h": 273,
+    "lum": 137,
+    "plate": "none"
+  },
+  "/projects/ppg-monitor/images/scope-hysteresis-annotated.webp": {
+    "w": 619,
+    "h": 234,
+    "lum": 96,
+    "plate": "none"
+  },
+  "/projects/ppg-monitor/images/scope-ppg-processed.webp": {
+    "w": 303,
+    "h": 218,
+    "lum": 119,
+    "plate": "none"
+  },
+  "/projects/ppg-monitor/images/scope-ppg-raw.webp": {
+    "w": 497,
+    "h": 376,
+    "lum": 119,
+    "plate": "none"
+  }
+}

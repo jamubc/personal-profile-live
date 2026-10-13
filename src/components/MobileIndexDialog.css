@@ -1,0 +1,41 @@
+.mobile-index {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow-y: auto;
+  background: var(--paper);
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 140ms linear,
+    transform 140ms ease-out,
+    overlay 140ms allow-discrete,
+    display 140ms allow-discrete;
+}
+
+.mobile-index[open] {
+  opacity: 1;
+  transform: none;
+  transition-duration: 180ms;
+}
+
+@starting-style {
+  .mobile-index[open] {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.mobile-index::backdrop {
+  background: var(--paper);
+}
+
+/* No scroll behind the open index. */
+html:has(dialog.mobile-index[open]) {
+  overflow: hidden;
+}

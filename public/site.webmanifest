@@ -4,8 +4,8 @@
   "description": "Portfolio of Andrew Manson: electrical engineering and open-source AI / MCP development.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#010208",
-  "theme_color": "#010208",
+  "background_color": "#0B0E14",
+  "theme_color": "#0B0E14",
   "icons": [
     {
       "src": "/favicon.svg",

@@ -1,0 +1,19 @@
+/* Fig. 1 scope: a readout bar above and below the plot, as on a bench scope, so nothing covers the
+   trace. The canvas keeps its aspect ratio in CSS so the server and client markup match. */
+.scope { border: 1px solid var(--rule-strong); background: var(--paper-2); }
+.scope-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 32px; padding: 0 8px; }
+.scope-bar-top { border-bottom: 1px solid var(--rule); }
+.scope-bar-bottom { border-top: 1px solid var(--rule); }
+.scope-plot { position: relative; }
+.scope-canvas { display: block; width: 100%; aspect-ratio: 2 / 1; }
+@media (min-width: 768px) { .scope-canvas { aspect-ratio: 4 / 3; } }
+.scope-overlay { position: absolute; inset: 0; pointer-events: none; }
+.scope-vt { position: absolute; right: 6px; transform: translateY(-100%); padding: 0 2px; background: var(--paper-2); }
+.scope-legend { display: flex; gap: 16px; }
+.scope-run {
+  display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; margin: -6px 0 -6px -8px; padding: 0 8px;
+  color: var(--ink);
+}
+.scope-run > span { display: inline-block; padding: 2px 6px; border: 1px solid var(--rule-ui); transition: color 120ms linear, border-color 120ms linear; }
+.scope-run:hover > span { color: var(--pen); border-color: var(--pen); }
+.scope-run[aria-pressed='false'] > span { color: var(--ink-2); }

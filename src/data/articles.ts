@@ -1,18 +1,28 @@
-import { ArticleBlock, parseArticle } from '../lib/parseArticle';
-
+/**
+ * Writing index metadata. Bodies are Markdown files in src/content/writing, registered in
+ * src/lib/content.ts; each published post also has a W sheet in src/data/sheets.ts. To publish a
+ * post: add the file, add a loader, add a sheet, add an entry here.
+ * 'gemini-3-release' and 'coding-with-ai' stay unpublished pending a rewrite.
+ */
 export type ArticleCategory = 'ai' | 'engineering';
 
 export interface Article {
-  /** Matches the markdown filename in src/content/writing (without .md) */
+  /** Matches the Markdown filename (without .md) and the route /writing/<slug>. */
   slug: string;
+  /** Registry sheet id, e.g. W-301. Numbered by insertion order, not by date. */
+  sheet: string;
   title: string;
   subject: string;
-  /** ISO date string, e.g. '2025-11-18' */
+  /** ISO date, e.g. '2025-11-17'. */
   date: string;
   category: ArticleCategory;
   summary: string;
-  /** Flag posts that were drafted with AI assistance */
+  /** Drafted with AI assistance. */
   aiGenerated?: boolean;
+  /** Document title (without the site suffix), kept under the 60 character limit. */
+  seoTitle: string;
+  /** Meta description, kept under the 155 character limit. */
+  seoDescription: string;
 }
 
 export const categoryLabels: Record<ArticleCategory, string> = {
@@ -20,82 +30,34 @@ export const categoryLabels: Record<ArticleCategory, string> = {
   engineering: 'Engineering',
 };
 
-/**
- * Article metadata index. Bodies live as plain Markdown in
- * src/content/writing/<slug>.md — add a file there and an entry here to
- * publish. Order here is irrelevant; the view sorts by date.
- */
 export const articles: Article[] = [
-  // 'gemini-3-release' and 'coding-with-ai' are unpublished pending a rewrite;
-  // their markdown stays in src/content/writing/.
-  {
-    slug: 'weathernext-2',
-    title: 'WeatherNext 2: AI weather forecasting for the scenario era',
-    subject:
-      'How Google DeepMind’s new model delivers faster, higher-resolution forecasts that capture entire ranges of possible futures.',
-    date: '2025-11-17',
-    category: 'ai',
-    aiGenerated: true,
-    summary:
-      'WeatherNext 2 is Google DeepMind and Google Research’s most advanced and efficient AI weather model yet, delivering high-resolution, scenario-rich forecasts in under a minute.',
-  },
   {
     slug: 'light-computing',
-    title:
-      'How AI requirements, ARM processors, and foundry wars are redefining the light CPU market',
-    subject:
-      'The 2025 tectonic shift in low-power computing: AI, ARM, and the new CPU landscape',
+    sheet: 'W-301',
+    title: 'How AI requirements, ARM processors, and foundry wars are redefining the light CPU market',
+    subject: 'The 2025 tectonic shift in low-power computing: AI, ARM, and the new CPU landscape',
     date: '2025-11-16',
     category: 'engineering',
     aiGenerated: true,
-    summary:
-      'A look at how the 40 TOPS AI requirement and ARM-based competitors are challenging the x86 duopoly in the light CPU market.',
+    summary: 'A look at how the 40 TOPS AI requirement and ARM-based competitors are challenging the x86 duopoly in the light CPU market.',
+    seoTitle: 'AI, ARM and the light CPU market',
+    seoDescription: 'A look at how the 40 TOPS AI requirement and ARM-based competitors are challenging the x86 duopoly in the light CPU market.',
+  },
+  {
+    slug: 'weathernext-2',
+    sheet: 'W-302',
+    title: 'WeatherNext 2: AI weather forecasting for the scenario era',
+    subject: 'How Google DeepMind’s new model delivers faster, higher-resolution forecasts that capture entire ranges of possible futures.',
+    date: '2025-11-17',
+    category: 'ai',
+    aiGenerated: true,
+    summary: 'WeatherNext 2 is Google DeepMind and Google Research’s most advanced and efficient AI weather model yet, delivering high-resolution, scenario-rich forecasts in under a minute.',
+    seoTitle: 'WeatherNext 2: AI weather forecasting',
+    seoDescription: 'Google DeepMind and Google Research’s WeatherNext 2 makes high-resolution, scenario-rich forecasts in under a minute. An explainer on how it works.',
   },
 ];
 
-/** Articles newest-first. */
-export const sortedArticles = (): Article[] =>
-  [...articles].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+/** Newest first. */
+export const sortedArticles = (): Article[] => [...articles].sort((a, b) => b.date.localeCompare(a.date));
 
-const WORDS_PER_MINUTE = 220;
-const contentCache = new Map<string, ArticleBlock[]>();
-
-/**
- * Lazily load and parse an article's markdown body. Mirrors the project
- * content loader: each .md becomes its own Vite chunk, cached after first read.
- */
-export async function loadArticleContent(slug: string): Promise<ArticleBlock[]> {
-  if (contentCache.has(slug)) return contentCache.get(slug)!;
-
-  const modules = import.meta.glob('../content/writing/*.md', {
-    query: '?raw',
-    import: 'default',
-    eager: false,
-  }) as Record<string, () => Promise<string | { default: string }>>;
-
-  const loader = modules[`../content/writing/${slug}.md`];
-  if (!loader) {
-    console.warn(`No article content found for "${slug}"`);
-    return [];
-  }
-
-  const raw = await loader();
-  const text = typeof raw === 'string' ? raw : raw.default ?? '';
-  const blocks = parseArticle(text);
-  contentCache.set(slug, blocks);
-  return blocks;
-}
-
-/** Rough reading time in minutes from parsed blocks. */
-export function readingTime(blocks: ArticleBlock[]): number {
-  const words = blocks.reduce((n, b) => {
-    if ('text' in b) return n + b.text.split(/\s+/).length;
-    if ('items' in b) return n + b.items.join(' ').split(/\s+/).length;
-    if (b.type === 'table') return n + (b.headers.length + b.rows.flat().length);
-    if (b.type === 'code') return n + b.code.split(/\s+/).length;
-    return n;
-  }, 0);
-  return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
-}
+export const articleBySlug = (slug: string): Article | undefined => articles.find((a) => a.slug === slug);

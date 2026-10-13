@@ -5,7 +5,7 @@ import { preloadRoute } from '../lib/route-cache';
 
 /** In-site link: a react-router Link that preloads the destination chunk and data on hover and focus. */
 export const AppLink = forwardRef<HTMLAnchorElement, LinkProps>(function AppLink({ to, onPointerEnter, onFocus, ...rest }, ref) {
-  const path = typeof to === 'string' ? to : (to.pathname ?? '');
+  const path = (typeof to === 'string' ? to : (to.pathname ?? '')).split(/[?#]/)[0];
   return (
     <Link
       ref={ref}

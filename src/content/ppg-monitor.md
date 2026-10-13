@@ -39,7 +39,7 @@ with a superimposed AC component of only ~54 nA riding on top,
 oscillating at heart rate.
 
 To make this usable, I implemented a Transimpedance Amplifier (TIA)
-using an LTC6078 Op-Amp with a feedback resistance of 0.7 MΩ. The
+using an LTC6078 op-amp with a feedback resistance of 0.7 MΩ. The
 TIA converts the weak photocurrent into a measurable voltage output:
 a 4 V DC offset carrying a ~38 mV peak-to-peak AC heartbeat signal
 at just above 1 Hz. Oscilloscope settings of AC coupling at
@@ -48,13 +48,13 @@ heartbeat waveform buried beneath the dominant DC level.
 
 During initial testing the circuit appeared non-functional. After
 replacing the op-amp and potentiometer without success, I discovered
-that the photodiode had been connected with reversed polarity 
+that the photodiode had been connected with reversed polarity —
 once corrected, the circuit immediately produced the expected PPG
 waveform.
 
 ::image[/projects/ppg-monitor/images/prototype-circuit-diagram.webp]{caption="Circuit diagram of the PPG prototype — from photodiode through TIA to output" fit=contain maxHeight=400}
 
-::image[/projects/ppg-monitor/images/scope-ppg-raw.webp]{caption="Raw unprocessed PPG pulse signal captured on the oscilloscope — 38 mV pk-pk on a 4 V DC offset" fit=contain maxHeight=380}
+::image[/projects/ppg-monitor/images/scope-ppg-raw.webp]{caption="Raw unprocessed PPG pulse signal captured on the oscilloscope — 38 mV pk-pk on a 4 V DC offset" alt="Oscilloscope screen: raw PPG, a small ripple on a large DC level" cut=A readout="CH1 20.0 mV · M 500 ms · 27-Jan-24" fit=contain maxHeight=380}
 
 ## Signal Conditioning
 
@@ -80,12 +80,12 @@ new 2.5 V common-mode bias established by a 10 kΩ resistor divider
 network. **Stage 2** used a second op-amp with a 10 MΩ feedback
 resistor and 1 nF feedback capacitor (Cf2) to provide substantial
 gain and additional low-pass filtering. The resulting output swung
-to approximately 0.6 V peak around a 2.2 V DC operating point 
+to approximately 0.6 V peak around a 2.2 V DC operating point —
 over 15× amplification of the original 38 mV heartbeat.
 
 ::image[/projects/ppg-monitor/images/ltspice-stage-2-schematic.webp]{caption="LTSpice schematic — full signal conditioning chain including the second filter and gain stage" fit=contain maxHeight=420}
 
-::image[/projects/ppg-monitor/images/scope-ppg-processed.webp]{caption="Processed PPG signal after bandpass filtering and amplification — dramatically improved SNR" fit=contain maxHeight=380}
+::image[/projects/ppg-monitor/images/scope-ppg-processed.webp]{caption="Processed PPG signal after bandpass filtering and amplification — dramatically improved SNR" alt="Oscilloscope screen: processed PPG on two channels" cut=B readout="CH1 20.0 mV · CH2 2.00 V · M 250 ms · 10-Feb-24" fit=contain maxHeight=380}
 
 ::image[/projects/ppg-monitor/images/breadboard-filter-stages.webp]{caption="Breadboard prototype of the gain and filtering stages" fit=contain maxHeight=420}
 
@@ -130,7 +130,7 @@ comparator behaviour.
 
 ::image[/projects/ppg-monitor/images/comparator-ltspice.webp]{caption="Full comparator design in LTSpice simulation" fit=contain maxHeight=420}
 
-::image[/projects/ppg-monitor/images/scope-hysteresis-annotated.webp]{caption="Annotated hysteresis band of the Schmitt trigger — the dead zone prevents dicrotic notch false triggers" fit=contain maxHeight=400}
+::image[/projects/ppg-monitor/images/scope-hysteresis-annotated.webp]{caption="Annotated hysteresis band of the Schmitt trigger — the dead zone prevents dicrotic notch false triggers" alt="Oscilloscope capture with the Schmitt-trigger hysteresis band marked in red" cut=C fit=contain maxHeight=400}
 
 The oscilloscope capture below validates the design at 2 V/div,
 250 ms/div in DC coupling mode. The yellow trace shows the cleaned
@@ -138,7 +138,7 @@ analog heartbeat waveform (systole → dicrotic notch → diastole),
 while the blue trace shows the comparator output switching cleanly
 on each beat with zero false edges from the notch.
 
-::image[/projects/ppg-monitor/images/scope-comparator-vs-ppg.webp]{caption="Comparator trigger signal alongside the time-varying PPG waveform — clean digital pulse on every heartbeat" fit=contain maxHeight=400}
+::image[/projects/ppg-monitor/images/scope-comparator-vs-ppg.webp]{caption="Comparator trigger signal alongside the time-varying PPG waveform — clean digital pulse on every heartbeat" alt="Oscilloscope screen: PPG waveform in yellow and the comparator's square-wave output in cyan" cut=C readout="CH1 2.00 V · CH2 2.00 V · M 250 ms · 3-Mar-24" fit=contain maxHeight=400}
 
 ## Monostable Multivibrator & Final Output
 

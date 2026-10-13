@@ -1,0 +1,95 @@
+/*
+ * ResultStrip layout follows the width of the strip itself (container query), not the viewport:
+ * under 640px each result is a row (numeral left, label and note right); from 640px the results sit
+ * side by side, four of them two by two until there is room for four across. Rules are cell borders
+ * clipped by the frame, so any layout gets correct dividers.
+ */
+.rs-label {
+  margin: 0 0 0.75rem;
+  color: var(--ink-2);
+}
+
+.rs-frame {
+  container-type: inline-size;
+  overflow: hidden;
+  border: 1px solid var(--rule-strong);
+}
+
+.rs-cells {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: -1px 0 0 -1px;
+}
+
+.rs-cell {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, max-content) minmax(0, 1fr);
+  grid-template-areas:
+    'value label'
+    'value note';
+  column-gap: 1rem;
+  align-items: center;
+  align-content: center;
+  padding: 1rem;
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+
+.rs-value {
+  grid-area: value;
+  margin: 0;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.rs-term {
+  grid-area: label;
+  margin: 0;
+  color: var(--ink-2);
+}
+
+.rs-note {
+  grid-area: note;
+  margin: 0.25rem 0 0;
+}
+
+@container (min-width: 640px) {
+  .rs-cells {
+    grid-template-columns: repeat(var(--rs-n), minmax(0, 1fr));
+  }
+
+  .rs-frame[data-count='4'] .rs-cells {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rs-cell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'value'
+      'label'
+      'note';
+    align-items: start;
+    align-content: start;
+    row-gap: 0.5rem;
+    padding: 1.25rem;
+  }
+
+  .rs-note {
+    margin-top: 0;
+  }
+
+  .rs-value {
+    white-space: normal;
+  }
+}
+
+@container (min-width: 900px) {
+  .rs-frame[data-count='4'] .rs-cells {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  /* A value of more than eight characters does not fit a quarter of the sheet at the lg numeral size. */
+  .rs-frame[data-count='4'][data-long] .rs-value {
+    font-size: 2rem;
+  }
+}

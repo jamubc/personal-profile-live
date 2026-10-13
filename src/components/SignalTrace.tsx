@@ -1,192 +1,310 @@
-import { useEffect, useRef } from 'react';
-import { DEFAULT_SCHMITT, SchmittTrigger, ppgAt } from '../lib/signal';
+import { useEffect, useRef, useState } from 'react';
+import { HI, LO, makeSchmitt, ppg } from '../lib/scope';
 import { useReducedMotion } from '../lib/hooks';
+import './SignalTrace.css';
 
 interface SignalTraceProps {
-  className?: string;
-  /** Seconds of signal visible across the scope. */
-  windowSeconds?: number;
-  bpm?: number;
-  divisionsX?: number;
-  divisionsY?: number;
-  /** Accessible description. The visible FIG. caption lives outside the canvas. */
-  label?: string;
+  ariaLabel: string;
 }
 
-const token = (el: Element, name: string, fallback: string): string =>
-  getComputedStyle(el).getPropertyValue(name).trim() || fallback;
+const WINDOW = 4.0; // seconds across the plot
+const GAP = 24; // px of blank ahead of the write-head
+const FRAME_MS = 33; // 30 fps cap
+const STATIC_OFFSET = 1.9; // start time of the static frame: three beats and their edges in view
+const DIV_X = 8;
+
+/** Seeded PRNG for the +-0.01 noise, so every visitor sees the same trace. */
+function mulberry32(seed: number): () => number {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const wander = (t: number) => 0.03 * Math.sin(2 * Math.PI * 0.25 * t);
+
+interface Colours {
+  rule: string;
+  ruleStrong: string;
+  ch1: string;
+  pen: string;
+}
+
+/** Everything that owns the canvas: sample buffers, the sweep, the loop and its gates. */
+function createScope(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, colours: Colours) {
+  let W = 1;
+  let H = 1;
+  let divY = 6;
+  let ch1 = new Float32Array(0);
+  let ch2 = new Uint8Array(0);
+  let head = 0; // next column the write-head fills; W means "past the right edge"
+  let carry = 0; // fractional column not yet written
+  let time = 0; // virtual seconds of the next sample; only advances while running
+  const schmitt = makeSchmitt();
+  const rng = mulberry32(0x9e3779b1);
+  let raf = 0;
+  let last = 0;
+  let running = false;
+  let visible = true;
+
+  const colDt = () => WINDOW / W;
+  const write = (x: number) => {
+    const v = ppg(time) + wander(time) + (rng() * 2 - 1) * 0.01;
+    ch1[x] = v;
+    ch2[x] = schmitt(v) ? 1 : 0;
+    time += colDt();
+  };
+  /** Fill the whole window in one go, head past the right edge: the static frame. */
+  const fill = (from: number) => {
+    time = from;
+    for (let x = 0; x < W; x++) write(x);
+    head = W;
+    carry = 0;
+  };
+  const advance = (dt: number) => {
+    carry += dt / colDt();
+    let n = Math.min(W, Math.floor(carry));
+    carry -= Math.floor(carry);
+    while (n-- > 0) {
+      if (head >= W) head = 0;
+      write(head);
+      head++;
+    }
+  };
+
+  const yOf = (v: number) => H * (0.92 - 0.52 * v);
+  const draw = () => {
+    ctx.clearRect(0, 0, W, H);
+    // graticule
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = colours.rule;
+    ctx.beginPath();
+    for (let i = 1; i < DIV_X; i++) {
+      const x = Math.round((i / DIV_X) * W) + 0.5;
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, H);
+    }
+    for (let j = 1; j < divY; j++) {
+      const y = Math.round((j / divY) * H) + 0.5;
+      ctx.moveTo(0, y);
+      ctx.lineTo(W, y);
+    }
+    ctx.stroke();
+    // centre cross with five minor ticks per division
+    const cx = Math.round(W / 2) + 0.5;
+    const cy = Math.round(H / 2) + 0.5;
+    ctx.strokeStyle = colours.ruleStrong;
+    ctx.beginPath();
+    ctx.moveTo(cx, 0);
+    ctx.lineTo(cx, H);
+    ctx.moveTo(0, cy);
+    ctx.lineTo(W, cy);
+    const tx = W / DIV_X / 5;
+    for (let x = tx; x < W; x += tx) {
+      const xx = Math.round(x) + 0.5;
+      ctx.moveTo(xx, cy - 3);
+      ctx.lineTo(xx, cy + 3);
+    }
+    const ty = H / divY / 5;
+    for (let y = ty; y < H; y += ty) {
+      const yy = Math.round(y) + 0.5;
+      ctx.moveTo(cx - 3, yy);
+      ctx.lineTo(cx + 3, yy);
+    }
+    ctx.stroke();
+    // thresholds
+    ctx.setLineDash([4, 3]);
+    ctx.beginPath();
+    for (const level of [HI, LO]) {
+      const y = Math.round(yOf(level)) + 0.5;
+      ctx.moveTo(0, y);
+      ctx.lineTo(W, y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // traces, skipping the blank gap ahead of the write-head
+    const inGap = (x: number) => head < W && x >= head && x < head + GAP;
+    ctx.lineWidth = 1.5;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = colours.ch1;
+    ctx.beginPath();
+    let pen = false;
+    for (let x = 0; x < W; x++) {
+      if (inGap(x) || x === head) {
+        pen = false;
+        continue;
+      }
+      const y = yOf(ch1[x]);
+      if (pen) ctx.lineTo(x, y);
+      else ctx.moveTo(x, y);
+      pen = true;
+    }
+    ctx.stroke();
+    ctx.strokeStyle = colours.pen;
+    ctx.beginPath();
+    pen = false;
+    let prevY = 0;
+    for (let x = 0; x < W; x++) {
+      if (inGap(x) || x === head) {
+        pen = false;
+        continue;
+      }
+      const y = ch2[x] ? 0.14 * H : 0.3 * H;
+      if (pen) {
+        if (y !== prevY) ctx.lineTo(x, prevY);
+        ctx.lineTo(x, y);
+      } else ctx.moveTo(x, y);
+      prevY = y;
+      pen = true;
+    }
+    ctx.stroke();
+  };
+
+  const frame = (now: number) => {
+    raf = 0;
+    if (!running || !visible || document.hidden) return;
+    if (now - last >= FRAME_MS) {
+      advance(Math.min(WINDOW, (now - last) / 1000));
+      last = now;
+      draw();
+    }
+    raf = requestAnimationFrame(frame);
+  };
+  const gate = () => {
+    const go = running && visible && !document.hidden;
+    if (go && !raf) {
+      last = performance.now();
+      raf = requestAnimationFrame(frame);
+    } else if (!go && raf) {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    }
+  };
+
+  const resize = () => {
+    const rect = canvas.getBoundingClientRect();
+    W = Math.max(1, Math.round(rect.width));
+    H = Math.max(1, Math.round(rect.height));
+    divY = H / W > 0.6 ? 6 : 4;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ch1 = new Float32Array(W);
+    ch2 = new Uint8Array(W);
+    fill(time > 0 ? time - WINDOW : STATIC_OFFSET);
+    draw();
+  };
+
+  return {
+    resize,
+    setRunning(value: boolean) {
+      running = value;
+      gate();
+    },
+    setVisible(value: boolean) {
+      visible = value;
+      gate();
+    },
+    gate,
+    stop() {
+      running = false;
+      gate();
+    },
+  };
+}
 
 /**
- * Two-channel scope: CH1 is a synthetic PPG, CH2 is the output of a Schmitt
- * trigger fed by it (the comparator stage of the author's analog heart-rate
- * project). Dashed lines mark the hysteresis band. Animates only on devices
- * with hover and without a reduced-motion preference; otherwise it draws one
- * static frame. Pauses when off-screen or when the tab is hidden.
+ * Fig. 1. CH1 is a synthetic PPG; CH2 is a literal Schmitt trigger fed by it, so the dicrotic notch
+ * sits inside the dashed hysteresis band and the output steps once per beat. A classic sweep with a
+ * write-head, 30 fps, paused when off-screen or in a background tab, and a visible RUN/STOP control.
+ * Static mode (reduced motion, data saver, low memory) shows one frame and leaves the control live.
  */
-export function SignalTrace({
-  className,
-  windowSeconds = 5,
-  bpm = 72,
-  divisionsX = 8,
-  divisionsY = 6,
-  label = 'Synthetic PPG waveform and the output of a Schmitt-trigger comparator',
-}: SignalTraceProps) {
-  const ref = useRef<HTMLCanvasElement>(null);
+export function SignalTrace({ ariaLabel }: SignalTraceProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const scopeRef = useRef<ReturnType<typeof createScope> | null>(null);
   const reduced = useReducedMotion();
+  // null until the client decides, so the server and the first client render agree (RUN).
+  const [running, setRunning] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const canvas = ref.current;
+    const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
     if (!canvas || !ctx) return;
-
-    const animate = !reduced && !window.matchMedia('(hover: none)').matches;
-    const colors = {
-      pen: token(canvas, '--pen', '#5FD3F3'),
-      grid: token(canvas, '--rule', '#2A313C'),
-      gridStrong: token(canvas, '--rule-strong', '#3A4350'),
-      muted: token(canvas, '--ink-3', '#8A94A3'),
-      ink: token(canvas, '--ink-2', '#B6BEC9'),
-    };
-
-    let W = 1;
-    let H = 1;
-    let raf = 0;
-    let visible = true;
-    let lastFrame = 0;
-    const startedAt = performance.now();
-    const STATIC_T = windowSeconds + 0.4;
-
-    const resize = () => {
-      const rect = canvas.getBoundingClientRect();
-      W = Math.max(1, Math.round(rect.width));
-      H = Math.max(1, Math.round(rect.height));
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
-      canvas.width = W * dpr;
-      canvas.height = H * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-
-    const draw = (t: number) => {
-      ctx.clearRect(0, 0, W, H);
-
-      ctx.lineWidth = 1;
-      for (let i = 0; i <= divisionsX; i++) {
-        const x = Math.round((i / divisionsX) * W) + 0.5;
-        ctx.strokeStyle = i === divisionsX / 2 ? colors.gridStrong : colors.grid;
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, H);
-        ctx.stroke();
-      }
-      for (let j = 0; j <= divisionsY; j++) {
-        const y = Math.round((j / divisionsY) * H) + 0.5;
-        ctx.strokeStyle = j === divisionsY / 2 ? colors.gridStrong : colors.grid;
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(W, y);
-        ctx.stroke();
-      }
-
-      const ppgTop = H * 0.08;
-      const ppgH = H * 0.54;
-      const cmpTop = H * 0.74;
-      const cmpH = H * 0.18;
-      const yPpg = (v: number) => ppgTop + (1 - v) * ppgH;
-
-      ctx.save();
-      ctx.setLineDash([4, 4]);
-      ctx.strokeStyle = colors.muted;
-      ctx.globalAlpha = 0.7;
-      for (const level of [DEFAULT_SCHMITT.upper, DEFAULT_SCHMITT.lower]) {
-        const y = Math.round(yPpg(level)) + 0.5;
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(W, y);
-        ctx.stroke();
-      }
-      ctx.restore();
-
-      const step = windowSeconds / W;
-      const t0 = t - windowSeconds;
-      const trigger = new SchmittTrigger();
-      for (let i = -Math.ceil(1.5 / step); i < 0; i++) trigger.update(ppgAt(t0 + i * step, { bpm }));
-
-      const out = new Array<number>(W + 1);
-      ctx.beginPath();
-      ctx.strokeStyle = colors.pen;
-      ctx.lineWidth = 1.5;
-      ctx.lineJoin = 'round';
-      for (let i = 0; i <= W; i++) {
-        const v = ppgAt(t0 + i * step, { bpm });
-        out[i] = trigger.update(v) ? 1 : 0;
-        if (i === 0) ctx.moveTo(i, yPpg(v));
-        else ctx.lineTo(i, yPpg(v));
-      }
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.strokeStyle = colors.ink;
-      for (let i = 0; i <= W; i++) {
-        const y = cmpTop + (1 - out[i]) * cmpH;
-        if (i === 0) ctx.moveTo(0, y);
-        else {
-          ctx.lineTo(i, cmpTop + (1 - out[i - 1]) * cmpH);
-          ctx.lineTo(i, y);
-        }
-      }
-      ctx.stroke();
-    };
-
-    const frame = (now: number) => {
-      raf = 0;
-      if (!visible) return;
-      if (now - lastFrame >= 33) {
-        lastFrame = now;
-        draw((now - startedAt) / 1000 + STATIC_T);
-      }
-      raf = requestAnimationFrame(frame);
-    };
-    const start = () => {
-      if (animate && !raf && visible && !document.hidden) raf = requestAnimationFrame(frame);
-    };
-    const stop = () => {
-      if (raf) cancelAnimationFrame(raf);
-      raf = 0;
-    };
-
-    resize();
-    draw(STATIC_T);
-    start();
-
-    const ro = new ResizeObserver(() => {
-      resize();
-      if (!animate) draw(STATIC_T);
+    const css = getComputedStyle(canvas);
+    const token = (name: string, fallback: string) => css.getPropertyValue(name).trim() || fallback;
+    const scope = createScope(canvas, ctx, {
+      rule: token('--rule', '#2a313c'),
+      ruleStrong: token('--rule-strong', '#3a4350'),
+      ch1: token('--ch1', '#f2c14e'),
+      pen: token('--pen', '#5fd3f3'),
     });
+    scopeRef.current = scope;
+    scope.resize();
+
+    const ro = new ResizeObserver(() => scope.resize());
     ro.observe(canvas);
-    const io = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      if (visible) start();
-      else stop();
-    });
+    const io = new IntersectionObserver(([entry]) => scope.setVisible(entry.isIntersecting && entry.intersectionRatio >= 0.1), { threshold: [0, 0.1] });
     io.observe(canvas);
-    const onVisibility = () => (document.hidden ? stop() : start());
-    document.addEventListener('visibilitychange', onVisibility);
+    document.addEventListener('visibilitychange', scope.gate);
+
+    // Static mode is decided here, never during render.
+    const nav = navigator as Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
+    const isStatic = window.matchMedia('(prefers-reduced-motion: reduce)').matches || nav.connection?.saveData === true || (nav.deviceMemory ?? 8) <= 2;
+    setRunning(!isStatic);
 
     return () => {
-      stop();
+      scope.stop();
       ro.disconnect();
       io.disconnect();
-      document.removeEventListener('visibilitychange', onVisibility);
+      document.removeEventListener('visibilitychange', scope.gate);
+      scopeRef.current = null;
     };
-  }, [reduced, windowSeconds, bpm, divisionsX, divisionsY]);
+  }, []);
+
+  useEffect(() => {
+    if (running !== null) scopeRef.current?.setRunning(running);
+  }, [running]);
+
+  // Honour a reduced-motion preference that changes while the page is open; the button can restart it.
+  useEffect(() => {
+    if (reduced) setRunning(false);
+  }, [reduced]);
 
   return (
-    <canvas
-      ref={ref}
-      role="img"
-      aria-label={label}
-      className={className}
-      style={{ display: 'block', width: '100%', height: '100%' }}
-    />
+    <div className="scope">
+      <div className="scope-bar scope-bar-top">
+        <button
+          type="button"
+          className="scope-run t-label"
+          aria-label="Run or stop the trace"
+          aria-pressed={running !== false}
+          onClick={() => setRunning((r) => r === false)}
+        >
+          <span>{running === false ? 'Stop' : 'Run'}</span>
+        </button>
+        <span className="t-label text-ink-3">Synthetic</span>
+      </div>
+      <div role="img" aria-label={ariaLabel} className="scope-plot">
+        <canvas ref={canvasRef} className="scope-canvas" />
+        <div className="scope-overlay" aria-hidden="true">
+          <span className="scope-vt t-micro" style={{ top: `${(0.92 - 0.52 * HI) * 100}%` }}>
+            VTH
+          </span>
+          <span className="scope-vt t-micro" style={{ top: `${(0.92 - 0.52 * LO) * 100}%` }}>
+            VTL
+          </span>
+        </div>
+      </div>
+      <div className="scope-bar scope-bar-bottom t-label" aria-hidden="true">
+        <span className="scope-legend">
+          <span className="text-ch1">CH1 PPG</span>
+          <span className="text-pen">CH2 Schmitt out</span>
+        </span>
+      </div>
+    </div>
   );
 }

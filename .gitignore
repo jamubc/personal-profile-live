@@ -32,3 +32,5 @@ coverage/
 
 # local component harness and its output
 /harness/
+
+/scripts/.og-render.html
