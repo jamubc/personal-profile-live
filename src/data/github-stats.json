@@ -1,0 +1,31 @@
+{
+  "fetchedAt": "2026-10-13T00:00:00.000Z",
+  "source": "github.com/jamubc profile pages, 2026-10-13",
+  "repos": {
+    "gemini-mcp-tool": { "stars": 2289, "forks": 203, "language": "TypeScript", "description": "MCP server that enables AI assistants to interact with Google Gemini CLI.", "pushedAt": "2026-07-21" },
+    "logic-pro-mcp-website": { "stars": 17, "forks": 5, "language": "TypeScript", "description": null, "pushedAt": "2025-06-29" },
+    "qwen-mcp-tool": { "stars": 13, "forks": 1, "language": "TypeScript", "description": null, "pushedAt": "2026-06-03" },
+    "grok-build-providers": { "stars": 10, "forks": 2, "language": "JavaScript", "description": "Integration tool to run third-party models directly within Grok Build without external background services.", "pushedAt": "2026-10-13" },
+    "Canvas_Downloader": { "stars": 6, "forks": 0, "language": "Python", "description": "A fast, safe, and customizable tool to download course content from Canvas (Instructure).", "pushedAt": "2026-04-11" },
+    "UBC-workday-to-calendar": { "stars": 3, "forks": 1, "language": "JavaScript", "description": "Convert Workday Excel schedule (.xlsx) exports to iCalendar (.ics) format.", "pushedAt": "2026-09-30" },
+    "ChatGPT-Shortcut-for-Google-Search": { "stars": 3, "forks": 0, "language": "JavaScript", "description": "Add a ChatGPT button inside the Google search bar container", "pushedAt": "2025-07-14" },
+    "2ManyTabs-MCP": { "stars": 2, "forks": 1, "language": "JavaScript", "description": "tab management, for your agent. List, group, close, and deduplicate tabs from your cluttered browser, over MCP.", "pushedAt": "2026-10-13" },
+    "toolbox": { "stars": 2, "forks": 0, "language": "TypeScript", "description": "Utilities for Claude Code", "pushedAt": "2026-10-13" },
+    "jamcli": { "stars": 0, "forks": 0, "language": "TypeScript", "description": "Multi-model CLI multi-tool", "pushedAt": "2026-10-13" },
+    "Sound-Solver": { "stars": 0, "forks": 0, "language": "Rust", "description": "Acoustic simulation suite for exhaust design", "pushedAt": "2026-09-29" },
+    "SISO-Space": { "stars": 0, "forks": 0, "language": null, "description": "Interactive MATLAB apps for control theory (PID, Bode, root locus)", "pushedAt": "2025-12-06" },
+    "JarvisAtHome": { "stars": 0, "forks": 0, "language": "JavaScript", "description": null, "pushedAt": "2026-09-28" },
+    "opencode-langsearch": { "stars": 0, "forks": 0, "language": "TypeScript", "description": "Unofficial OpenCode plugin adding LangSearch web search with optional filtering", "pushedAt": "2026-09-20" },
+    "opencode-ponytail-v2": { "stars": 1, "forks": 0, "language": "JavaScript", "description": "OpenCode V2 plugin that encourages minimal code output", "pushedAt": "2026-09-24" },
+    "claude-fighter": { "stars": 0, "forks": 0, "language": "Python", "description": "Terminal wrapper for Claude Code that shows an animated mascot while it works", "pushedAt": "2026-09-27" },
+    "stats-fan-keeper": { "stars": 0, "forks": 0, "language": "Shell", "description": "Keeps manual fan speed from reverting in the Stats macOS app on Apple Silicon", "pushedAt": "2026-09-27" },
+    "text-difference-viewer": { "stars": 0, "forks": 0, "language": "HTML", "description": "Lightweight Monaco-themed tool for comparing two texts", "pushedAt": "2026-09-02" },
+    "meta-agent": { "stars": 0, "forks": 0, "language": "Shell", "description": "Read-only meta-agent that audits other agents for safety risks", "pushedAt": "2026-06-09" },
+    "Element-Selector-tree-tool": { "stars": 0, "forks": 0, "language": "JavaScript", "description": "Hover-and-click tool for copying CSS selectors", "pushedAt": "2025-11-03" },
+    "canvas-mcp-tool": { "stars": 0, "forks": 0, "language": "TypeScript", "description": "MCP server that lets AI assistants query Canvas course details, assignments, and announcements.", "pushedAt": "2025-07-12" },
+    "engineer-mcp": { "stars": 1, "forks": 0, "language": null, "description": "allows AI to solve complex engineering challenges using engineering philosophy", "pushedAt": "2025-07-07" },
+    "claude-hook-sdk": { "stars": 1, "forks": 0, "language": "TypeScript", "description": null, "pushedAt": "2025-07-05" },
+    "InstantNotes": { "stars": 0, "forks": 0, "language": null, "description": "an attempt to capture ideas as quickly as possible, its a notes app.", "pushedAt": null },
+    "olis_oils_main": { "stars": 0, "forks": 0, "language": "TypeScript", "description": null, "pushedAt": "2026-01-06" }
+  }
+}
