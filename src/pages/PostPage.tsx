@@ -26,14 +26,14 @@ export default function PostPage({ sheet, data: blocks }: PageProps<Block[]>) {
   useSeo({
     title: `${article.seoTitle}${TITLE_SUFFIX}`,
     description: article.seoDescription,
-    path: sheet.route!,
+    path: sheet.route,
     type: 'article',
     publishedTime: article.date,
     jsonLd: [
-      blogPostingNode({ path: sheet.route!, title: article.title, description: article.summary, datePublished: article.date }),
+      blogPostingNode({ path: sheet.route, title: article.title, description: article.summary, datePublished: article.date }),
       breadcrumbNode([
         { name: 'Writing', path: '/writing' },
-        { name: article.title, path: sheet.route! },
+        { name: article.title, path: sheet.route },
       ]),
     ],
   });

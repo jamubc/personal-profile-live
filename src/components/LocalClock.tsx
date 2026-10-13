@@ -3,13 +3,13 @@ import { formatClock, msUntilNextMinute } from './clockTime';
 
 interface LocalClockProps {
   timeZone: string;
-  /** Shown on the server and on the first client render, before the clock is read. */
-  placeholder?: string;
 }
 
 /** Wall-clock time in a fixed zone, "HH:MM TZ", refreshed on the minute. Not announced to screen readers. */
-export function LocalClock({ timeZone, placeholder = 'PACIFIC TIME' }: LocalClockProps) {
-  const [text, setText] = useState(placeholder);
+const PLACEHOLDER = 'PACIFIC TIME';
+
+export function LocalClock({ timeZone }: LocalClockProps) {
+  const [text, setText] = useState(PLACEHOLDER);
 
   useEffect(() => {
     let timer: number | undefined;

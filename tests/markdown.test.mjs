@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import {
   parseMarkdown, extractToc, figureCount, readingMinutes,
-  figureBlocks, numberBlocks, documentToc, captionTitle, figureTitle, figureAlt, figureId, tokenizeInline,
+  figureBlocks, numberBlocks, documentToc, captionTitle, figureTitle, figureAlt, figureId, tokenizeInline, plainText,
 } from '../src/lib/markdown.ts';
 
 const content = (name) => readFileSync(new URL(`../src/content/${name}`, import.meta.url), 'utf8');
@@ -173,4 +173,28 @@ test('inline: a token holds raw markdown, so a link label or bold run can be tok
   for (const t of outer) tokenizeInline(t.text);
   assert.deepEqual(tokenizeInline(text), outer);
   assert.deepEqual(tokenizeInline('two `three`').map((t) => t.type), ['text', 'code']);
+});
+
+test('plainText leaves underscores alone, like the inline tokenizer', () => {
+  assert.equal(plainText('use ppg_monitor_v2 and __init__'), 'use ppg_monitor_v2 and __init__');
+  assert.equal(plainText('**bold** and *em* and `code` and [link](/x)'), 'bold and em and code and link');
+});
+
+test('edge cases: a number-led continuation line stays in its paragraph; only "1." starts a list mid-paragraph', () => {
+  const a = parseMarkdown('In short:\n2024. was the year\nthe project started.');
+  assert.deepEqual(a.map((b) => b.type), ['paragraph']);
+  const b = parseMarkdown('Steps:\n1. first\n2. second');
+  assert.deepEqual(b.map((x) => x.type), ['paragraph', 'list']);
+  assert.deepEqual(b[1].items, ['first', 'second']);
+  const c = parseMarkdown('1) one\n2) two');
+  assert.deepEqual(c.map((x) => x.type), ['list']);
+});
+
+test('edge cases: CRLF input, an unterminated fence and trailing hashes on headings', () => {
+  const crlf = parseMarkdown('## Title ##\r\n\r\nBody line.\r\n');
+  assert.equal(crlf[0].type, 'heading');
+  assert.equal(crlf[0].text, 'Title');
+  assert.equal(crlf[1].type, 'paragraph');
+  const fence = parseMarkdown('```\ncode\n');
+  assert.equal(fence[0].type, 'code');
 });

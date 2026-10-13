@@ -11,10 +11,10 @@ import type { PageProps } from '../routes';
 export default function WorksPage({ sheet }: PageProps<undefined>) {
   useSeo({
     ...META[sheet.id],
-    path: sheet.route!,
+    path: sheet.route,
     jsonLd: [
       collectionPageNode({
-        path: sheet.route!,
+        path: sheet.route,
         name: 'Works',
         description: META[sheet.id].description,
         items: works.map((w) => ({ name: w.title, url: w.href })),

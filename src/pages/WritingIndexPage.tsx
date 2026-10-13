@@ -23,10 +23,10 @@ export default function WritingIndexPage({ sheet, data: minutes }: PageProps<Min
   const posts = sortedArticles();
   useSeo({
     ...META[sheet.id],
-    path: sheet.route!,
+    path: sheet.route,
     jsonLd: [
       collectionPageNode({
-        path: sheet.route!,
+        path: sheet.route,
         name: 'Writing',
         description: META[sheet.id].description,
         items: posts.map((a) => ({ name: a.title, path: `/writing/${a.slug}` })),
@@ -39,6 +39,10 @@ export default function WritingIndexPage({ sheet, data: minutes }: PageProps<Min
       <header className="mb-12">
         <h1 className="t-h1">Writing</h1>
         <p className="mt-4 font-serif text-xl italic text-ink-2">Whatever I’m trying to understand this week.</p>
+        <p className="t-caption mt-3">
+          {posts.length} {posts.length === 1 ? 'post' : 'posts'} so far.
+          {posts.every((a) => a.aiGenerated) ? ' Each was drafted with AI assistance, and says so at the top.' : ''}
+        </p>
       </header>
       <ul className="border-t border-rule">
         {posts.map((a) => (

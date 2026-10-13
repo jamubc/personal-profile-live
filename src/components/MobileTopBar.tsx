@@ -16,7 +16,7 @@ export function MobileTopBar({ current }: { current: Sheet }) {
 
   return (
     <>
-      <header className="sticky top-0 z-chrome flex h-14 items-center justify-between border-b border-rule bg-paper px-4 md:px-6 lg:hidden">
+      <header className="no-print sticky top-0 z-chrome flex h-14 items-center justify-between border-b border-rule bg-paper px-4 md:px-6 lg:hidden">
         <AppLink to="/" className="inline-flex min-h-[44px] items-center font-mono text-[13px] font-medium text-ink">
           Andrew Manson
         </AppLink>

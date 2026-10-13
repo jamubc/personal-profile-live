@@ -16,3 +16,17 @@ const raw = (p: number) => g(wrap(p - 0.22), 0.09) + 0.55 * g(wrap(p - 0.54), 0.
 export const RAW_MAX = 1.0277;                        // max of raw() over one beat (checked by the acceptance test)
 export const ppg = (t: number) => raw(((t / T) % 1 + 1) % 1) / RAW_MAX;    // systolic peak at 0.22, dicrotic notch about 0.43, bump about 0.54
 export function makeSchmitt() { let out = false; return (v: number) => (out = !out && v >= HI ? true : out && v <= LO ? false : out); }
+
+/** What the renderer adds on top of ppg(): slow baseline wander and a little seeded noise. */
+export const NOISE = 0.01;
+export const wander = (t: number) => 0.03 * Math.sin(2 * Math.PI * 0.25 * t);
+export function mulberry32(seed: number): () => number {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+export const sample = (t: number, rng: () => number) => ppg(t) + wander(t) + (rng() * 2 - 1) * NOISE;

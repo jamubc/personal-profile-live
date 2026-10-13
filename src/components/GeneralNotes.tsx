@@ -4,13 +4,26 @@ interface GeneralNotesProps {
   id?: string;
 }
 
+/** A site path inside a note ("/llms.txt") becomes a link and keeps its case under the uppercase transform. */
+function linkPaths(note: string) {
+  return note.split(/(\/[\w.-]+\.[a-z]+)/).map((part, i) =>
+    part.startsWith('/') ? (
+      <a key={i} href={part} className="link-prose normal-case">
+        {part}
+      </a>
+    ) : (
+      part
+    ),
+  );
+}
+
 function NoteList({ notes }: { notes: string[] }) {
   return (
     <ol aria-label="General notes" className="m-0 grid list-none gap-2 p-0">
       {notes.map((note, i) => (
         <li key={note} className="t-label grid grid-cols-[auto_minmax(0,1fr)] gap-x-2 tracking-[0.04em] text-ink-2">
           <span>NOTE {i + 1}:</span>
-          <span>{note}</span>
+          <span>{linkPaths(note)}</span>
         </li>
       ))}
     </ol>

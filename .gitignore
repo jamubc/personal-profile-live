@@ -34,3 +34,6 @@ coverage/
 /harness/
 
 /scripts/.og-render.html
+
+# TypeScript incremental build info
+*.tsbuildinfo

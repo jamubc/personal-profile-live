@@ -6,12 +6,11 @@
  *  - in the browser the same hook updates the live <head> on client-side navigation.
  */
 import { createContext, useContext, useEffect } from 'react';
-import { SITE } from '../data/site';
+import { SITE, absoluteUrl } from '../data/site';
 import { OG_IMAGE, buildGraph } from '../seo/graph';
 
-export const SITE_URL = SITE.url;
-export const SITE_NAME = SITE.name;
-export const DEFAULT_IMAGE = OG_IMAGE;
+const SITE_NAME = SITE.name;
+const DEFAULT_IMAGE = OG_IMAGE;
 
 export interface Seo {
   title: string;
@@ -21,6 +20,8 @@ export interface Seo {
   type?: 'website' | 'article' | 'profile';
   image?: string;
   imageAlt?: string;
+  /** Social-card text when it should differ from the meta description (the cover). */
+  ogDescription?: string;
   publishedTime?: string;
   modifiedTime?: string;
   /** Page-specific JSON-LD nodes appended to the global graph. */
@@ -32,7 +33,7 @@ export interface Seo {
 export const SeoContext = createContext<{ collect?: (seo: Seo) => void }>({});
 
 const INDEXABLE = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
-const canonicalOf = (path: string): string => (path === '/' ? `${SITE_URL}/` : SITE_URL + path);
+const canonicalOf = absoluteUrl;
 const graphJson = (seo: Seo): string | null =>
   seo.noindex ? null : JSON.stringify({ '@context': 'https://schema.org', '@graph': buildGraph(seo.jsonLd, seo.path === '/') }).replace(/</g, '\\u003c');
 
@@ -70,11 +71,11 @@ export function useSeo(seo: Seo): void {
     setMeta('property', 'og:type', seo.type ?? 'website');
     setMeta('property', 'og:url', url);
     setMeta('property', 'og:title', seo.title);
-    setMeta('property', 'og:description', seo.description);
+    setMeta('property', 'og:description', seo.ogDescription ?? seo.description);
     setMeta('property', 'og:image', image);
     setMeta('property', 'og:image:alt', seo.imageAlt ?? seo.title);
     setMeta('name', 'twitter:title', seo.title);
-    setMeta('name', 'twitter:description', seo.description);
+    setMeta('name', 'twitter:description', seo.ogDescription ?? seo.description);
     setMeta('name', 'twitter:image', image);
     upsert(
       'link[rel="canonical"]',
@@ -97,7 +98,7 @@ export function useSeo(seo: Seo): void {
       document.head.appendChild(s);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- jsonLd is tracked through its serialized form `ld`
-  }, [seo.title, seo.description, seo.path, seo.type, seo.image, seo.imageAlt, seo.noindex, ld]);
+  }, [seo.title, seo.description, seo.ogDescription, seo.path, seo.type, seo.image, seo.imageAlt, seo.noindex, ld]);
 }
 
 const esc = (s: string): string => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -106,25 +107,29 @@ const esc = (s: string): string => s.replace(/&/g, '&amp;').replace(/"/g, '&quot
 export function renderHead(seo: Seo): string {
   const url = canonicalOf(seo.path);
   const image = seo.image ?? DEFAULT_IMAGE;
+  const social = seo.ogDescription ?? seo.description;
+  // A noindex page (the 404) carries only its title and the robots rule: no canonical, no card.
+  if (seo.noindex) return [`<title>${esc(seo.title)}</title>`, `<meta name="robots" content="noindex, nofollow" />`].join('\n    ');
   const tags: string[] = [
     `<title>${esc(seo.title)}</title>`,
     `<meta name="description" content="${esc(seo.description)}" />`,
-    `<meta name="robots" content="${seo.noindex ? 'noindex, nofollow' : INDEXABLE}" />`,
+    `<meta name="robots" content="${INDEXABLE}" />`,
     `<link rel="canonical" href="${esc(url)}" />`,
     `<meta property="og:type" content="${seo.type ?? 'website'}" />`,
     `<meta property="og:site_name" content="${SITE_NAME}" />`,
     `<meta property="og:locale" content="en_US" />`,
     `<meta property="og:url" content="${esc(url)}" />`,
     `<meta property="og:title" content="${esc(seo.title)}" />`,
-    `<meta property="og:description" content="${esc(seo.description)}" />`,
+    `<meta property="og:description" content="${esc(social)}" />`,
     `<meta property="og:image" content="${esc(image)}" />`,
-    `<meta property="og:image:type" content="image/png" />`,
-    `<meta property="og:image:width" content="1200" />`,
-    `<meta property="og:image:height" content="630" />`,
+    // The site card's dimensions are known; a figure's are not declared.
+    ...(image === DEFAULT_IMAGE
+      ? [`<meta property="og:image:type" content="image/png" />`, `<meta property="og:image:width" content="1200" />`, `<meta property="og:image:height" content="630" />`]
+      : []),
     `<meta property="og:image:alt" content="${esc(seo.imageAlt ?? seo.title)}" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${esc(seo.title)}" />`,
-    `<meta name="twitter:description" content="${esc(seo.description)}" />`,
+    `<meta name="twitter:description" content="${esc(social)}" />`,
     `<meta name="twitter:image" content="${esc(image)}" />`,
   ];
   if (seo.publishedTime) tags.push(`<meta property="article:published_time" content="${esc(seo.publishedTime)}" />`);

@@ -19,7 +19,7 @@ export default [
   },
   { ...jsxA11y.flatConfigs.recommended, files: ['src/**/*.tsx'] },
   {
-    files: ['scripts/**/*.mjs', 'plugins/**/*.ts', 'tests/**/*.mjs', '*.config.{js,ts}'],
+    files: ['scripts/**/*.mjs', 'tests/**/*.mjs', '*.config.{js,ts}'],
     languageOptions: { globals: { ...globals.node } },
   },
   {

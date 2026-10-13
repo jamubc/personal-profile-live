@@ -7,8 +7,8 @@ export interface SectionCutMarkProps {
   href: string;
   /** Plain-language description of what is at the cut; becomes the accessible name. */
   label: string;
-  /** Figure number the cut links to, named in the accessible label. */
-  figure?: number;
+  /** Figure numbers the cut covers, named in the accessible label; the link goes to the first. */
+  figures?: number[];
   style?: CSSProperties;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 }
@@ -19,8 +19,10 @@ export interface SectionCutMarkProps {
  * like at that point; hover, focus or a matching figure in view thickens the mark.
  * 28 x 64 px; the signal path crosses it at y = 32.
  */
-export function SectionCutMark({ id, active = false, href, label, figure, style, onClick }: SectionCutMarkProps) {
-  const name = `Section ${id}-${id}${figure ? `, Figure ${figure}` : ''}: ${label}`;
+const figureList = (figures: number[]): string => (figures.length > 1 ? `Figures ${figures.slice(0, -1).join(', ')} and ${figures[figures.length - 1]}` : `Figure ${figures[0]}`);
+
+export function SectionCutMark({ id, active = false, href, label, figures = [], style, onClick }: SectionCutMarkProps) {
+  const name = `Section ${id}-${id}${figures.length ? `, ${figureList(figures)}` : ''}: ${label}`;
   return (
     <a href={href} aria-label={name} data-active={active ? 'true' : undefined} className="cut-mark" style={style} onClick={onClick}>
       <svg width="28" height="64" viewBox="0 0 28 64" fill="none" aria-hidden="true" focusable="false">

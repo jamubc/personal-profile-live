@@ -1,6 +1,8 @@
-// Refreshes src/data/github-stats.json from the public GitHub API at build time.
-// Falls back silently to the committed JSON when offline or rate-limited, so the
-// build never depends on the network. Run: node scripts/fetch-github-stats.mjs
+// Refreshes src/data/github-stats.json from the public GitHub API. Run it by hand and commit the
+// result; it is never part of the build, so a build never depends on the network.
+//   node scripts/fetch-github-stats.mjs
+// Records each public repo's stars, forks, language, description and last push, plus the profile's
+// public repository count (forks included, as the GitHub profile counts them).
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
@@ -11,6 +13,12 @@ const USER = 'jamubc';
 
 const headers = { Accept: 'application/vnd.github+json', 'User-Agent': 'jandrewmanson.engineer build' };
 if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+
+async function fetchJson(url) {
+  const res = await fetch(url, { headers, signal: AbortSignal.timeout(10000) });
+  if (!res.ok) throw new Error(`GitHub API ${res.status} for ${url}`);
+  return res.json();
+}
 
 async function fetchAll() {
   const repos = [];
@@ -29,7 +37,8 @@ try { previous = JSON.parse(readFileSync(OUT, 'utf8')); } catch { /* first run *
 
 try {
   const repos = await fetchAll();
-  const next = { fetchedAt: new Date().toISOString(), repos: {} };
+  const user = await fetchJson(`https://api.github.com/users/${USER}`);
+  const next = { fetchedAt: new Date().toISOString(), source: 'api.github.com', publicRepos: user.public_repos, repos: {} };
   for (const r of repos) {
     if (r.fork) continue;
     next.repos[r.name] = {
@@ -37,9 +46,7 @@ try {
       forks: r.forks_count,
       language: r.language,
       description: r.description,
-      pushedAt: r.pushed_at,
-      archived: r.archived,
-      homepage: r.homepage || null,
+      pushedAt: r.pushed_at.slice(0, 10),
     };
   }
   writeFileSync(OUT, JSON.stringify(next, null, 2) + '\n');

@@ -1,4 +1,4 @@
-import { SITE, LINKS } from '../data/site';
+import { SITE, LINKS, absoluteUrl } from '../data/site';
 
 /** JSON-LD builders. The Person and WebSite nodes are the author's, kept verbatim from the old index.html. */
 type Node = Record<string, unknown>;
@@ -7,7 +7,7 @@ export const PERSON_ID = `${SITE.url}/#person`;
 export const WEBSITE_ID = `${SITE.url}/#website`;
 export const OG_IMAGE = `${SITE.url}/og-image.png`;
 
-const url = (path: string): string => (path === '/' ? `${SITE.url}/` : SITE.url + path);
+const url = absoluteUrl;
 
 export const personNode = (): Node => ({
   '@type': 'Person',

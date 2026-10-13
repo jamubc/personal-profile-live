@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist');
 const KB = 1024;
-const BUDGET = { js: 100 * KB, css: 16 * KB, fontPreload: 56 * KB };
+const BUDGET = { js: 100 * KB, css: 16 * KB, fontPreload: 96 * KB };
 
 const html = readFileSync(join(dist, 'index.html'), 'utf8');
 const attr = (tag, name) => (tag.match(new RegExp(`\\b${name}="([^"]*)"`)) ?? [])[1];

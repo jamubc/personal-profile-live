@@ -1,7 +1,7 @@
 import { ScheduleTable } from '../components/ScheduleTable';
 import { StatusChip } from '../components/StatusChip';
 import { engineeringColumns, engineeringGroup, engineeringRows } from '../components/schedules';
-import { COURSEWORK_NOTE, engineering } from '../data/engineering';
+import { engineering } from '../data/engineering';
 import { loadDocument } from '../lib/content';
 import { renderInline } from '../lib/renderInline';
 import type { Block } from '../lib/markdown';
@@ -12,21 +12,23 @@ import { SheetTitle } from '../components/SheetTitle';
 import { sheetById } from '../data/sheets';
 import type { PageProps } from '../routes';
 
-export const loadData = (): Promise<Block[]> => loadDocument(COURSEWORK_NOTE.contentFile);
+const COURSEWORK_NOTE = sheetById('E-107')!;
+
+export const loadData = (): Promise<Block[]> => loadDocument(COURSEWORK_NOTE.contentFile!);
 
 export default function EngineeringIndexPage({ sheet, data: coursework }: PageProps<Block[]>) {
   const issued = engineering.filter((e) => e.status === 'issued');
   useSeo({
     ...META[sheet.id],
-    path: sheet.route!,
+    path: sheet.route,
     jsonLd: [
       collectionPageNode({
-        path: sheet.route!,
+        path: sheet.route,
         name: 'Engineering & Research',
         description: META[sheet.id].description,
-        items: issued.map((e) => ({ name: e.title, path: sheetById(e.sheet)!.route! })),
+        items: issued.map((e) => ({ name: e.title, path: sheetById(e.sheet)?.route ?? '/projects' })),
       }),
-      breadcrumbNode([{ name: 'Engineering & Research', path: sheet.route! }]),
+      breadcrumbNode([{ name: 'Engineering & Research', path: sheet.route }]),
     ],
   });
 
@@ -47,7 +49,7 @@ export default function EngineeringIndexPage({ sheet, data: coursework }: PagePr
 
       <section aria-labelledby="coursework" className="mt-16 max-w-measure border border-rule-strong bg-paper-2 p-4 md:p-6">
         <p className="t-label flex flex-wrap items-center gap-3 text-ink-3">
-          {COURSEWORK_NOTE.sheet} · Coursework note <StatusChip kind="note" />
+          {COURSEWORK_NOTE.id} · Coursework note <StatusChip kind="note" />
         </p>
         <h2 id="coursework" className="t-h3 mt-3">
           {COURSEWORK_NOTE.title}

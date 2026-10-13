@@ -26,6 +26,11 @@ const External = ({ href, children }: { href: string; children: ReactNode }) => 
   </a>
 );
 
+/** A column header with a plain-language decoding of the drafting term. */
+function Hint({ text, children }: { text: string; children: ReactNode }) {
+  return <span title={text}>{children}</span>;
+}
+
 /* ---------------------------------- Engineering (E) ---------------------------------- */
 
 export const engineeringColumns: Column[] = [
@@ -33,7 +38,7 @@ export const engineeringColumns: Column[] = [
   { key: 'title', label: 'Title' },
   { key: 'key', label: 'Key figure', width: '220px' },
   { key: 'tags', label: 'Tags', width: '200px', hideBelow: 'lg' },
-  { key: 'status', label: 'Status', width: '104px' },
+  { key: 'status', label: 'Status', width: '128px', stack: 'lead' },
 ];
 
 /** E-103 has no photograph, so its thumbnail is a miniature of its single-line diagram. */
@@ -69,7 +74,7 @@ export function engineeringRows(): Row[] {
       cells: {
         sheet: e.sheet,
         title: e.title,
-        key: e.keyFigure ?? '—',
+        key: e.keyFigure ?? <span className="hidden md:inline">—</span>,
         tags: e.tags.slice(0, 3).join(' · '),
         status: issued ? (
           <StatusChip kind="issued" />
@@ -96,17 +101,18 @@ export function ossColumns(full: boolean): Column[] {
     ? [
         { key: 'item', label: 'Item', width: '48px', mono: true, stack: 'lead' },
         { key: 'symbol', label: 'Symbol', width: '56px', stack: 'aside' },
-        { key: 'component', label: 'Component', width: '210px', part: 'title' },
-        { key: 'description', label: 'Description' },
-        { key: 'material', label: 'Material', width: '110px', hideBelow: 'lg' },
-        { key: 'qty', label: 'QTY (★)', width: '88px', align: 'right', mono: true },
-        { key: 'ref', label: 'Ref', width: '210px' },
+        { key: 'component', label: 'Component', width: '200px', part: 'title' },
+        // Under 900px the description moves under the name (showAbstract="narrow" on the table).
+        { key: 'description', label: 'Description', hideBelow: 'lg', stack: 'hide' },
+        { key: 'material', label: <Hint text="Main programming language">Material</Hint>, width: '110px', stack: 'lead' },
+        { key: 'qty', label: <Hint text="GitHub stars">QTY (★)</Hint>, width: '88px', align: 'right', mono: true, stack: 'lead', stackLabel: '★' },
+        { key: 'ref', label: 'Ref', width: '170px' },
       ]
     : [
         { key: 'symbol', label: 'Symbol', width: '56px', stack: 'aside' },
         { key: 'component', label: 'Component', part: 'title' },
-        { key: 'material', label: 'Material', width: '120px', hideBelow: 'lg' },
-        { key: 'qty', label: 'QTY (★)', width: '88px', align: 'right', mono: true },
+        { key: 'material', label: <Hint text="Main programming language">Material</Hint>, width: '120px', hideBelow: 'lg', stack: 'lead' },
+        { key: 'qty', label: <Hint text="GitHub stars">QTY (★)</Hint>, width: '88px', align: 'right', mono: true, stack: 'lead', stackLabel: '★' },
       ];
 }
 
@@ -119,6 +125,7 @@ const qtyOf = (r: Repo): string => {
 export function ossFullRows(): Row[] {
   return repos.map((r, i) => ({
     id: r.name,
+    abstract: r.description,
     cells: {
       item: String(i + 1),
       symbol: <SchematicSymbol kind={r.symbol} size={40} />,
@@ -192,7 +199,7 @@ export const worksColumns: Column[] = [
   { key: 'sheet', label: 'Sheet', width: '72px', mono: true },
   { key: 'work', label: 'Work' },
   { key: 'scope', label: 'Scope', width: '260px' },
-  { key: 'year', label: 'Year', width: '72px', mono: true },
+  { key: 'year', label: 'Year', width: '72px', mono: true, stackLabel: 'Year' },
   { key: 'ref', label: 'Ref', width: '150px' },
 ];
 
@@ -201,7 +208,7 @@ export function worksRows(): Row[] {
     id: w.sheet,
     href: w.href,
     external: true,
-    cells: { sheet: w.sheet, work: w.title, scope: w.scope, year: w.year, ref: `${w.ref} ↗` },
+    cells: { sheet: w.sheet, work: w.title, scope: w.scope, year: w.year, ref: <External href={w.href}>{w.ref}</External> },
   }));
 }
 

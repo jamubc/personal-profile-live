@@ -11,11 +11,11 @@ export const AppLink = forwardRef<HTMLAnchorElement, LinkProps>(function AppLink
       ref={ref}
       to={to}
       onPointerEnter={(e) => {
-        void preloadRoute(path);
+        preloadRoute(path).catch(() => undefined);
         onPointerEnter?.(e);
       }}
       onFocus={(e) => {
-        void preloadRoute(path);
+        preloadRoute(path).catch(() => undefined);
         onFocus?.(e);
       }}
       {...rest}

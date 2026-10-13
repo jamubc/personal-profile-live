@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { sheets, sheetById, sheetByRoute, neighbours, publishedSheets, indexSheets, parentOf } from '../src/data/sheets.ts';
+import { sheets, sheetById, neighbours, publishedSheets, indexSheets, parentOf } from '../src/data/sheets.ts';
 import { formatDate } from '../src/lib/format.ts';
 
 test('sheet ids are unique and every issued sheet except the 404 has a route', () => {
@@ -41,14 +41,10 @@ test('neighbours stay inside the series and do not wrap', () => {
   assert.equal(parentOf(sheetById('W-302')).id, 'W-300');
 });
 
-test('route lookup ignores a trailing slash', () => {
-  assert.equal(sheetByRoute('/projects/apple-classifier/').id, 'E-101');
-  assert.equal(sheetByRoute('/'). id, 'G-001');
-  assert.equal(sheetByRoute('/nope'), undefined);
-});
 
-test('formatDate does not shift a day west of UTC', () => {
+test('formatDate prints the ISO date as given, so it can never shift a day', () => {
   process.env.TZ = 'America/Vancouver';
-  assert.equal(formatDate('2025-11-17'), 'November 17, 2025');
-  assert.equal(formatDate('2026-01-01'), 'January 1, 2026');
+  assert.equal(formatDate('2025-11-17'), '2025-11-17');
+  assert.equal(formatDate('2025-11-17T23:00:00Z'), '2025-11-17');
+  assert.equal(formatDate('2026-01-01'), '2026-01-01');
 });

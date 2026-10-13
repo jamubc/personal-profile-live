@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { HI, LO, makeSchmitt, ppg } from '../lib/scope';
+import { HI, LO, makeSchmitt, mulberry32, sample } from '../lib/scope';
 import { useReducedMotion } from '../lib/hooks';
 import './SignalTrace.css';
 
@@ -12,18 +12,6 @@ const GAP = 24; // px of blank ahead of the write-head
 const FRAME_MS = 33; // 30 fps cap
 const STATIC_OFFSET = 1.9; // start time of the static frame: three beats and their edges in view
 const DIV_X = 8;
-
-/** Seeded PRNG for the +-0.01 noise, so every visitor sees the same trace. */
-function mulberry32(seed: number): () => number {
-  let a = seed >>> 0;
-  return () => {
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-const wander = (t: number) => 0.03 * Math.sin(2 * Math.PI * 0.25 * t);
 
 interface Colours {
   rule: string;
@@ -51,7 +39,7 @@ function createScope(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, c
 
   const colDt = () => WINDOW / W;
   const write = (x: number) => {
-    const v = ppg(time) + wander(time) + (rng() * 2 - 1) * 0.01;
+    const v = sample(time, rng);
     ch1[x] = v;
     ch2[x] = schmitt(v) ? 1 : 0;
     time += colDt();
@@ -279,14 +267,14 @@ export function SignalTrace({ ariaLabel }: SignalTraceProps) {
       <div className="scope-bar scope-bar-top">
         <button
           type="button"
-          className="scope-run t-label"
+          className="scope-run no-print t-label"
           aria-label="Run or stop the trace"
           aria-pressed={running !== false}
           onClick={() => setRunning((r) => r === false)}
         >
           <span>{running === false ? 'Stop' : 'Run'}</span>
         </button>
-        <span className="t-label text-ink-3">Synthetic</span>
+        <span className="t-label text-ink-3" title="Simulated signal, not measured data">Synthetic</span>
       </div>
       <div role="img" aria-label={ariaLabel} className="scope-plot">
         <canvas ref={canvasRef} className="scope-canvas" />

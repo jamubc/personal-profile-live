@@ -20,27 +20,29 @@ function Channel({ label, value, href, external = true }: ChannelProps) {
       <a
         href={href}
         {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-        className="group flex min-h-[56px] items-center justify-between gap-4 px-1 hover:bg-paper-3 md:px-3"
+        className="group flex min-h-[56px] flex-col justify-center gap-1 px-1 py-2 hover:bg-paper-3 sm:flex-row sm:items-center sm:gap-4 sm:py-0 md:px-3"
       >
-        <span className="t-label w-28 shrink-0 text-ink-3 md:w-36">{label}</span>
-        <span className="min-w-0 flex-1 break-words text-ink group-hover:text-pen">{value}</span>
-        {external && (
-          <>
-            <span aria-hidden="true" className="text-ink-3">↗</span>
-            <span className="sr-only">(opens in a new tab)</span>
-          </>
-        )}
+        <span className="t-label shrink-0 text-ink-3 sm:w-28 md:w-36">{label}</span>
+        <span className="min-w-0 flex-1 break-words text-ink group-hover:text-pen">
+          {value}
+          {external && (
+            <>
+              <span aria-hidden="true" className="ml-2 text-ink-3">↗</span>
+              <span className="sr-only">(opens in a new tab)</span>
+            </>
+          )}
+        </span>
       </a>
     </li>
   );
 }
 
 export default function ContactPage({ sheet }: PageProps<undefined>) {
-  useSeo({ ...META[sheet.id], path: sheet.route!, jsonLd: [contactPageNode(sheet.route!)] });
+  useSeo({ ...META[sheet.id], path: sheet.route, jsonLd: [contactPageNode(sheet.route)] });
 
   return (
     <>
-      <SheetTitle title="Contact" lead="Hiring, a question about a project, or something to say about the open-source tools: any of these reaches me." />
+      <SheetTitle title="Contact" lead="Hiring, a question about a project, or something to say about the open-source tools: any of the channels below reaches me." />
       <section aria-labelledby="transmittal" className="max-w-[44rem] border border-rule-strong bg-paper-2 p-4 md:p-6">
         <h2 id="transmittal" className="t-label text-ink-3">
           Transmittal · Set {SITE.set}
@@ -61,9 +63,9 @@ export default function ContactPage({ sheet }: PageProps<undefined>) {
           <li className="flex flex-wrap items-center justify-between gap-x-3 border-b border-rule">
             <a
               href={`mailto:${SITE.email}`}
-              className="group flex min-h-[56px] min-w-[16rem] flex-1 items-center justify-between gap-4 px-1 hover:bg-paper-3 md:px-3"
+              className="group flex min-h-[56px] min-w-[16rem] flex-1 flex-col justify-center gap-1 px-1 py-2 hover:bg-paper-3 sm:flex-row sm:items-center sm:gap-4 sm:py-0 md:px-3"
             >
-              <span className="t-label w-24 shrink-0 text-ink-3 sm:w-28 md:w-36">Email</span>
+              <span className="t-label shrink-0 text-ink-3 sm:w-28 md:w-36">Email</span>
               <span className="min-w-0 flex-1 break-words text-ink group-hover:text-pen">{SITE.email}</span>
             </a>
             <span className="mb-2 ml-auto sm:mb-0">

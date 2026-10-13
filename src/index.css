@@ -163,6 +163,11 @@
     background-size: 128px 128px, 128px 128px, 32px 32px, 32px 32px;
   }
 }
+@media (forced-colors: active) {
+  /* The light matte is the figure's paper: keep it, or multiply turns the picture black. */
+  .plate-light { forced-color-adjust: none; }
+}
+
 @media (prefers-contrast: more), (forced-colors: active) {
   .sheet-grid { background-image: none; }
 }
@@ -181,6 +186,7 @@
     --pen: #005f7a; --pen-hover: #005f7a; --ch1: #7a5a00; --redline: #b3261e;
   }
   .no-print, .skip-link, dialog { display: none !important; }
+  .sheet-wrap { margin: 0 !important; padding: 0 !important; }
   .sheet-grid { background-image: none !important; }
   figure, .plate { break-inside: avoid; }
   main a[href^='http']::after { content: ' (' attr(href) ')'; font-size: 0.8em; color: var(--ink-3); }

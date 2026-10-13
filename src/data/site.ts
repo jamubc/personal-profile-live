@@ -50,3 +50,6 @@ export const SITE_REVISIONS: Revision[] = [
 ];
 
 export const CURRENT_REV = SITE_REVISIONS[0];
+
+/** Absolute URL of a site path. */
+export const absoluteUrl = (path: string): string => `${SITE.url}${path === '/' ? '/' : path}`;

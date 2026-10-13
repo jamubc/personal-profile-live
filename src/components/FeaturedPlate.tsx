@@ -12,7 +12,7 @@ export function FeaturedPlate() {
   const size = (figures as Record<string, FigureInfo>)[src];
   return (
     <section aria-labelledby="featured-e101" className="border border-rule-strong bg-paper-2 lg:grid lg:grid-cols-12">
-      <AppLink to="/projects/apple-classifier" tabIndex={-1} aria-hidden="true" className="block lg:col-span-5">
+      <AppLink to="/projects/apple-classifier" tabIndex={-1} className="block lg:col-span-5">
         <img
           src={src}
           width={size?.w}

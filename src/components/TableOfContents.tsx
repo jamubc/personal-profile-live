@@ -4,8 +4,6 @@ import type { TocFigure, TocSection } from '../lib/markdown';
 export interface TableOfContentsProps {
   sections: TocSection[];
   figures?: TocFigure[];
-  /** Replaces the disclosure summary and the nav name, for example "In this post". */
-  label?: string;
 }
 
 const pad = (n: number): string => String(n).padStart(2, '0');
@@ -80,10 +78,10 @@ function TocLists({ heading, sections, figures, active }: TocListsProps) {
  * stretches to the prose); below that it is a native <details> that is closed by default. The section in view
  * (useActiveHeading) carries aria-current="location", a pen colour and an extended leader line.
  */
-export function TableOfContents({ sections, figures = [], label }: TableOfContentsProps) {
+export function TableOfContents({ sections, figures = [] }: TableOfContentsProps) {
   const active = useActiveHeading(sections.map((s) => s.id), ACTIVE_BAND);
-  const heading = label ?? 'Contents';
-  const summary = label ?? `Contents (${sections.length})${figures.length > 0 ? ` · Figures (${figures.length})` : ''}`;
+  const heading = 'Contents';
+  const summary = `Contents (${sections.length})${figures.length > 0 ? ` · Figures (${figures.length})` : ''}`;
   const lists = <TocLists heading={heading} sections={sections} figures={figures} active={active} />;
   return (
     <div className="min-w-0">

@@ -14,7 +14,7 @@ import type { Sheet } from '../data/sheets';
 import { SITE } from '../data/site';
 import figures from '../generated/figures.json';
 import { loadDocument } from '../lib/content';
-import { extractToc } from '../lib/markdown';
+import { documentToc } from '../lib/markdown';
 import type { Block } from '../lib/markdown';
 import { useSeo } from '../lib/seo';
 import { breadcrumbNode, techArticleNode } from '../seo/graph';
@@ -26,16 +26,10 @@ type FigureInfo = { plate: 'light' | 'none' };
 
 export const loadData = (sheet: Sheet): Promise<Block[]> => loadDocument(sheet.contentFile!);
 
-/** Caption up to the first em dash, for the figure list in the table of contents. */
-const figureTitle = (caption: string | undefined): string => {
-  const head = (caption ?? '').split(' — ')[0];
-  return head.length > 44 ? `${head.slice(0, 43).trimEnd()}…` : head;
-};
-
 export default function CaseStudyPage({ sheet, data: blocks }: PageProps<Block[]>) {
   const entry = engineeringBySheet(sheet.id)!;
   const images = blocks.filter((b): b is ImageBlock => b.type === 'image');
-  const sections = extractToc(blocks, [2]);
+  const toc = documentToc(blocks, true);
   const coverFig = entry.cover?.kind === 'figure' ? entry.cover.n : undefined;
   const cover = coverFig ? images[coverFig - 1] : undefined;
   const { prev, next, index } = neighbours(sheet);
@@ -43,12 +37,12 @@ export default function CaseStudyPage({ sheet, data: blocks }: PageProps<Block[]
 
   useSeo({
     ...META[sheet.id],
-    path: sheet.route!,
+    path: sheet.route,
     type: 'article',
     // The share card stays the site's 1200 x 630 image: a figure's aspect ratio is not a card's.
     jsonLd: [
       techArticleNode({
-        path: sheet.route!,
+        path: sheet.route,
         title: sheet.title,
         description: META[sheet.id].description,
         image: cover ? `${SITE.url}${cover.src}` : undefined,
@@ -56,7 +50,7 @@ export default function CaseStudyPage({ sheet, data: blocks }: PageProps<Block[]
       }),
       breadcrumbNode([
         { name: 'Engineering & Research', path: '/projects' },
-        { name: sheet.title, path: sheet.route! },
+        { name: sheet.title, path: sheet.route },
       ]),
     ],
   });
@@ -114,10 +108,7 @@ export default function CaseStudyPage({ sheet, data: blocks }: PageProps<Block[]
       )}
 
       <div className="mt-16 xl:grid xl:grid-cols-[240px_minmax(0,1fr)] xl:gap-12">
-        <TableOfContents
-          sections={sections.map((s, i) => ({ id: s.id, n: i + 1, title: s.text }))}
-          figures={images.map((img, i) => ({ n: i + 1, id: `fig-${i + 1}`, title: figureTitle(img.caption) }))}
-        />
+        <TableOfContents sections={toc.sections} figures={toc.figures} />
         <div className="min-w-0 max-w-measure">
           <ProseRenderer blocks={blocks} coverFig={coverFig} />
         </div>

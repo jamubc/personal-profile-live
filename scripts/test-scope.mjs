@@ -3,19 +3,7 @@
 // Exits non-zero if the Schmitt trigger does not fire exactly once per beat, or if a plain threshold
 // comparator does not double-trigger on the dicrotic bump (the behaviour the figure demonstrates).
 import { fileURLToPath } from 'node:url';
-import { BPM, HI, LO, RAW_MAX, T, makeSchmitt, ppg } from '../src/lib/scope.ts';
-
-/** Same seeded generator the renderer uses for its +-0.01 noise. */
-export function mulberry32(seed) {
-  let a = seed >>> 0;
-  return () => {
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-export const wander = (t) => 0.03 * Math.sin(2 * Math.PI * 0.25 * t);
+import { BPM, HI, LO, RAW_MAX, T, makeSchmitt, mulberry32, ppg, sample } from '../src/lib/scope.ts';
 
 /** Simulate `seconds` of signal at `rate` Hz with wander and noise; count edges both ways. */
 export function simulate({ seconds = 120, rate = 60, naiveThreshold = 0.48, seed = 1 } = {}) {
@@ -28,7 +16,7 @@ export function simulate({ seconds = 120, rate = 60, naiveThreshold = 0.48, seed
   const n = Math.round(seconds * rate);
   for (let i = 0; i < n; i++) {
     const t = i / rate;
-    const v = ppg(t) + wander(t) + (rng() * 2 - 1) * 0.01;
+    const v = sample(t, rng); // the renderer's exact signal: ppg plus wander plus seeded noise
     const out = schmitt(v);
     if (out && !prev) schmittEdges++;
     prev = out;

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useNavigationType } from 'react-router-dom';
 import { articleBySlug } from '../data/articles';
 import type { Sheet } from '../data/sheets';
 
@@ -11,14 +11,19 @@ const LEGACY_HASH: Record<string, { to: string; replaceHash?: string }> = {
   '#engineering': { to: '/', replaceHash: '#schedule-e' },
 };
 
+/** Scroll offsets by history entry, so Back and Forward land where the visitor left. */
+const positions = new Map<string, number>();
+
 /**
- * Route-change housekeeping: legacy URL handling, scroll to top (or to the hash), focus to #main,
- * and a polite announcement of the new sheet. Nothing else in the app reads window.location.
+ * Route-change housekeeping: legacy URL handling, scroll (to the top, to the hash, or back to where a
+ * history entry was left), focus (to #main on a new sheet, to the target on an in-page jump), and a
+ * polite announcement of the new sheet. Nothing else in the app reads window.location.
  */
 export function ScrollManager({ sheet }: { sheet: Sheet }) {
-  const { pathname, hash, search } = useLocation();
+  const { pathname, hash, search, key } = useLocation();
+  const navigationType = useNavigationType();
   const navigate = useNavigate();
-  const first = useRef(true);
+  const previous = useRef<{ pathname: string; key: string } | null>(null);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -32,17 +37,34 @@ export function ScrollManager({ sheet }: { sheet: Sheet }) {
     }
   }, [pathname, hash, search, navigate]);
 
+  // The app owns scrolling, so the browser's own restoration must not race it.
   useEffect(() => {
-    if (first.current) {
-      first.current = false;
+    window.history.scrollRestoration = 'manual';
+  }, []);
+
+  useEffect(() => {
+    const prev = previous.current;
+    previous.current = { pathname, key };
+    if (!prev) return; // first render: the browser has already placed the prerendered page
+    positions.set(prev.key, window.scrollY);
+
+    const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
+    if (prev.pathname === pathname) {
+      // An in-page jump (table of contents, section cut): go to the target and continue the tab order from it.
+      if (target) {
+        target.scrollIntoView({ block: 'start' });
+        if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      }
       return;
     }
-    const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
-    if (target) target.scrollIntoView({ block: 'start' });
+    const saved = navigationType === 'POP' ? positions.get(key) : undefined;
+    if (saved !== undefined) window.scrollTo({ top: saved, left: 0, behavior: 'instant' as ScrollBehavior });
+    else if (target) target.scrollIntoView({ block: 'start' });
     else window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
     document.getElementById('main')?.focus({ preventScroll: true });
     setMessage(`Sheet ${sheet.id}, ${sheet.title}`);
-  }, [pathname, hash, sheet.id, sheet.title]);
+  }, [pathname, hash, key, navigationType, sheet.id, sheet.title]);
 
   return (
     <div role="status" aria-live="polite" className="sr-only">

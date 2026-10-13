@@ -23,9 +23,9 @@ const { render, prerenderPaths, sitemapXml, llmsTxt, checkRegistry } = server;
 const problems = checkRegistry();
 if (problems.length) fail(`registry check failed:\n  - ${problems.join('\n  - ')}`);
 
-// Preload the three fonts used on first paint.
+// Preload every face used on first paint (the index column name is Mono 600, labels Mono 500, headings Sans 600).
 const assets = readdirSync(join(dist, 'assets'));
-const preloads = ['ibm-plex-mono-latin-400-normal', 'ibm-plex-mono-latin-600-normal', 'ibm-plex-sans-latin-400-normal'].map((name) => {
+const preloads = ['ibm-plex-mono-latin-400-normal', 'ibm-plex-mono-latin-500-normal', 'ibm-plex-mono-latin-600-normal', 'ibm-plex-sans-latin-400-normal', 'ibm-plex-sans-latin-600-normal'].map((name) => {
   const file = assets.find((f) => f.startsWith(`${name}-`) && f.endsWith('.woff2'));
   if (!file) fail(`font file for ${name} not found in dist/assets`);
   return `<link rel="preload" as="font" type="font/woff2" href="/assets/${file}" crossorigin />`;

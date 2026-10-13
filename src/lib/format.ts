@@ -1,4 +1,2 @@
-const dateFmt = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-
-/** "November 17, 2025". Formatted in UTC so a date-only ISO string never shifts a day west of Greenwich. */
-export const formatDate = (iso: string): string => dateFmt.format(new Date(`${iso}T00:00:00Z`));
+/** Dates print as ISO (2025-11-17) everywhere on the sheets, the same form the title blocks use. */
+export const formatDate = (iso: string): string => iso.slice(0, 10);

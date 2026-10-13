@@ -8,7 +8,7 @@ import type { Sheet } from '../data/sheets';
 export function IndexColumn({ current }: { current: Sheet }) {
   const parent = parentOf(current);
   return (
-    <header className="scroll-region fixed inset-y-0 left-0 z-chrome hidden w-[256px] flex-col border-r border-rule bg-paper p-6 lg:flex">
+    <header className="no-print scroll-region fixed inset-y-0 left-0 z-chrome hidden w-[256px] flex-col border-r border-rule bg-paper p-6 lg:flex">
       <div className="flex items-center gap-3">
         <AppLink to="/" aria-label="Andrew Manson, home" className="shrink-0 text-ink">
           <RegistrationMark size={24} />

@@ -27,7 +27,12 @@ import { META } from '../seo/meta';
 import type { PageProps } from '../routes';
 
 export default function CoverPage({ sheet }: PageProps<undefined>) {
-  useSeo({ ...META[sheet.id], path: sheet.route! });
+  useSeo({
+    ...META[sheet.id],
+    path: sheet.route,
+    ogDescription: 'Electrical engineer (UBC Okanagan, EGBC EIT). Built a machine-vision apple grader (96% in controlled tests). Maintains open-source MCP tools (2.3k stars).',
+    imageAlt: 'Andrew Manson, Electrical Engineer (EGBC EIT)',
+  });
   const nameRef = useRef<HTMLHeadingElement>(null);
 
   return (
@@ -38,7 +43,7 @@ export default function CoverPage({ sheet }: PageProps<undefined>) {
           <h1 id="cover-title" ref={nameRef} className="t-display mt-1 w-fit">
             Andrew Manson
           </h1>
-          <p className="t-label mt-4 text-pen">Electrical engineer · EGBC EIT · Victoria, BC</p>
+          <p className="t-label mt-4 text-pen">Electrical engineer · EGBC EIT · Victoria,{'\u00a0'}BC</p>
           <div className="mt-8 max-w-[52ch] space-y-4">
             {COVER_LEAD.map((p) => (
               <p key={p} className="t-lead">
@@ -46,11 +51,11 @@ export default function CoverPage({ sheet }: PageProps<undefined>) {
               </p>
             ))}
           </div>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <AppLink to="/projects/apple-classifier" className="btn btn-lg btn-primary">
+          <div className="mt-8 flex flex-wrap gap-3">
+            <AppLink to="/projects/apple-classifier" className="btn btn-lg btn-primary w-full whitespace-nowrap sm:w-auto">
               View sheet E-101 — capstone <span aria-hidden="true">→</span>
             </AppLink>
-            <AppLink to="/open-source" className="btn btn-lg">
+            <AppLink to="/open-source" className="btn btn-lg w-full whitespace-nowrap sm:w-auto">
               Open-source schedule (S-200)
             </AppLink>
           </div>
@@ -63,7 +68,7 @@ export default function CoverPage({ sheet }: PageProps<undefined>) {
               <span className="t-label text-ink-2">Fig. 1</span>
               <span className="t-caption">
                 Synthetic photoplethysmogram (CH1, yellow) and Schmitt-trigger output (CH2, cyan), modelled on the comparator capture in
-                Fig. 11 of sheet E-102. Not measured data. Trace colours follow the author’s Tektronix TDS 2012B captures.{' '}
+                Fig. 11 of sheet E-102. Not measured data. Trace colours follow my Tektronix TDS 2012B captures.{' '}
                 <AppLink to="/projects/ppg-monitor#fig-11" className="link-prose">
                   See sheet E-102 →
                 </AppLink>
@@ -84,7 +89,7 @@ export default function CoverPage({ sheet }: PageProps<undefined>) {
         <h2 id="index-title" className="t-h2">
           Drawing index
         </h2>
-        <p className="t-caption mt-2">Every sheet in set AM-PF. Sheet numbers are permanent; new sheets are appended.</p>
+        <p className="t-caption mt-2">Every page here is a numbered sheet in set AM-PF. Sheet numbers never change; new sheets are added at the end of their series.</p>
 
         <div className="mt-10 space-y-14">
           <div id="schedule-e">

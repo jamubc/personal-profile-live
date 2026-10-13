@@ -11,9 +11,14 @@
     "lint": "eslint . --max-warnings 0",
     "test": "node --experimental-strip-types --no-warnings --test \"tests/**/*.test.mjs\"",
     "figures": "node scripts/figure-meta.mjs",
-    "revisions": "node scripts/revisions.mjs",
+    "revisions": "node --experimental-strip-types --no-warnings scripts/revisions.mjs",
     "og": "node scripts/generate-og-image.mjs",
-    "icons": "node scripts/generate-icons.mjs"
+    "icons": "node scripts/generate-icons.mjs",
+    "images": "node scripts/optimize-images.mjs",
+    "stats": "node scripts/fetch-github-stats.mjs"
+  },
+  "engines": {
+    "node": ">=22.6"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.3.0",

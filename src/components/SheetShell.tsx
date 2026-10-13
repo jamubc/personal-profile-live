@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import { HeaderRail } from './HeaderRail';
@@ -21,9 +21,10 @@ interface SheetShellProps {
 export function SheetShell({ sheet, revisions, scale, children }: SheetShellProps) {
   const { pathname } = useLocation();
   // The rise-and-fade runs on client navigation only, never on the first render.
-  const [navigations, setNavigations] = useState(0);
+  const firstPath = useRef(pathname);
+  const [entered, setEntered] = useState(false);
   useEffect(() => {
-    setNavigations((n) => n + 1);
+    if (pathname !== firstPath.current) setEntered(true);
   }, [pathname]);
 
   const rev = revisions[0];
@@ -32,11 +33,11 @@ export function SheetShell({ sheet, revisions, scale, children }: SheetShellProp
       <SkipLink />
       <IndexColumn current={sheet} />
       <MobileTopBar current={sheet} />
-      <div className="lg:ml-[256px] lg:p-6">
+      <div className="sheet-wrap lg:ml-[256px] lg:p-6">
         <div className="sheet-grid flex min-h-screen flex-col lg:min-h-[calc(100vh-48px)] lg:border lg:border-rule-strong">
           <main id="main" tabIndex={-1} className="flex flex-1 flex-col">
             <HeaderRail sheet={sheet} rev={rev.rev} date={rev.date} />
-            <div key={pathname} className={`mx-auto w-full max-w-[1136px] flex-1 px-4 pb-16 pt-8 md:px-6 lg:px-10 lg:pb-24 lg:pt-12 ${navigations > 1 ? 'route-enter' : ''}`}>
+            <div key={pathname} className={`mx-auto w-full max-w-[1136px] flex-1 px-4 pb-16 pt-8 md:px-6 lg:px-10 lg:pb-24 lg:pt-12 ${entered ? 'route-enter' : ''}`}>
               {children}
             </div>
           </main>

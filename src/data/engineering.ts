@@ -63,7 +63,7 @@ export const engineering: EngineeringEntry[] = [
       { label: 'Client', value: 'Commercial Okanagan grower' },
       { label: 'Course', value: 'ENGR 499 Engineering Capstone, UBC Okanagan' },
       { label: 'Compute', value: 'Raspberry Pi CM4, Pi Camera Module V2 (8 MP), Adafruit IR break-beam' },
-      { label: 'Status', value: 'Presented at the UBCO Engineering Capstone Expo' },
+      { label: 'Status', value: 'Presented at the UBC Okanagan Engineering Capstone Expo' },
     ],
     results: {
       label: 'Schedule of results',
@@ -80,7 +80,7 @@ export const engineering: EngineeringEntry[] = [
     sheet: 'E-102',
     slug: 'ppg-monitor',
     title: 'Analog PPG Heart Rate Monitor',
-    description: 'Measuring heart rate via photoplethysmogram with a multi-stage analog signal filter',
+    description: 'Measuring heart rate via photoplethysmogram with a multi-stage analog signal filter.',
     tags: ['Analog Circuit Design', 'LTSpice validation', 'Signals', 'Prototyping'],
     keyFigure: '38 mV pk-pk in, LED pulse out',
     status: 'issued',
@@ -135,7 +135,7 @@ export const engineering: EngineeringEntry[] = [
       label: 'Published figures',
       source: 'FROM BORAY ET AL., 2024. NOT MY OWN CALCULATIONS.',
       cells: [
-        { value: '≈ $40 B CAD', label: 'NPV', note: '30 yr at 6 %' },
+        { value: '~$40 B', label: 'NPV (CAD)', note: '30 yr at 6 %' },
         { value: '9 : 1', label: 'Benefit-cost ratio', note: 'typical successful North American light rail: 2.5 to 3.5' },
         { value: '33 %', label: 'IRR' },
         { value: '342 km', label: 'Kamloops to Osoyoos' },
@@ -149,7 +149,4 @@ export const engineering: EngineeringEntry[] = [
 ];
 
 export const engineeringBySheet = (id: string): EngineeringEntry | undefined => engineering.find((e) => e.sheet === id);
-export const engineeringBySlug = (slug: string): EngineeringEntry | undefined => engineering.find((e) => e.slug === slug);
 
-/** E-107: rendered inline on E-100 from src/content/photonics-optical-systems.md. */
-export const COURSEWORK_NOTE = { sheet: 'E-107', title: 'Photonics & Optical Systems', contentFile: 'photonics-optical-systems' } as const;

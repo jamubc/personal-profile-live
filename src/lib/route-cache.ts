@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react';
 import { notFoundRoute, routes } from '../routes';
 import type { PageProps } from '../routes';
-import type { Sheet } from '../data/sheets';
+import type { PublishedSheet } from '../data/sheets';
 
 /**
  * Route chunk and data cache (design spec 9.2). React.lazy cannot be prerendered with
@@ -12,7 +12,7 @@ import type { Sheet } from '../data/sheets';
 export interface RouteEntry {
   Page: ComponentType<PageProps<unknown>>;
   data: unknown;
-  sheet: Sheet;
+  sheet: PublishedSheet;
 }
 
 const normalize = (pathname: string): string => {
@@ -27,21 +27,29 @@ export const resolveRoute = (pathname: string) => {
 
 const cache = new Map<string, RouteEntry>();
 const pending = new Map<string, Promise<void>>();
+const failed = new Map<string, Error>();
 
 export const readRoute = (pathname: string): RouteEntry | undefined => cache.get(resolveRoute(pathname).path);
+
+/** The error of the last failed load for this route, if any; cleared by the next preloadRoute() call. */
+export const routeFailure = (pathname: string): Error | undefined => failed.get(resolveRoute(pathname).path);
 
 export function preloadRoute(pathname: string): Promise<void> {
   const route = resolveRoute(pathname);
   if (cache.has(route.path)) return Promise.resolve();
   let promise = pending.get(route.path);
   if (!promise) {
+    failed.delete(route.path);
     promise = (async () => {
       const mod = await route.load();
       const data = mod.loadData ? await mod.loadData(route.sheet) : undefined;
       cache.set(route.path, { Page: mod.default as ComponentType<PageProps<unknown>>, data, sheet: route.sheet });
     })();
-    // A failed load must be retryable.
-    promise.catch(() => pending.delete(route.path));
+    // A failed load is recorded (App throws it to the error boundary) and stays retryable.
+    promise.catch((error: unknown) => {
+      pending.delete(route.path);
+      failed.set(route.path, error instanceof Error ? error : new Error(String(error)));
+    });
     pending.set(route.path, promise);
   }
   return promise;

@@ -29,7 +29,8 @@ export interface Repo {
 }
 
 export const STARS_AS_OF = stats.fetchedAt.slice(0, 10);
-export const PUBLIC_REPOS = 44;
+/** Public repository count from the same snapshot (forks included, as GitHub's profile counts them). */
+export const PUBLIC_REPOS: number = stats.publicRepos;
 
 const gh = (name: string): RepoLink => ({ label: 'GitHub', href: `https://github.com/jamubc/${name}` });
 
@@ -41,14 +42,14 @@ export const repos: Repo[] = [
   { name: 'Canvas_Downloader', description: 'Fast, strictly read-only CLI for downloading and organizing Canvas LMS course content.', language: 'Python', symbol: 'cli', links: [gh('Canvas_Downloader'), { label: 'PyPI (profile)', href: LINKS.pypi }] },
   { name: 'UBC-workday-to-calendar', description: 'Convert Workday Excel schedule (.xlsx) exports to iCalendar (.ics) format.', language: 'JavaScript', symbol: 'app', links: [gh('UBC-workday-to-calendar')], crossRef: 'SEE P-402' },
   { name: '2ManyTabs-MCP', description: 'Manage browser tabs (list, group, deduplicate, bulk-close) with natural language from any MCP client; runs locally over loopback.', language: 'JavaScript', symbol: 'mcp', links: [gh('2ManyTabs-MCP')], selected: true },
-  { name: 'toolbox', description: 'Utilities for Claude Code', language: 'TypeScript', symbol: 'app', links: [gh('toolbox')] },
+  { name: 'toolbox', description: 'Utilities for Claude Code.', language: 'TypeScript', symbol: 'app', links: [gh('toolbox')] },
   { name: 'JarvisAtHome', description: 'Fully local, offline voice assistant pipeline (VAD, wake word, Whisper STT, intent matching, TTS). No cloud APIs.', language: 'JavaScript', symbol: 'app', links: [gh('JarvisAtHome')] },
   { name: 'jamcli', description: 'Efficient multi-model terminal CLI with Ollama and OpenRouter support.', language: 'TypeScript', symbol: 'cli', links: [gh('jamcli')] },
   { name: 'canvas-mcp-tool', description: 'MCP server that lets AI assistants query Canvas course details, assignments, and announcements.', language: 'TypeScript', symbol: 'mcp', links: [gh('canvas-mcp-tool')] },
-  { name: 'opencode-langsearch', description: 'Unofficial OpenCode plugin adding LangSearch web search with optional filtering', language: 'TypeScript', symbol: 'app', links: [gh('opencode-langsearch')] },
-  { name: 'meta-agent', description: 'Read-only meta-agent that audits other agents for safety risks', language: 'Shell', symbol: 'app', links: [gh('meta-agent')] },
-  { name: 'Sound-Solver', description: 'Acoustic simulation suite for exhaust design', language: 'Rust', symbol: 'sim', links: [gh('Sound-Solver')], crossRef: 'SEE E-104 (HOLD)' },
-  { name: 'SISO-Space', description: 'Interactive MATLAB apps for control theory (PID, Bode, root locus)', language: null, symbol: 'sim', links: [gh('SISO-Space')] },
+  { name: 'opencode-langsearch', description: 'Unofficial OpenCode plugin adding LangSearch web search with optional filtering.', language: 'TypeScript', symbol: 'app', links: [gh('opencode-langsearch')] },
+  { name: 'meta-agent', description: 'Read-only meta-agent that audits other agents for safety risks.', language: 'Shell', symbol: 'app', links: [gh('meta-agent')] },
+  { name: 'Sound-Solver', description: 'Acoustic simulation suite for exhaust design.', language: 'Rust', symbol: 'sim', links: [gh('Sound-Solver')], crossRef: 'SEE E-104 (HOLD)' },
+  { name: 'SISO-Space', description: 'Interactive MATLAB apps for control theory (PID, Bode, root locus).', language: null, symbol: 'sim', links: [gh('SISO-Space')] },
 ];
 
 type StatRepo = { stars: number; forks: number };

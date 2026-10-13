@@ -76,8 +76,8 @@ export const plainText = (s: string): string =>
   s
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-    .replace(/(\*\*|__)(.*?)\1/g, '$2')
-    .replace(/(\*|_)(.*?)\1/g, '$2')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
     .replace(/`([^`]+)`/g, '$1')
     .trim();
 
@@ -198,7 +198,7 @@ export function parseMarkdown(raw: string): Block[] {
       continue;
     }
 
-    if (/^\d+[.)]\s+/.test(line)) {
+    if (/^\d+[.)]\s+/.test(line) && (para.length === 0 || /^1[.)]\s/.test(line))) {
       flushPara();
       const items: string[] = [];
       while (i < lines.length && /^\d+[.)]\s+/.test(lines[i].trim())) items.push(lines[i++].trim().replace(/^\d+[.)]\s+/, ''));

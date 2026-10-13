@@ -12,10 +12,10 @@ import type { PageProps } from '../routes';
 export default function OpenSourcePage({ sheet }: PageProps<undefined>) {
   useSeo({
     ...META[sheet.id],
-    path: sheet.route!,
+    path: sheet.route,
     jsonLd: [
       collectionPageNode({
-        path: sheet.route!,
+        path: sheet.route,
         name: 'Open source',
         description: META[sheet.id].description,
         items: repos.map((r) => ({
@@ -31,7 +31,7 @@ export default function OpenSourcePage({ sheet }: PageProps<undefined>) {
     <>
       <SheetTitle
         title="Open source"
-        lead={`Everything I create is to solve a problem I have, so I test my solutions thoroughly. ${repos.length} of my ${PUBLIC_REPOS} public repositories are listed here. The rest are on GitHub.`}
+        lead={`Everything I create is to solve a problem I have, so I test my solutions thoroughly. I have ${PUBLIC_REPOS} public repositories on GitHub; this table lists ${repos.length}.`}
       />
       <FeaturedItem repo={featured} icon="/oss/gemini-mcp-tool.webp" />
 
@@ -42,6 +42,7 @@ export default function OpenSourcePage({ sheet }: PageProps<undefined>) {
           rows={ossFullRows()}
           groupLabel="S — Schedule of open-source components"
           groupCount={`${repos.length} components`}
+          showAbstract="narrow"
         />
       </div>
 

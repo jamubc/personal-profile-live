@@ -4,13 +4,15 @@ import { STARS_AS_OF, formatStars, formatStarsShort, starsOf } from '../data/oss
 /** Document titles and descriptions per sheet (design spec 9.1). Counts and star numbers come from data. */
 export const TITLE_SUFFIX = ' | Andrew Manson';
 
-const geminiStars = starsOf('gemini-mcp-tool') ?? 0;
-const postCount = articles.length === 2 ? 'Two' : String(articles.length);
+const geminiStars = starsOf('gemini-mcp-tool');
+const geminiNote = geminiStars ? ` (${formatStars(geminiStars)} GitHub stars as of ${STARS_AS_OF})` : '';
+const postCount = articles.length;
+const aiNote = articles.every((a) => a.aiGenerated) ? ', all drafted with AI assistance' : '';
 
 export const META: Record<string, { title: string; description: string }> = {
   'G-001': {
     title: 'Andrew Manson | Electrical Engineer (EGBC EIT)',
-    description: `Electrical engineer (UBC Okanagan, EGBC EIT) in Victoria, BC. Machine vision, analog design and open-source MCP tools, led by gemini-mcp-tool (${formatStarsShort(geminiStars)} stars).`,
+    description: `Electrical engineer (UBC Okanagan, EGBC EIT) in Victoria, BC. Machine vision, analog design and open-source MCP tools, led by gemini-mcp-tool${geminiStars ? ` (${formatStarsShort(geminiStars)} stars)` : ''}.`,
   },
   'E-100': {
     title: `Engineering & Research${TITLE_SUFFIX}`,
@@ -30,11 +32,11 @@ export const META: Record<string, { title: string; description: string }> = {
   },
   'S-200': {
     title: `Open-Source Software${TITLE_SUFFIX}`,
-    description: `Open-source work by Andrew Manson: MCP servers and AI tooling, led by gemini-mcp-tool (${formatStars(geminiStars)} GitHub stars as of ${STARS_AS_OF}).`,
+    description: `Open-source work by Andrew Manson: MCP servers and AI tooling, led by gemini-mcp-tool${geminiNote}.`,
   },
   'W-300': {
     title: `Writing${TITLE_SUFFIX}`,
-    description: `Writing by Andrew Manson: whatever I'm trying to understand this week. ${postCount} posts on AI and engineering, both drafted with AI assistance.`,
+    description: `Writing by Andrew Manson: whatever I'm trying to understand this week. ${postCount} ${postCount === 1 ? 'post' : 'posts'} on AI and engineering${aiNote}.`,
   },
   'P-400': {
     title: `Works${TITLE_SUFFIX}`,

@@ -1,9 +1,9 @@
 import type { ComponentType } from 'react';
-import { publishedSheets, sheetById } from './data/sheets';
-import type { Sheet } from './data/sheets';
+import { hasRoute, publishedSheets, sheetById } from './data/sheets';
+import type { PublishedSheet, Sheet } from './data/sheets';
 
 export interface PageProps<T> {
-  sheet: Sheet;
+  sheet: PublishedSheet;
   data: T;
 }
 
@@ -15,7 +15,7 @@ export interface PageModule {
 
 export interface RouteDef {
   path: string;
-  sheet: Sheet;
+  sheet: PublishedSheet;
   load: () => Promise<PageModule>;
 }
 
@@ -40,8 +40,10 @@ function pageFor(sheet: Sheet): () => Promise<PageModule> {
  * One route per published sheet, generated from the registry so the two cannot drift, plus the 404
  * sheet. Unknown paths resolve to the 404 route.
  */
-export const routes: RouteDef[] = [...publishedSheets(), sheetById('X-404')!].map((sheet) => ({
-  path: sheet.route!,
+const notFoundSheet = sheetById('X-404');
+if (!notFoundSheet || !hasRoute(notFoundSheet)) throw new Error('The registry needs an X-404 sheet with a route');
+export const routes: RouteDef[] = [...publishedSheets(), notFoundSheet].map((sheet) => ({
+  path: sheet.route,
   sheet,
   load: pageFor(sheet),
 }));

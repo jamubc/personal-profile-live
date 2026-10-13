@@ -74,15 +74,14 @@ export const INDEX_SHEET_IDS = ['G-001', 'E-100', 'S-200', 'W-300', 'P-400', 'C-
 
 export const sheetById = (id: string): Sheet | undefined => sheets.find((s) => s.id === id);
 
-export const sheetByRoute = (path: string): Sheet | undefined => {
-  const clean = path.length > 1 ? path.replace(/\/+$/, '') : path;
-  return sheets.find((s) => s.route === clean);
-};
-
 export const indexSheets: Sheet[] = INDEX_SHEET_IDS.map((id) => sheetById(id)!);
 
+/** A sheet with a page: the type says so, so pages never have to assert that `route` is set. */
+export type PublishedSheet = Sheet & { route: string };
+export const hasRoute = (s: Sheet): s is PublishedSheet => s.route !== null;
+
 /** Sheets that get a prerendered page, a sitemap entry and an llms.txt line. */
-export const publishedSheets = (): Sheet[] => sheets.filter((s) => s.status === 'issued' && s.route && s.kind !== 'error');
+export const publishedSheets = (): PublishedSheet[] => sheets.filter((s): s is PublishedSheet => s.status === 'issued' && hasRoute(s) && s.kind !== 'error');
 
 /** The index sheet a case or post belongs under (E-101 → E-100, W-301 → W-300). */
 export const parentOf = (sheet: Sheet): Sheet | undefined =>

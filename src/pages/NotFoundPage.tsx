@@ -8,7 +8,7 @@ import { META } from '../seo/meta';
 import type { PageProps } from '../routes';
 
 export default function NotFoundPage({ sheet }: PageProps<undefined>) {
-  useSeo({ ...META[sheet.id], path: sheet.route!, noindex: true });
+  useSeo({ ...META[sheet.id], path: sheet.route, noindex: true });
 
   // The server cannot know which address was requested, so it renders a neutral phrase and the
   // client fills in the path after hydration.

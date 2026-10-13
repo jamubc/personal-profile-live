@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { figureMeta } from '../lib/figures';
 import './FigureLightbox.css';
@@ -19,7 +19,7 @@ export interface FigureLightboxProps {
  * (Esc, the CLOSE button, a click on the scrim); the owner puts focus back on its trigger there.
  */
 export function FigureLightbox({ open, n, src, alt, caption, onClose }: FigureLightboxProps) {
-  const titleId = useId();
+  const titleId = `lightbox-${n}-title`;
   const dialog = useRef<HTMLDialogElement>(null);
   const [seen, setSeen] = useState(open);
   if (open && !seen) setSeen(true);
