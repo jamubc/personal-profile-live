@@ -36,8 +36,10 @@ export function TitleBlock({ sheet, revisions, scale = 'NTS' }: TitleBlockProps)
       <Cell label="Rev" className="md:col-span-2">{current.rev}</Cell>
       <Cell label="Drawn by" className="md:col-span-4">A. Manson, EIT</Cell>
       <Cell label="Checked" className="md:col-span-3">
-        <span title="Empty on purpose: this site has no checker and no seal">—</span>
-        <span className="sr-only"> (empty on purpose: this site has no checker and no seal)</span>
+        <span aria-hidden="true" title="Empty on purpose: this site has no checker and no seal">
+          —
+        </span>
+        <span className="sr-only">Empty on purpose: this site has no checker and no seal</span>
       </Cell>
       <Cell label="Set" className="md:col-span-3">
         <span title="This site's drawing-set code">{SITE.set}</span>

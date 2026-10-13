@@ -9,11 +9,20 @@ interface ChainDiagramProps {
 }
 
 const PAD = 12;
-const NODE_W = 144;
 const NODE_H = 88;
-const GAP = 32; // between nodes in a row: the arrow, and a cut mark when there is one
 const ROW_GAP = 56; // between rows: the return path, and a cut mark when there is one
 const TOP = 26;
+
+/**
+ * The three layouts and the container widths they need: two columns of narrow boxes fit a 320 px phone
+ * (286 px of content), three columns from 520 px, the whole chain on one line from 1048 px. CSS container
+ * queries in ChainDiagram.css pick one from the diagram's own width, never the viewport's.
+ */
+const LAYOUTS = [
+  { cols: 2, nodeW: 120, gap: 22, className: 'chain-l2' }, // 286 px
+  { cols: 3, nodeW: 144, gap: 32, className: 'chain-l3' }, // 520 px
+  { cols: 6, nodeW: 144, gap: 32, className: 'chain-l6' }, // 1048 px
+] as const;
 
 /** Greedy word wrap on an estimated character budget (the SVG cannot wrap text itself). */
 function wrap(text: string, perLine: number): string[] {
@@ -35,9 +44,12 @@ function wrap(text: string, perLine: number): string[] {
  * returns to the start of the next row on a drawn path, so a phone gets three rows of two, a tablet two
  * rows of three and a wide sheet one row of six. Text stays 12px at every width.
  */
-function Layout({ nodes, cuts, cols, active }: ChainDiagramProps & { cols: number; active: Set<string> }) {
+function Layout({ nodes, cuts, cols, nodeW: NODE_W, gap: GAP, active }: ChainDiagramProps & { cols: number; nodeW: number; gap: number; active: Set<string> }) {
   const rows = Math.ceil(nodes.length / cols);
   const width = PAD * 2 + cols * NODE_W + (cols - 1) * GAP;
+  // Characters per line: Mono 12 px with tracking is about 8 px a character, Sans 12 px about 6.4 px.
+  const labelChars = Math.floor((NODE_W - 12) / 8);
+  const subChars = Math.floor((NODE_W - 12) / 6.4);
   const height = TOP + rows * NODE_H + (rows - 1) * ROW_GAP + 26;
   const rowTop = (r: number) => TOP + r * (NODE_H + ROW_GAP);
   const axisOf = (r: number) => rowTop(r) + NODE_H / 2;
@@ -93,8 +105,8 @@ function Layout({ nodes, cuts, cols, active }: ChainDiagramProps & { cols: numbe
         {nodes.map((n, i) => {
           const x = xOf(i % cols);
           const y = rowTop(Math.floor(i / cols));
-          const label = wrap(n.label.toUpperCase(), 15);
-          const sub = n.sub ? wrap(n.sub, 19) : [];
+          const label = wrap(n.label.toUpperCase(), labelChars);
+          const sub = n.sub ? wrap(n.sub, subChars) : [];
           const total = label.length * 16 + (sub.length ? 4 + sub.length * 15 : 0);
           let ty = y + (NODE_H - total) / 2 + 12;
           const lines: JSX.Element[] = [];
@@ -131,8 +143,9 @@ function Layout({ nodes, cuts, cols, active }: ChainDiagramProps & { cols: numbe
 /**
  * The E-102 signal chain as a single-line diagram with section cuts. The cuts are the point: a
  * section view shows what is at the cut, and here that is a scope capture of the signal, so each
- * mark links to its figure and thickens while that figure is in view. Three layouts are rendered
- * and CSS shows one per width, so nothing is measured and nothing shifts.
+ * mark links to its figure and thickens while that figure is in view. Three layouts are rendered and a
+ * container query shows the one that fits, so nothing is measured, nothing shifts and nothing scrolls
+ * from 320 px up.
  */
 export function ChainDiagram({ nodes, cuts }: ChainDiagramProps) {
   const [active, setActive] = useState<Set<string>>(() => new Set());
@@ -162,18 +175,12 @@ export function ChainDiagram({ nodes, cuts }: ChainDiagramProps) {
   return (
     <div>
       <p className="t-label text-ink-3">Signal chain · Section cuts A–C</p>
-      {/* A scrollable region must be reachable by keyboard (WCAG 2.1.1), so it is focusable and named. */}
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
-      <div role="region" aria-label="Signal chain diagram" tabIndex={0} className="scroll-region mt-3 border border-rule-strong bg-paper-2">
-        <div className="md:hidden">
-          <Layout nodes={nodes} cuts={cuts} cols={2} active={active} />
-        </div>
-        <div className="hidden md:block xl:hidden">
-          <Layout nodes={nodes} cuts={cuts} cols={3} active={active} />
-        </div>
-        <div className="hidden xl:block">
-          <Layout nodes={nodes} cuts={cuts} cols={6} active={active} />
-        </div>
+      <div className="chain mt-3 border border-rule-strong bg-paper-2">
+        {LAYOUTS.map((l) => (
+          <div key={l.cols} className={l.className}>
+            <Layout nodes={nodes} cuts={cuts} cols={l.cols} nodeW={l.nodeW} gap={l.gap} active={active} />
+          </div>
+        ))}
       </div>
       <ol className="sr-only">
         {nodes.map((n) => (

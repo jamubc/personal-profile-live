@@ -71,8 +71,8 @@ author's own calculations. Fig. 1 on the cover is labelled synthetic.
 ## Checks
 
 `npm run build` runs the typecheck, the Fig. 1 acceptance test, the registry consistency check and the
-page-weight budget. `npm test`, `npm run lint` and `npm run revisions -- --check` are separate; run them
-before pushing (there is no CI on this repository yet). Node 22.6 or newer is required: the test and
+page-weight budget. `npm test` (which includes the revisions freshness check) and `npm run lint` are
+separate; run them before pushing (there is no CI on this repository yet). Node 22.6 or newer is required: the test and
 revision scripts import TypeScript directly with `--experimental-strip-types`.
 
 ## Deploy notes

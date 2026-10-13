@@ -19,7 +19,7 @@ import {
   writingRows,
 } from '../components/schedules';
 import { articles } from '../data/articles';
-import { repos } from '../data/oss';
+import { repos, selectedRepos } from '../data/oss';
 import { COVER_LEAD, GENERAL_NOTES } from '../data/site';
 import { works } from '../data/works';
 import { useSeo } from '../lib/seo';
@@ -30,7 +30,6 @@ export default function CoverPage({ sheet }: PageProps<undefined>) {
   useSeo({
     ...META[sheet.id],
     path: sheet.route,
-    ogDescription: 'Electrical engineer (UBC Okanagan, EGBC EIT). Built a machine-vision apple grader (96% in controlled tests). Maintains open-source MCP tools (2.3k stars).',
     imageAlt: 'Andrew Manson, Electrical Engineer (EGBC EIT)',
   });
   const nameRef = useRef<HTMLHeadingElement>(null);
@@ -92,25 +91,25 @@ export default function CoverPage({ sheet }: PageProps<undefined>) {
         <p className="t-caption mt-2">Every page here is a numbered sheet in set AM-PF. Sheet numbers never change; new sheets are added at the end of their series.</p>
 
         <div className="mt-10 space-y-14">
-          <div id="schedule-e">
+          <div id="schedule-e" className="scroll-mt-20 lg:scroll-mt-6">
             <ScheduleTable caption="Engineering and research sheets" columns={engineeringColumns} rows={engineeringRows()} {...engineeringGroup()} />
           </div>
 
-          <div id="schedule-s">
+          <div id="schedule-s" className="scroll-mt-20 lg:scroll-mt-6">
             <ScheduleTable
               caption="Open-source components, selected"
               columns={ossColumns(false)}
               rows={ossSelectedRows()}
               showAbstract
               groupLabel="S — Open source (selected)"
-              groupCount={`4 of ${repos.length} components`}
+              groupCount={`${selectedRepos.length} of ${repos.length} components`}
             />
             <AppLink to="/open-source" className="t-label mt-2 inline-flex min-h-[44px] items-center gap-2 text-pen hover:text-pen-hover">
               All open-source components → S-200
             </AppLink>
           </div>
 
-          <div id="schedule-w">
+          <div id="schedule-w" className="scroll-mt-20 lg:scroll-mt-6">
             <ScheduleTable
               caption="Writing"
               columns={writingColumns}
@@ -120,11 +119,11 @@ export default function CoverPage({ sheet }: PageProps<undefined>) {
             />
           </div>
 
-          <div id="schedule-p">
+          <div id="schedule-p" className="scroll-mt-20 lg:scroll-mt-6">
             <ScheduleTable caption="Works" columns={worksColumns} rows={worksRows()} groupLabel="P — Works" groupCount={`${works.length} sheets`} />
           </div>
 
-          <div id="schedule-c">
+          <div id="schedule-c" className="scroll-mt-20 lg:scroll-mt-6">
             <ScheduleTable caption="Contact" columns={contactColumns} rows={contactRows()} groupLabel="C — Contact" groupCount="1 sheet" />
           </div>
         </div>

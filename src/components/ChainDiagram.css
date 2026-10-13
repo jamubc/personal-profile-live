@@ -8,3 +8,16 @@
 .cut-mark:hover svg text,
 .cut-mark:focus-visible svg text,
 .cut-mark[data-active='true'] svg text { font-weight: 600; }
+
+/* The diagram picks its layout from its own width (see LAYOUTS in ChainDiagram.tsx). Below 286 px of
+   content (a viewport under 320 px) the narrow layout scrolls rather than squeezes. */
+.chain { container-type: inline-size; overflow-x: auto; }
+.chain-l3, .chain-l6 { display: none; }
+@container (min-width: 520px) {
+  .chain-l2 { display: none; }
+  .chain-l3 { display: block; }
+}
+@container (min-width: 1048px) {
+  .chain-l3 { display: none; }
+  .chain-l6 { display: block; }
+}

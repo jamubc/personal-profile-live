@@ -5,7 +5,14 @@ interface State {
   failed: boolean;
 }
 
-/** Catches a failed route chunk (for example a stale tab after a deploy) and offers a reload. */
+const RETRY_KEY = 'route-reload';
+
+/**
+ * Catches a sheet that failed to load during client navigation (typically a tab left open across a
+ * deploy, whose chunk names no longer exist). Every route is prerendered, so the first response is a
+ * full page load of the same URL; only if that already happened in the last half minute does it show
+ * the reload screen. Back and Forward clear the error, since the other sheets are already loaded.
+ */
 export class RouteErrorBoundary extends Component<{ children: ReactNode }, State> {
   state: State = { failed: false };
 
@@ -13,9 +20,29 @@ export class RouteErrorBoundary extends Component<{ children: ReactNode }, State
     return { failed: true };
   }
 
+  componentDidMount() {
+    window.addEventListener('popstate', this.reset);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('popstate', this.reset);
+  }
+
   componentDidCatch(error: Error) {
     console.error(error);
+    let last = 0;
+    try {
+      last = Number(sessionStorage.getItem(RETRY_KEY) ?? 0);
+      sessionStorage.setItem(RETRY_KEY, String(Date.now()));
+    } catch {
+      return; // no storage: no loop guard, so do not reload automatically
+    }
+    if (Date.now() - last > 30_000) window.location.reload();
   }
+
+  reset = () => {
+    if (this.state.failed) this.setState({ failed: false });
+  };
 
   render() {
     if (!this.state.failed) return this.props.children;

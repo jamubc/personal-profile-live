@@ -24,9 +24,15 @@ const tree = (
 );
 
 // Load the current route's chunk and data first, so hydration matches the prerendered HTML exactly.
-preloadRoute(window.location.pathname)
-  .catch(() => undefined)
-  .then(() => {
+// If that load fails (a flaky network, or a deploy between the HTML and its chunks), the prerendered
+// page is complete and readable, so it is left as it is rather than replaced by an error screen.
+preloadRoute(window.location.pathname).then(
+  () => {
     if (container.childElementCount > 0) hydrateRoot(container, tree);
     else createRoot(container).render(tree);
-  });
+  },
+  (error: unknown) => {
+    console.error(error);
+    if (container.childElementCount === 0) createRoot(container).render(tree);
+  },
+);

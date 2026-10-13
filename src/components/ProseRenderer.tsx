@@ -171,8 +171,7 @@ export interface ProseRendererProps {
 /**
  * Case-study body. Every level 1-2 heading becomes a numbered h2 (01, 02, …) with its slug id, and blocks render
  * strictly in document order, so every figure appears. A section titled "Sources" renders through References.
- * Sections after the first two sit in `content-auto`; the wrapper's 6 px bleed keeps that class's paint
- * containment from clipping the 2 px focus ring (offset 2 px) of a figure button at the column edge.
+ * Sections render eagerly (no content-visibility), so in-page jumps and #fig deep links land where they aim.
  */
 export function ProseRenderer({ blocks, coverFig }: ProseRendererProps) {
   const figures = numberBlocks(blocks, 'image');
@@ -182,12 +181,7 @@ export function ProseRenderer({ blocks, coverFig }: ProseRendererProps) {
       {splitSections(blocks).map((section, i) => {
         const key = section.heading?.id ?? 'intro';
         const view = { section, figures, tables, coverFig };
-        if (i < 2) return <SectionView key={key} {...view} className={i === 1 ? SECTION_GAP : undefined} />;
-        return (
-          <div key={key} className="content-auto -mx-1.5 -mb-1.5 px-1.5 pb-1.5 pt-16 md:pt-24">
-            <SectionView {...view} />
-          </div>
-        );
+        return <SectionView key={key} {...view} className={i > 0 ? SECTION_GAP : undefined} />;
       })}
     </div>
   );

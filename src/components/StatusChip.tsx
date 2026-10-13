@@ -2,10 +2,10 @@ export type StatusKind = 'issued' | 'hold' | 'note' | 'ai';
 
 const TEXT: Record<StatusKind, string> = { issued: 'Issued', hold: 'Hold', note: 'Note', ai: 'AI-assisted' };
 
-/** Plain-language decoding of the drafting term, for a first-time visitor. */
-const HINT: Record<StatusKind, string> = {
+/** Plain-language decoding of the drafting term. HOLD has none: every HOLD chip is followed by "No write-up yet". */
+const HINT: Record<StatusKind, string | undefined> = {
   issued: 'Published',
-  hold: 'Listed, but there is no write-up yet',
+  hold: undefined,
   note: 'Coursework note, inline on this sheet',
   ai: 'Drafted with AI assistance',
 };

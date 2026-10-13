@@ -9,9 +9,11 @@ const geminiNote = geminiStars ? ` (${formatStars(geminiStars)} GitHub stars as 
 const postCount = articles.length;
 const aiNote = articles.every((a) => a.aiGenerated) ? ', all drafted with AI assistance' : '';
 
-export const META: Record<string, { title: string; description: string }> = {
+export const META: Record<string, { title: string; description: string; ogDescription?: string }> = {
   'G-001': {
     title: 'Andrew Manson | Electrical Engineer (EGBC EIT)',
+    // copy.md section 10: the social card has its own line; the star count follows the stats snapshot.
+    ogDescription: `Electrical engineer (UBC Okanagan, EGBC EIT). Built a machine-vision apple grader (96% in controlled tests). Maintains open-source MCP tools${geminiStars ? ` (${formatStarsShort(geminiStars)} stars)` : ''}.`,
     description: `Electrical engineer (UBC Okanagan, EGBC EIT) in Victoria, BC. Machine vision, analog design and open-source MCP tools, led by gemini-mcp-tool${geminiStars ? ` (${formatStarsShort(geminiStars)} stars)` : ''}.`,
   },
   'E-100': {

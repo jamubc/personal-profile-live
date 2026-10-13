@@ -45,7 +45,8 @@ export function preloadRoute(pathname: string): Promise<void> {
       const data = mod.loadData ? await mod.loadData(route.sheet) : undefined;
       cache.set(route.path, { Page: mod.default as ComponentType<PageProps<unknown>>, data, sheet: route.sheet });
     })();
-    // A failed load is recorded (App throws it to the error boundary) and stays retryable.
+    // A failed load is recorded and App throws it to RouteErrorBoundary, which reloads the page once. The
+    // pending entry is cleared so a later preload can try again (browsers may cache a failed import()).
     promise.catch((error: unknown) => {
       pending.delete(route.path);
       failed.set(route.path, error instanceof Error ? error : new Error(String(error)));

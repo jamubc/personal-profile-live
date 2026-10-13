@@ -13,6 +13,60 @@ const FRAME_MS = 33; // 30 fps cap
 const STATIC_OFFSET = 1.9; // start time of the static frame: three beats and their edges in view
 const DIV_X = 8;
 
+const SEED = 0x9e3779b1;
+
+/**
+ * The static frame as SVG paths in a 1000 x 1000 box (scaled to the plot with preserveAspectRatio none):
+ * the same signal, seed, thresholds and time offset as the canvas's static frame. It is in the prerendered
+ * HTML, so Fig. 1 is complete before any script runs and without JavaScript at all; the canvas replaces it
+ * once it has drawn.
+ */
+const STATIC_PATHS = (() => {
+  const n = 320;
+  const rng = mulberry32(SEED);
+  const schmitt = makeSchmitt();
+  let ch1 = '';
+  let ch2 = '';
+  let prev = -1;
+  for (let i = 0; i <= n; i++) {
+    const x = Math.round((i / n) * 1000);
+    const v = sample(STATIC_OFFSET + (i / n) * WINDOW, rng);
+    const y = Math.round(1000 * (0.92 - 0.52 * v));
+    const level = schmitt(v) ? 140 : 300;
+    ch1 += `${i ? 'L' : 'M'}${x} ${y}`;
+    ch2 += i === 0 ? `M${x} ${level}` : level !== prev ? `H${x}V${level}` : '';
+    prev = level;
+  }
+  return { ch1, ch2: `${ch2}H1000` };
+})();
+
+function StaticFrame() {
+  const lines = (count: number, horizontal: boolean) =>
+    Array.from({ length: count - 1 }, (_, i) => {
+      const at = Math.round(((i + 1) / count) * 1000);
+      return horizontal ? <line key={i} x1="0" x2="1000" y1={at} y2={at} /> : <line key={i} x1={at} x2={at} y1="0" y2="1000" />;
+    });
+  const yHi = Math.round(1000 * (0.92 - 0.52 * HI));
+  const yLo = Math.round(1000 * (0.92 - 0.52 * LO));
+  return (
+    <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <g stroke="var(--rule)" strokeWidth="1" vectorEffect="non-scaling-stroke">
+        {lines(DIV_X, false)}
+        <g className="md:hidden">{lines(4, true)}</g>
+        <g className="hidden md:inline">{lines(6, true)}</g>
+      </g>
+      <g stroke="var(--rule-strong)" strokeWidth="1" strokeDasharray="4 3" vectorEffect="non-scaling-stroke">
+        <line x1="0" x2="1000" y1={yHi} y2={yHi} />
+        <line x1="0" x2="1000" y1={yLo} y2={yLo} />
+      </g>
+      <g fill="none" strokeWidth="1.5" strokeLinejoin="round" vectorEffect="non-scaling-stroke">
+        <path d={STATIC_PATHS.ch1} stroke="var(--ch1)" vectorEffect="non-scaling-stroke" />
+        <path d={STATIC_PATHS.ch2} stroke="var(--pen)" vectorEffect="non-scaling-stroke" />
+      </g>
+    </svg>
+  );
+}
+
 interface Colours {
   rule: string;
   ruleStrong: string;
@@ -31,7 +85,7 @@ function createScope(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, c
   let carry = 0; // fractional column not yet written
   let time = 0; // virtual seconds of the next sample; only advances while running
   const schmitt = makeSchmitt();
-  const rng = mulberry32(0x9e3779b1);
+  const rng = mulberry32(SEED);
   let raf = 0;
   let last = 0;
   let running = false;
@@ -217,6 +271,8 @@ export function SignalTrace({ ariaLabel }: SignalTraceProps) {
   const reduced = useReducedMotion();
   // null until the client decides, so the server and the first client render agree (RUN).
   const [running, setRunning] = useState<boolean | null>(null);
+  // The SVG static frame stays until the canvas has drawn its first frame.
+  const [drawn, setDrawn] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -232,6 +288,7 @@ export function SignalTrace({ ariaLabel }: SignalTraceProps) {
     });
     scopeRef.current = scope;
     scope.resize();
+    setDrawn(true);
 
     const ro = new ResizeObserver(() => scope.resize());
     ro.observe(canvas);
@@ -278,6 +335,7 @@ export function SignalTrace({ ariaLabel }: SignalTraceProps) {
       </div>
       <div role="img" aria-label={ariaLabel} className="scope-plot">
         <canvas ref={canvasRef} className="scope-canvas" />
+        {!drawn && <StaticFrame />}
         <div className="scope-overlay" aria-hidden="true">
           <span className="scope-vt t-micro" style={{ top: `${(0.92 - 0.52 * HI) * 100}%` }}>
             VTH

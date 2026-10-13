@@ -110,7 +110,6 @@
   .hatch { background-image: repeating-linear-gradient(45deg, var(--rule-strong) 0 1px, transparent 1px 6px); }
   .rule-hidden { border: 1px dashed var(--rule-strong); }
   .scroll-region { overflow: auto; scrollbar-width: thin; scrollbar-color: var(--rule-ui) var(--paper-2); }
-  .content-auto { content-visibility: auto; contain-intrinsic-size: auto 700px; }
 
   /* Engineering-paper grid. Only inside the sheet frame, only >= 1100px. It is the paper, not a mark. */
   .sheet-grid { background-color: var(--paper); }
@@ -189,5 +188,5 @@
   .sheet-wrap { margin: 0 !important; padding: 0 !important; }
   .sheet-grid { background-image: none !important; }
   figure, .plate { break-inside: avoid; }
-  main a[href^='http']::after { content: ' (' attr(href) ')'; font-size: 0.8em; color: var(--ink-3); }
+  main a[href^='http']:not(.sched-link)::after { content: ' (' attr(href) ')'; font-size: 0.8em; color: var(--ink-3); }
 }

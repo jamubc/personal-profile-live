@@ -21,7 +21,7 @@ const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 // Issued case studies track their content file; posts carry their own publication date (the commit
 // that added them only imported an existing article); every other issued sheet was first issued here.
 const CASES = Object.fromEntries(sheets.filter((s) => s.kind === 'case' && s.status === 'issued').map((s) => [s.id, `src/content/${s.contentFile}.md`]));
-const POSTS = Object.fromEntries(articles.map((a) => [a.sheet, a.date]));
+const POSTS = Object.fromEntries(articles.map((a) => [a.sheet, { date: a.date, file: `src/content/${sheets.find((s) => s.id === a.sheet)?.contentFile}.md` }]));
 const SINGLES = sheets.filter((s) => s.status === 'issued' && s.route && !['case', 'post', 'error'].includes(s.kind)).map((s) => s.id);
 
 const gitDates = (file) =>
@@ -38,9 +38,16 @@ function build() {
     out[id] = rows.map((r, i) => row(i, r.date, r.description)).reverse();
     modified[id] = dates[dates.length - 1];
   }
-  for (const [id, date] of Object.entries(POSTS)) {
-    out[id] = [row(1, REISSUE, 'REISSUED IN SET AM-PF'), row(0, date, 'INITIAL ISSUE')];
-    modified[id] = REISSUE;
+  for (const [id, { date, file }] of Object.entries(POSTS)) {
+    // Edits before the reissue were the import into this repo; later edits are revisions.
+    const later = [...new Set(gitDates(file))].filter((d) => d > REISSUE).sort();
+    const rows = [
+      { date, description: 'INITIAL ISSUE' },
+      { date: REISSUE, description: 'REISSUED IN SET AM-PF' },
+      ...later.map((d) => ({ date: d, description: 'REVISED' })),
+    ];
+    out[id] = rows.map((r, i) => row(i, r.date, r.description)).reverse();
+    modified[id] = rows[rows.length - 1].date;
   }
   for (const id of SINGLES) {
     out[id] = [row(0, REISSUE, 'ISSUED IN SET AM-PF')];

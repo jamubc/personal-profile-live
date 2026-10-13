@@ -208,7 +208,7 @@ export function worksRows(): Row[] {
     id: w.sheet,
     href: w.href,
     external: true,
-    cells: { sheet: w.sheet, work: w.title, scope: w.scope, year: w.year, ref: <External href={w.href}>{w.ref}</External> },
+    cells: { sheet: w.sheet, work: w.title, scope: w.scope, year: w.year, ref: <>{w.ref}<span aria-hidden="true"> ↗</span></> },
   }));
 }
 
