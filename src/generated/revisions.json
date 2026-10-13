@@ -1,0 +1,144 @@
+{
+  "sheets": {
+    "E-101": [
+      {
+        "rev": "C",
+        "date": "2026-10-13",
+        "description": "REISSUED IN SET AM-PF",
+        "by": "AM"
+      },
+      {
+        "rev": "B",
+        "date": "2026-02-09",
+        "description": "REVISED",
+        "by": "AM"
+      },
+      {
+        "rev": "A",
+        "date": "2026-02-05",
+        "description": "INITIAL ISSUE",
+        "by": "AM"
+      }
+    ],
+    "E-102": [
+      {
+        "rev": "C",
+        "date": "2026-10-13",
+        "description": "REISSUED IN SET AM-PF",
+        "by": "AM"
+      },
+      {
+        "rev": "B",
+        "date": "2026-02-09",
+        "description": "REVISED",
+        "by": "AM"
+      },
+      {
+        "rev": "A",
+        "date": "2026-02-05",
+        "description": "INITIAL ISSUE",
+        "by": "AM"
+      }
+    ],
+    "E-103": [
+      {
+        "rev": "C",
+        "date": "2026-10-13",
+        "description": "REISSUED IN SET AM-PF",
+        "by": "AM"
+      },
+      {
+        "rev": "B",
+        "date": "2026-07-11",
+        "description": "REVISED",
+        "by": "AM"
+      },
+      {
+        "rev": "A",
+        "date": "2026-02-05",
+        "description": "INITIAL ISSUE",
+        "by": "AM"
+      }
+    ],
+    "W-301": [
+      {
+        "rev": "B",
+        "date": "2026-10-13",
+        "description": "REISSUED IN SET AM-PF",
+        "by": "AM"
+      },
+      {
+        "rev": "A",
+        "date": "2025-11-16",
+        "description": "INITIAL ISSUE",
+        "by": "AM"
+      }
+    ],
+    "W-302": [
+      {
+        "rev": "B",
+        "date": "2026-10-13",
+        "description": "REISSUED IN SET AM-PF",
+        "by": "AM"
+      },
+      {
+        "rev": "A",
+        "date": "2025-11-17",
+        "description": "INITIAL ISSUE",
+        "by": "AM"
+      }
+    ],
+    "E-100": [
+      {
+        "rev": "A",
+        "date": "2026-10-13",
+        "description": "ISSUED IN SET AM-PF",
+        "by": "AM"
+      }
+    ],
+    "S-200": [
+      {
+        "rev": "A",
+        "date": "2026-10-13",
+        "description": "ISSUED IN SET AM-PF",
+        "by": "AM"
+      }
+    ],
+    "W-300": [
+      {
+        "rev": "A",
+        "date": "2026-10-13",
+        "description": "ISSUED IN SET AM-PF",
+        "by": "AM"
+      }
+    ],
+    "P-400": [
+      {
+        "rev": "A",
+        "date": "2026-10-13",
+        "description": "ISSUED IN SET AM-PF",
+        "by": "AM"
+      }
+    ],
+    "C-500": [
+      {
+        "rev": "A",
+        "date": "2026-10-13",
+        "description": "ISSUED IN SET AM-PF",
+        "by": "AM"
+      }
+    ]
+  },
+  "modified": {
+    "E-101": "2026-02-09",
+    "E-102": "2026-02-09",
+    "E-103": "2026-07-11",
+    "W-301": "2025-11-16",
+    "W-302": "2025-11-17",
+    "E-100": "2026-10-13",
+    "S-200": "2026-10-13",
+    "W-300": "2026-10-13",
+    "P-400": "2026-10-13",
+    "C-500": "2026-10-13"
+  }
+}

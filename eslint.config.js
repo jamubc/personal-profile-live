@@ -5,7 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 
 export default [
-  { ignores: ['dist/**', 'node_modules/**', 'src/generated/**', '.vercel/**'] },
+  { ignores: ['dist/**', 'node_modules/**', 'src/generated/**', '.vercel/**', 'harness/**'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

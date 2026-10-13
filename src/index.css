@@ -1,61 +1,181 @@
-
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------------------------------------
+   Tokens. Dark only in v1. Semantic names so a print or light theme swaps values, not components.
+   Contrast ratios (WCAG 2.x) are listed in the design spec; --ink-4 is never used for text.
+   ------------------------------------------------------------------------------------------------ */
 @layer base {
-  html {
-    font-size: 115%;
-    scroll-behavior: smooth;
+  :root {
+    color-scheme: dark;
+    --paper: #0b0e14;
+    --paper-2: #10141c;
+    --paper-3: #171c26;
+    --plate-light: #e9ecef;
+    --ink: #e8ecf1;
+    --ink-2: #b6bec9;
+    --ink-3: #8a94a3;
+    --ink-4: #78838f;
+    --rule: #2a313c;
+    --rule-strong: #3a4350;
+    --rule-ui: #5e6b84;
+    --pen: #5fd3f3;
+    --pen-hover: #8fe3fa;
+    --ch1: #f2c14e;
+    --redline: #f0634a;
+    --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'IBM Plex Serif', Georgia, 'Times New Roman', serif;
+    --index-w: 256px;
   }
 
-  /* Hide scrollbar globally */
-  *::-webkit-scrollbar {
-    display: none;
-  }
-  * {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  html {
+    background-color: var(--paper);
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto;
   }
 
   body {
-    @apply font-sans antialiased bg-[#010208] text-white;
-    background-image:
-      radial-gradient(circle at 20% 20%, rgba(93, 237, 203, 0.08), transparent 55%),
-      radial-gradient(circle at 80% 0%, rgba(183, 148, 255, 0.25), transparent 50%),
-      linear-gradient(180deg, #010208 0%, #020512 45%, #010208 100%);
-    min-height: 100vh;
+    margin: 0;
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--pen);
+    color: var(--paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--pen);
+    outline-offset: 2px;
+  }
+
+  /* Programmatic focus (route changes) shows no ring; keyboard focus always does. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  table {
+    border-collapse: collapse;
   }
 }
 
+/* ------------------------------------------------------------------------------------------------
+   Type scale (desktop >= 768px / mobile). Use these classes, not ad hoc sizes.
+   Uppercase mono stops at .t-label (12px) and below.
+   ------------------------------------------------------------------------------------------------ */
 @layer components {
-  .text-glow {
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  .t-display { font-family: var(--font-mono); font-weight: 600; font-size: 2rem; line-height: 1.05; letter-spacing: -0.01em; text-transform: uppercase; }
+  .t-numeral-lg { font-family: var(--font-mono); font-weight: 500; font-size: 2rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .t-numeral-md { font-family: var(--font-mono); font-weight: 500; font-size: 1.75rem; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .t-h1 { font-family: var(--font-sans); font-weight: 600; font-size: 1.75rem; line-height: 1.15; letter-spacing: -0.01em; }
+  .t-h2 { font-family: var(--font-sans); font-weight: 600; font-size: 1.375rem; line-height: 1.25; }
+  .t-h3 { font-family: var(--font-sans); font-weight: 600; font-size: 1.125rem; line-height: 1.3; }
+  .t-lead { font-family: var(--font-sans); font-size: 1.125rem; line-height: 1.5; color: var(--ink-2); }
+  .t-body { font-family: var(--font-sans); font-size: 1rem; line-height: 1.65; }
+  .t-post { font-family: var(--font-serif); font-size: 1.0625rem; line-height: 1.7; }
+  .t-table { font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.5; font-variant-numeric: tabular-nums; }
+  .t-caption { font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.5; color: var(--ink-2); }
+  .t-label { font-family: var(--font-mono); font-weight: 500; font-size: 0.75rem; line-height: 1rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .t-micro { font-family: var(--font-mono); font-size: 0.6875rem; line-height: 1rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+
+  @media (min-width: 768px) {
+    .t-display { font-size: 2.75rem; }
+    .t-numeral-lg { font-size: 2.75rem; }
+    .t-numeral-md { font-size: 2rem; }
+    .t-h1 { font-size: 2.25rem; }
+    .t-h2 { font-size: 1.625rem; }
+    .t-h3 { font-size: 1.25rem; }
+    .t-lead { font-size: 1.25rem; }
+    .t-body { font-size: 1.0625rem; }
+    .t-post { font-size: 1.125rem; }
   }
 
-  .noise-texture {
-    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.02), transparent 35%);
-    background-size: 4px 4px;
-  }
+  /* --- Surfaces and rules -------------------------------------------------------------------- */
+  .plate { background-color: var(--paper-2); border: 1px solid var(--rule-strong); padding: 1rem; }
+  .plate-light { background-color: var(--plate-light); }
+  .hatch { background-image: repeating-linear-gradient(45deg, var(--rule-strong) 0 1px, transparent 1px 6px); }
+  .rule-hidden { border: 1px dashed var(--rule-strong); }
+  .scroll-region { overflow: auto; scrollbar-width: thin; scrollbar-color: var(--rule-ui) var(--paper-2); }
+  .content-auto { content-visibility: auto; contain-intrinsic-size: auto 700px; }
 
-  /* Restore subtle scrollbar for the project detail overlay */
-  .custom-scrollbar::-webkit-scrollbar {
-    display: block;
-    width: 6px;
+  /* Engineering-paper grid. Only inside the sheet frame, only >= 1100px. It is the paper, not a mark. */
+  .sheet-grid { background-color: var(--paper); }
+
+  /* --- Controls ------------------------------------------------------------------------------ */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    min-height: 2.75rem; padding: 0 1rem;
+    font-family: var(--font-mono); font-weight: 500; font-size: 0.75rem; line-height: 1rem;
+    letter-spacing: 0.08em; text-transform: uppercase; text-align: center;
+    color: var(--ink); background: transparent; border: 1px solid var(--rule-ui);
+    transition: color 120ms linear, border-color 120ms linear, background-color 120ms linear;
   }
-  .custom-scrollbar {
-    -ms-overflow-style: auto;
-    scrollbar-width: thin;
+  .btn:hover { border-color: var(--ink-2); }
+  .btn-lg { min-height: 3rem; }
+  .btn-primary { color: var(--pen); border-color: var(--pen); }
+  .btn-primary:hover { background-color: var(--pen); color: var(--paper); border-color: var(--pen); }
+
+  .link-prose { color: var(--pen); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color 120ms linear; }
+  .link-prose:hover { color: var(--pen-hover); text-decoration-thickness: 2px; }
+
+  /* Index and TOC leader line: extends on hover, focus and when active. */
+  .leader { display: inline-block; width: 1.5rem; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left center; transition: transform 180ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .leader[data-active='true'], .group:hover .leader, .group:focus-visible .leader { transform: scaleX(1); }
+
+  /* Hairline-dash list marker (10 x 1px). */
+  .dash-list > li { position: relative; padding-left: 1.5rem; }
+  .dash-list > li::before { content: ''; position: absolute; left: 0; top: 0.8em; width: 10px; height: 1px; background: var(--ink-3); }
+
+  .skip-link { position: absolute; left: 0.5rem; top: 0.5rem; z-index: 100; transform: translateY(-200%); background: var(--paper-2); color: var(--ink); border: 1px solid var(--pen); padding: 0.5rem 0.75rem; }
+  .skip-link:focus { transform: none; }
+
+  /* Route change: opacity and 6px rise, 240ms. Disabled under prefers-reduced-motion below. */
+  .route-enter { animation: route-in 240ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+}
+
+@keyframes route-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Paper grid: minor lines every 32px, major every 128px. Static, no JS, removed for contrast preferences. */
+@media (min-width: 1100px) {
+  .sheet-grid {
+    background-image:
+      linear-gradient(to right, rgba(232, 236, 241, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(232, 236, 241, 0.045) 1px, transparent 1px),
+      linear-gradient(to right, rgba(232, 236, 241, 0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(232, 236, 241, 0.025) 1px, transparent 1px);
+    background-size: 128px 128px, 128px 128px, 32px 32px, 32px 32px;
   }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+}
+@media (prefers-contrast: more), (forced-colors: active) {
+  .sheet-grid { background-image: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* A hiring manager may print a case study: it prints as a white drawing sheet. */
+@media print {
+  :root {
+    color-scheme: light;
+    --paper: #fff; --paper-2: #fff; --paper-3: #f2f4f6; --plate-light: #fff;
+    --ink: #000; --ink-2: #222; --ink-3: #444; --ink-4: #555;
+    --rule: #ccc; --rule-strong: #888; --rule-ui: #666;
+    --pen: #005f7a; --pen-hover: #005f7a; --ch1: #7a5a00; --redline: #b3261e;
   }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
+  .no-print, .skip-link, dialog { display: none !important; }
+  .sheet-grid { background-image: none !important; }
+  figure, .plate { break-inside: avoid; }
+  main a[href^='http']::after { content: ' (' attr(href) ')'; font-size: 0.8em; color: var(--ink-3); }
 }

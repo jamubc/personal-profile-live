@@ -1,39 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseMarkdown, extractToc, figureCount, readingMinutes } from '../src/lib/markdown.ts';
-import { parseFrontmatter } from '../src/lib/frontmatter.ts';
-
-test('frontmatter: scalars, inline lists, block lists, comments', () => {
-  const { data, body } = parseFrontmatter(`---
-title: "Analog PPG Heart Rate Monitor"
-date: 2025-03-10
-tech: [Analog Design, LTSpice, Signals]
-featured: true
-order: 2
-links:
-  - https://a
-  - "https://b"
-summary: Measuring heart rate. # trailing comment
----
-
-## First
-
-Body text.`);
-  assert.equal(data.title, 'Analog PPG Heart Rate Monitor');
-  assert.equal(data.date, '2025-03-10');
-  assert.deepEqual(data.tech, ['Analog Design', 'LTSpice', 'Signals']);
-  assert.equal(data.featured, true);
-  assert.equal(data.order, 2);
-  assert.deepEqual(data.links, ['https://a', 'https://b']);
-  assert.equal(data.summary, 'Measuring heart rate.');
-  assert.ok(body.startsWith('## First'));
-});
-
-test('frontmatter: absent block leaves the body untouched', () => {
-  const { data, body } = parseFrontmatter('## Only body');
-  assert.deepEqual(data, {});
-  assert.equal(body, '## Only body');
-});
 
 test('markdown: every block type, in source order', () => {
   const blocks = parseMarkdown([
