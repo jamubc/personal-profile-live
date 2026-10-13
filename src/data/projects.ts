@@ -89,7 +89,7 @@ export const projects: Project[] = [
     id: '5',
     title: 'Analog PPG Heart Rate Monitor',
     description: 'Measuring heart rate via photoplethysmogram with a multi stage analog signal filter',
-    image: '/projects/ppg-monitor/images/Circuit%20schematic%20including%20stage%202.webp',
+    image: '/projects/ppg-monitor/images/ltspice-stage-2-schematic.webp',
     engineeringImageWidthPct: 80,
     engineeringImageFit: 'contain',
     techStack: ['Analog Circuit Design', 'LTSpice validation', 'Signals', 'Prototyping'],
