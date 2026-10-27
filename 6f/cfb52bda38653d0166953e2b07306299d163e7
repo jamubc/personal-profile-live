@@ -1,0 +1,24 @@
+src/components/ProjectCard.tsx
+  s_3defb1068ab2d6::t_d5196f368671e2 60
+src/data/projects.ts
+  s_3defb1068ab2d6::t_d5196f368671e2 38,45,48,50,55-56,59-95,104-113,137,150,160,170
+  s_3defb1068ab2d6::t_04f2e8cccc5d61 121-122,126
+src/types.ts
+  s_3defb1068ab2d6::t_d5196f368671e2 30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "6fcfb52bda38653d0166953e2b07306299d163e7",
+  "prompts": {},
+  "sessions": {
+    "s_3defb1068ab2d6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f9bf7f32-f257-4f1d-b2c2-60050e908dd3",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "jamubc <150970140+jamubc@users.noreply.github.com>"
+    }
+  }
+}
