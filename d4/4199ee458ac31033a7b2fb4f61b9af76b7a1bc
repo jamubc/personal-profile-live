@@ -1,0 +1,26 @@
+src/index.css
+  s_3defb1068ab2d6::t_4a12fd1d5f9abb 42-58
+src/App.tsx
+  s_3defb1068ab2d6::t_3d505990d1d09b 18-19
+  s_3defb1068ab2d6::t_a487d444c0d4c6 28,30-31
+  s_3defb1068ab2d6::t_1ee88191352037 1
+  s_3defb1068ab2d6::t_de5d25d72f6129 10
+src/lib/usePointerOffset.ts
+  s_3defb1068ab2d6::t_21cc7fa55fcc8c 1-31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d44199ee458ac31033a7b2fb4f61b9af76b7a1bc",
+  "prompts": {},
+  "sessions": {
+    "s_3defb1068ab2d6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f9bf7f32-f257-4f1d-b2c2-60050e908dd3",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "jamubc <150970140+jamubc@users.noreply.github.com>"
+    }
+  }
+}
