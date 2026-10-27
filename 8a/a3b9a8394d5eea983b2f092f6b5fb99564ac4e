@@ -1,0 +1,54 @@
+science/styles.css
+  s_3defb1068ab2d6::t_d13276000db86d 1-986
+science/index.html
+  s_3defb1068ab2d6::t_d13276000db86d 1-25
+science/tsconfig.json
+  s_3defb1068ab2d6::t_d13276000db86d 1-19
+docs/science/SCI-PLAN-2026-07-22.md
+  s_3defb1068ab2d6::t_d13276000db86d 1-621
+vercel.json
+  s_3defb1068ab2d6::t_d13276000db86d 2-8,29-30
+  s_3defb1068ab2d6::t_03a33a1c577f0f 31-37
+science/stub/index.html
+  s_3defb1068ab2d6::t_d13276000db86d 1-25
+science/linalg/main.ts
+  s_3defb1068ab2d6::t_d13276000db86d 1-1105
+science/PLAN.md
+  s_3defb1068ab2d6::t_d13276000db86d 1-621
+science/hub.ts
+  s_3defb1068ab2d6::t_d13276000db86d 1-54
+science/linalg/index.html
+  s_3defb1068ab2d6::t_d13276000db86d 1-25
+science/stub/main.ts
+  s_3defb1068ab2d6::t_d13276000db86d 1-90
+tsconfig.node.json
+  s_3defb1068ab2d6::t_d13276000db86d 9
+src/components/Hero.tsx
+  s_3defb1068ab2d6::t_d13276000db86d 17
+vite.science.config.ts
+  s_3defb1068ab2d6::t_d13276000db86d 1-32
+package.json
+  s_3defb1068ab2d6::t_d13276000db86d 9,11-14,25-26,31,39-41
+package-lock.json
+  s_3defb1068ab2d6::t_3e4d732235ad79 18-19,24,329-335,1677-1683,1764-1792,2340-2346,2695-2701,3589-3594
+scripts/assert-science-artifacts.mjs
+  s_3defb1068ab2d6::t_64f31ddce40afd 1-33
+scripts/check-science-isolation.mjs
+  s_3defb1068ab2d6::t_01fb34865ba021 1-107
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8aa3b9a8394d5eea983b2f092f6b5fb99564ac4e",
+  "prompts": {},
+  "sessions": {
+    "s_3defb1068ab2d6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f9bf7f32-f257-4f1d-b2c2-60050e908dd3",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "jamubc <150970140+jamubc@users.noreply.github.com>"
+    }
+  }
+}
