@@ -57,7 +57,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
 
         {/* Bottom Area: Actions */}
         <div className="mt-auto flex justify-end w-full">
-          {project.stars && githubPath && (
+          {githubPath && !project.hideStars && (
             <div className="shrink-0 hidden sm:block overflow-hidden opacity-90 hover:opacity-100 transition-opacity shadow-lg">
               <img
                 src={`https://img.shields.io/github/stars/${githubPath}?style=social`}
