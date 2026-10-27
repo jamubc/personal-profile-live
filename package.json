@@ -6,7 +6,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:science": "vite --config vite.science.config.ts",
     "build": "tsc && vite build",
+    "build:science": "tsc -p science/tsconfig.json && vite build --config vite.science.config.ts",
+    "build:all": "npm run build && npm run build:science",
+    "check:science-isolation": "node scripts/check-science-isolation.mjs",
+    "assert:science-artifacts": "node scripts/assert-science-artifacts.mjs",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -17,11 +22,13 @@
     "lucide-react": "^0.292.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tailwind-merge": "^2.0.0"
+    "tailwind-merge": "^2.0.0",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
+    "@types/three": "^0.185.1",
     "@vitejs/plugin-react": "^4.2.0",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
@@ -29,5 +36,8 @@
     "tailwindcss": "^3.3.5",
     "typescript": "^5.2.2",
     "vite": "^5.0.0"
+  },
+  "allowScripts": {
+    "esbuild@0.21.5": true
   }
 }

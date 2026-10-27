@@ -14,7 +14,7 @@ export const Hero = () => {
             Electrical Engineer <span className="text-white/40">/</span> EGBC EIT
           </p>
           <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-2xl mb-4">
-            I'm an electrical engineering graduate from UBCO and a registered EIT with Engineers and Geoscientists BC.
+            I'm an electrical engineering graduate from UBC and a registered EIT with Engineers and Geoscientists BC.
             I love to solve real-world problems with simple solutions to make life easier.
           </p>
           <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-2xl">
