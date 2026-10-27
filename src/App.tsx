@@ -1,4 +1,4 @@
-import { useState, useCallback, lazy, Suspense, ReactNode } from 'react';
+import { useState, useCallback, useRef, lazy, Suspense, ReactNode } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Hero } from './components/Hero';
 import { Projects } from './components/Projects';
@@ -7,6 +7,7 @@ import { Contact } from './components/Contact';
 import { Works } from './components/Works';
 import { Writing } from './components/Writing';
 import { Project } from './types';
+import { usePointerOffset } from './lib/usePointerOffset';
 
 const ProjectDetail = lazy(() =>
   import('./components/ProjectDetail').then((m) => ({ default: m.ProjectDetail }))
@@ -14,6 +15,8 @@ const ProjectDetail = lazy(() =>
 
 /** Sidebar + background effects + sidebar-offset content area. */
 function Shell({ children }: { children: ReactNode }) {
+  const lightsRef = useRef<HTMLDivElement>(null);
+  usePointerOffset(lightsRef);
   return (
     <div className="relative min-h-screen bg-dark text-white selection:bg-primary selection:text-dark overflow-hidden">
       {/* Sidebar */}
@@ -22,19 +25,11 @@ function Shell({ children }: { children: ReactNode }) {
       {/* Main Content — offset by sidebar width on desktop */}
       <div className="relative z-10 bg-dark shadow-2xl md:ml-60">
         {/* Background Effects */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div ref={lightsRef} className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-[#05060f] via-[#020308] to-[#05060f]" />
+          <div className="light-far" />
+          <div className="light-near" />
           <div className="absolute inset-0 opacity-60 noise-texture mix-blend-soft-light" />
-          <div
-            className="absolute inset-0 opacity-[0.07]"
-            style={{
-              backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
-              backgroundSize: '32px 32px',
-            }}
-          />
-          <div className="absolute -top-32 right-0 w-[620px] h-[620px] bg-primary/20 blur-[160px]" />
-          <div className="absolute top-1/2 -left-10 w-[420px] h-[420px] bg-secondary/10 blur-[160px]" />
-          <div className="absolute bottom-[-10%] right-1/3 w-[380px] h-[380px] bg-accent/10 blur-[140px]" />
         </div>
 
         {/* Content */}

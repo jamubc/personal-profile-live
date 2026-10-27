@@ -39,6 +39,23 @@
     background-size: 4px 4px;
   }
 
+  .light-far,
+  .light-near {
+    position: absolute;
+    inset: -16px;
+    transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .light-far {
+    background-image:
+      radial-gradient(760px 560px at 78% 12vh, rgba(242, 193, 78, 0.11), transparent 70%),
+      radial-gradient(640px 500px at 8% 68vh, rgba(240, 150, 128, 0.09), transparent 70%);
+    transform: translate(calc(var(--mx, 0) * -6px), calc(var(--my, 0) * -6px));
+  }
+  .light-near {
+    background-image: radial-gradient(400px 320px at 46% 44vh, rgba(255, 228, 190, 0.07), transparent 70%);
+    transform: translate(calc(var(--mx, 0) * -14px), calc(var(--my, 0) * -14px));
+  }
+
   /* Restore subtle scrollbar for the project detail overlay */
   .custom-scrollbar::-webkit-scrollbar {
     display: block;
